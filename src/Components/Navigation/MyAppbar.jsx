@@ -450,10 +450,10 @@ export default function MyAppbar(props) {
                         <Button disabled>Sortir</Button>
                       </div>
                       <div>
-                        <Button color="secondary">Terapkan</Button>
+                        <button className="btn-terapkan">Terapkan</button>
                       </div>
                     </div>
-                    <div className="flex tab-sort">
+                    <div className="flex tab-sort mt-8">
                       {/* <Button className="bg-grey">A-Z</Button>
                       <Button className="bg-grey">Z-A</Button> */}
                       {choseTab()}

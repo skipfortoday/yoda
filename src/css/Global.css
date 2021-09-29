@@ -135,6 +135,34 @@ a {
   padding: 10px;
 }
 
+.btn-terapkan {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 20px;
+
+  background: #F5F6F7;
+  border-radius: 10px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  border: 0;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+  color: #A0A4A8;
+}
+
+.btn-terapkan:hover{
+  cursor: pointer;
+}
+
+.btn-list-tab:hover{
+  cursor: pointer;
+}
+
 .switch {
   display: flex;
   justify-content: space-between;
@@ -151,6 +179,7 @@ a {
   padding: 10px 30px;
   border-radius: 0;
   background: white;
+  color: #A0A4A8;
 }
 
 .btn-list-sort {
@@ -162,6 +191,7 @@ a {
   box-sizing: border-box;
   border-radius: 8px;
   margin: 7px 5px;
+  color: #A0A4A8;
 }
 
 .btn-list-sort:hover{
@@ -171,4 +201,5 @@ a {
 
 .btn-active {
   background: #F5F6F7 !important;
+  color: #78C2B4 !important;
 }
