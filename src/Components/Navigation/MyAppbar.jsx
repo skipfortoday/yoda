@@ -307,6 +307,65 @@ export default function MyAppbar(props) {
     setOpenSub(!openSub);
   };
 
+  const textsTab = [
+    {
+      id  : 1,
+      name: 'A-Z',
+    },
+    {
+      id  : 2,
+      name: 'Z-A',
+    },
+  ]
+
+  const texts = [
+    {
+      id  : 1,
+      name: 'Nama & Email',
+    },
+    {
+      id  : 2,
+      name: 'Tanggal',
+    },
+    {
+      id  : 3,
+      name: 'No. Handphone',
+    },
+  ]
+
+  // const getButtonsUsingMap = () => {
+  //   const array = [1, 2, 3 ,4, 5]
+
+  //   return array.map((number) => {
+  //     return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
+  //   })
+
+  // }
+
+  const [selectedTabId, setSelectedTabId] = useState(1);
+  const pushTabId = (id) => {
+    setSelectedTabId(id)
+  }
+
+  const [selectedId, setSelectedId] = useState(1);
+  const pushId = (id) => {
+    setSelectedId(id)
+  }
+
+  const getButtonsUsingMap = () => {
+    return texts.map((number) => {
+      // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
+      return <button onClick={() => pushId(number.id)} className={`btn-list-sort ${selectedId === number.id ? 'btn-active' : ''}`}>{number.name}</button>
+    })
+  }
+
+  const choseTab = () => {
+    return textsTab.map((number) => {
+      // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
+      return <button onClick={() => pushTabId(number.id)} className={`btn-list-tab ${selectedTabId === number.id ? 'btn-active' : ''} ${number.id === 1 ? 'border-left' : 'border-right'}`}>{number.name}</button>
+    })
+  }
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -395,13 +454,21 @@ export default function MyAppbar(props) {
                       </div>
                     </div>
                     <div className="flex tab-sort">
-                      <Button className="bg-grey">A-Z</Button>
-                      <Button className="bg-grey">Z-A</Button>
+                      {/* <Button className="bg-grey">A-Z</Button>
+                      <Button className="bg-grey">Z-A</Button> */}
+                      {choseTab()}
                     </div>
-                    <hr/>
+                    <hr className="border-grey my-5" />
+                    <p><b>Urutkan Berdasarkan</b></p>
+                    <div className="list-filter">
+                      {/* <Button variant="outlined" color="secondary" onClick={() => console.log('ead')} >Nama & Email</Button>
+                      <Button variant="outlined" color="secondary">No. Handphone</Button>
+                      <Button variant="outlined" color="secondary">Tanggal</Button> */}
+                      {getButtonsUsingMap()}
+                    </div>
                   </div>
-                  <MenuItem onClick={() => sortData()}>Name</MenuItem>
-                  <MenuItem onClick={() => sortDataHp()}>Hp</MenuItem>
+                  {/* <MenuItem onClick={() => sortData()}>Name</MenuItem>
+                  <MenuItem onClick={() => sortDataHp()}>Hp</MenuItem> */}
                   {/* <MenuItem onClick={() => sortData('nameDesc')}>Name Desc</MenuItem> */}
                 </Menu>
               </div>
