@@ -385,6 +385,21 @@ export default function MyAppbar(props) {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
+                  <div className="menuSort">
+                    <div className="switch">
+                      <div>
+                        <Button disabled>Sortir</Button>
+                      </div>
+                      <div>
+                        <Button color="secondary">Terapkan</Button>
+                      </div>
+                    </div>
+                    <div className="flex tab-sort">
+                      <Button className="bg-grey">A-Z</Button>
+                      <Button className="bg-grey">Z-A</Button>
+                    </div>
+                    <hr/>
+                  </div>
                   <MenuItem onClick={() => sortData()}>Name</MenuItem>
                   <MenuItem onClick={() => sortDataHp()}>Hp</MenuItem>
                   {/* <MenuItem onClick={() => sortData('nameDesc')}>Name Desc</MenuItem> */}
