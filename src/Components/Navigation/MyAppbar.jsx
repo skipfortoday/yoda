@@ -255,20 +255,7 @@ export default function MyAppbar(props) {
     };
 
   // sort data
-  const [typeSort, setTypeSort] = useState("Asc");
-
-  const sortData = () => {
-    if(typeSort === "Desc"){
-      props.sendData('nameDesc')
-      setTypeSort('Desc')
-      setAnchorElSort(null);
-    }
-    if(typeSort === "Asc"){
-      props.sendData('nameAsc')
-      setTypeSort('Asc')
-      setAnchorElSort(null);
-    }
-  }
+  
   
   // const [dataSort, setDataSort] = useState("nameAsc");
   // const sortData = () => {
@@ -347,28 +334,52 @@ export default function MyAppbar(props) {
 
   // }
 
+  const [typeSort, setTypeSort] = useState("Asc");
+  const [nameSort, setNameSort] = useState("Nama & Email");
   const [selectedTabId, setSelectedTabId] = useState({id:1});
+  const [selectedId, setSelectedId] = useState({id:1});
+
+  const sortData = () => {
+    console.log('typeSort', typeSort)
+    console.log('nameSort', nameSort)
+    if(typeSort === "Desc"){
+      console.log('do Desc')
+      if(nameSort === 'Nama & Email'){
+        props.sendData('nameDesc')
+        setAnchorElSort(null);
+      }
+    }
+    if(typeSort === "Asc"){
+      console.log('do Asc')
+      if(nameSort === 'Nama & Email'){
+        props.sendData('nameAsc')
+        setAnchorElSort(null);
+      }
+    }
+  }
+
   const pushTabId = (item) => {
     setSelectedTabId(item)
     setTypeSort(item.type)
   }
 
-  const [selectedId, setSelectedId] = useState({id:1});
   const pushId = (item) => {
     setSelectedId(item)
+    setNameSort(item.name)
+  }
+  
+
+  const choseTab = () => {
+    return textsTab.map((number) => {
+      // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
+      return <button onClick={() => pushTabId(number)} className={`btn-list-tab ${selectedTabId.id === number.id ? 'btn-active' : ''} ${number.id === 1 ? 'border-left' : 'border-right'}`}>{number.name}</button>
+    })
   }
 
   const choseListFilter = () => {
     return texts.map((number) => {
       // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
       return <button onClick={() => pushId(number)} className={`btn-list-sort ${selectedId.id === number.id ? 'btn-active' : ''}`}>{number.name}</button>
-    })
-  }
-
-  const choseTab = () => {
-    return textsTab.map((number) => {
-      // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
-      return <button onClick={() => pushTabId(number)} className={`btn-list-tab ${selectedTabId.id === number.id ? 'btn-active' : ''} ${number.id === 1 ? 'border-left' : 'border-right'}`}>{number.name}</button>
     })
   }
 
@@ -410,26 +421,7 @@ export default function MyAppbar(props) {
           </Box>
           { upMd? (
             <>
-              {/* <button onClick={() => sortData('nameAsc')}>Asc</button>
-              <button onClick={() => sortData('nameDesc')}>Desc</button> */}
-              {/* <input type="file" accept=".xlsx,.xls" className="custom-file-input" onChange={(e) => uploadData(e)}/> */}
-              {/* <Button disableRipple
-                color="primary"
-                startIcon={<UploadIcon />}
-                onClick={() => uploadData()}
-              >
-                {'Unggah data'}
-              </Button> */}
               <div>
-                {/* <Button
-                  id="basic-button"
-                  aria-controls="basic-menu"
-                  aria-haspopup="true"
-                  aria-expanded={openSort ? 'true' : undefined}
-                  onClick={handleClick}
-                >
-                  Dashboard
-                </Button> */}
                 <Button disableRipple
                   id="basic-button"
                   aria-controls="basic-menu"
@@ -460,22 +452,14 @@ export default function MyAppbar(props) {
                       </div>
                     </div>
                     <div className="flex tab-sort mt-8">
-                      {/* <Button className="bg-grey">A-Z</Button>
-                      <Button className="bg-grey">Z-A</Button> */}
                       {choseTab()}
                     </div>
                     <hr className="border-grey my-5" />
                     <p><b>Urutkan Berdasarkan</b></p>
                     <div className="list-filter">
-                      {/* <Button variant="outlined" color="secondary" onClick={() => console.log('ead')} >Nama & Email</Button>
-                      <Button variant="outlined" color="secondary">No. Handphone</Button>
-                      <Button variant="outlined" color="secondary">Tanggal</Button> */}
                       {choseListFilter()}
                     </div>
                   </div>
-                  {/* <MenuItem onClick={() => sortData()}>Name</MenuItem>
-                  <MenuItem onClick={() => sortDataHp()}>Hp</MenuItem> */}
-                  {/* <MenuItem onClick={() => sortData('nameDesc')}>Name Desc</MenuItem> */}
                 </Menu>
               </div>
               <div>
@@ -499,30 +483,6 @@ export default function MyAppbar(props) {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
-                  {/* <MenuItem onClick={() => filterData('Malang')}>Malang</MenuItem>
-                  <MenuItem onClick={() => filterData('Test')}>Test</MenuItem>
-                  <MenuItem onClick={() => filterData('Reset')}>Reset</MenuItem> */}
-                  {/* <NestedMenuItem
-                    label="Button 5"
-                  >
-                    <MenuItem>Sub-Button 1</MenuItem>
-                    <MenuItem>Sub-Button 2</MenuItem>
-                  </NestedMenuItem> */}
-                  {/* <MenuItem>
-                  <List>
-                    <ListItem disablePadding>
-                      <ListItemButton>
-                        <ListItemText primary="Trash" />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                      <ListItemButton component="a" href="#simple-list">
-                        <ListItemText primary="Spam" />
-                      </ListItemButton>
-                    </ListItem>
-                  </List>
-                  </MenuItem> */}
-                  {/* <MenuItem> */}
                     <List
                       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
                       component="nav"
