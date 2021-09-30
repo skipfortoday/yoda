@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -79,6 +79,18 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
     [theme.breakpoints.up('md')]: {
       width: '20ch',
     },
+  },
+}));
+
+const StyledInputBaseFilter = styled(OutlinedInput)(({ theme }) => ({
+  color: 'inherit',
+  borderRadius: 50,
+  '& .MuiOutlinedInput-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
   },
 }));
 
@@ -334,6 +346,7 @@ export default function MyAppbar(props) {
 
   // }
 
+  // sorting
   const [typeSort, setTypeSort] = useState("Asc");
   const [nameSort, setNameSort] = useState("Nama & Email");
   const [selectedTabId, setSelectedTabId] = useState({id:1});
@@ -398,6 +411,51 @@ export default function MyAppbar(props) {
       return <button onClick={() => pushId(number)} className={`btn-list-sort ${selectedId.id === number.id ? 'btn-active' : ''}`}>{number.name}</button>
     })
   }
+
+  const areas = [
+    {
+      id  : 1,
+      name: 'Jakarta',
+    },
+    {
+      id  : 2,
+      name: 'Jawa Timur',
+    },
+    {
+      id  : 3,
+      name: 'Malang',
+    },
+    {
+      id  : 4,
+      name: 'Yogyakarta',
+    },
+  ]
+
+  const [selectedArea, setSelectedArea] = useState([]);
+
+  const cek = () => {
+    console.log('selected', selectedArea)
+  }
+
+  const pushArea = (item) => {
+    setSelectedArea(selectedArea.concat(item))
+  }
+
+  const choseAreas = () => {
+    return areas.map((area) => {
+      return <button onClick={() => pushArea(area)} className={`btn-list-sort ${selectedId.id === area.id ? 'btn-active' : ''}`}>{area.name}</button>
+    })
+  }
+
+  const areasSelected = () => {
+    return selectedArea.map((area) => {
+      return <button onClick={() => pushArea(area)} className={`btn-list-sort ${selectedId.id === area.id ? 'btn-active' : ''}`}>{area.name}</button>
+    })
+  }
+
+  // useEffect(() => {
+  //   areasSelected()
+  // }, [])
 
 
   return (
@@ -499,39 +557,40 @@ export default function MyAppbar(props) {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
-                    <List
-                      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-                      component="nav"
-                      aria-labelledby="nested-list-subheader"
-                    >
-                      <ListItemButton onClick={handleClickSub}>
-                        <ListItemText primary="Cabang" />
-                        {openSub ? <ExpandLess /> : <ExpandMore />}
-                      </ListItemButton>
-                      <Collapse in={openSub} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                          <ListItemButton sx={{ pl: 4 }} onClick={() => filterData('Malang')}>
-                            <ListItemText primary="Malang" />
-                          </ListItemButton>
-                          <ListItemButton sx={{ pl: 4 }} >
-                            <ListItemText primary="Test" onClick={() => filterData('Test')}/>
-                          </ListItemButton>
-                          {/* <ListItemButton sx={{ pl: 4 }} >
-                            <ListItemText primary="Reset" onClick={() => filterData('Reset')}/>
-                          </ListItemButton> */}
-                        </List>
-                      </Collapse>
-                    </List>
-                  {/* </MenuItem> */}
-                <MenuItem onClick={() => filterData('Reset')}>Reset</MenuItem>
+                  <div className="menuSort">
+                    <div className="switch">
+                      <div>
+                        <Button disabled>Filter</Button>
+                      </div>
+                      <div>
+                        <button className="btn-terapkan" onClick={() => sortData()}>Terapkan</button>
+                      </div>
+                    </div>
+                    <div className="mt-5">
+                    <Search>
+                      <SearchIconWrapper>
+                        <SearchIcon sx={{ color: 'tint.black.60' }} />
+                      </SearchIconWrapper>
+                      <StyledInputBaseFilter
+                        color="primary"
+                        placeholder="Cari . . ."
+                        inputProps={{ 'aria-label': 'search' }}
+                      />
+                    </Search>
+                    </div>
+                    <button onClick={() => cek()}>cek</button>
+                    <div>
+                      <p>Selected</p>
+                      {areasSelected()}
+                    </div>
+                    <hr/>
+                    <div>
+                      <p>Chose</p>
+                      {choseAreas()}
+                    </div>
+                  </div>
                 </Menu>
               </div>
-              {/* <Button disableRipple
-                color="primary"
-                startIcon={<ImportExportIcon />}
-              >
-                {'Sortir'}
-              </Button> */}
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ color: 'tint.black.60' }} />
@@ -545,11 +604,6 @@ export default function MyAppbar(props) {
             </>
           ) : null }
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={1} color="red20">
-                <MailIcon color="primary"/>
-              </Badge>
-            </IconButton> */}
             <IconButton
               size="large"
               aria-label="show 17 new notifications"

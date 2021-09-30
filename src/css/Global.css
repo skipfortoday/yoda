@@ -12,6 +12,14 @@ code {
     monospace;
 }
 
+.menuSort .css-zrodvd {
+  margin: 0 !important;
+}
+
+.menuSort .css-zrodvd .css-9ypwsl-MuiInputBase-root-MuiOutlinedInput-root{
+  border-radius: 8px !important;
+}
+
 a {
   text-decoration: none;
 }
