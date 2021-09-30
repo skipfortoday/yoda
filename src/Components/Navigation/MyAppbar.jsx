@@ -338,7 +338,7 @@ export default function MyAppbar(props) {
     },
   ]
 
-  // const getButtonsUsingMap = () => {
+  // const choseListFilter = () => {
   //   const array = [1, 2, 3 ,4, 5]
 
   //   return array.map((number) => {
@@ -356,10 +356,9 @@ export default function MyAppbar(props) {
   const [selectedId, setSelectedId] = useState({id:1});
   const pushId = (item) => {
     setSelectedId(item)
-    sortData()
   }
 
-  const getButtonsUsingMap = () => {
+  const choseListFilter = () => {
     return texts.map((number) => {
       // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
       return <button onClick={() => pushId(number)} className={`btn-list-sort ${selectedId.id === number.id ? 'btn-active' : ''}`}>{number.name}</button>
@@ -457,7 +456,7 @@ export default function MyAppbar(props) {
                         <Button disabled>Sortir</Button>
                       </div>
                       <div>
-                        <button className="btn-terapkan">Terapkan</button>
+                        <button className="btn-terapkan" onClick={() => sortData()}>Terapkan</button>
                       </div>
                     </div>
                     <div className="flex tab-sort mt-8">
@@ -471,7 +470,7 @@ export default function MyAppbar(props) {
                       {/* <Button variant="outlined" color="secondary" onClick={() => console.log('ead')} >Nama & Email</Button>
                       <Button variant="outlined" color="secondary">No. Handphone</Button>
                       <Button variant="outlined" color="secondary">Tanggal</Button> */}
-                      {getButtonsUsingMap()}
+                      {choseListFilter()}
                     </div>
                   </div>
                   {/* <MenuItem onClick={() => sortData()}>Name</MenuItem>
