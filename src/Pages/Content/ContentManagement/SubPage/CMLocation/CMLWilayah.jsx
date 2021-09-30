@@ -33,10 +33,13 @@ export default function CMLWilayah(props) {
   const [Kota, setKota] = useState([]);
   const [KecamatanArr, setKecamatanArr] = useState([]);
   const [Kecamatan, setKecamatan] = useState([]);
+  const [CabangArr, setCabangArr] = useState([]);
+  const [Cabang, setCabang] = useState([]);
 
   useEffect(() => {
     LoadData();
     getWilayah();
+    getCabang();
   }, []);
 
   async function LoadData() {
@@ -61,6 +64,22 @@ export default function CMLWilayah(props) {
 
         setWilayah(tempData.data);
         setProvinsiArr(listProvinsi)
+      });
+    }
+    
+    async function getCabang() {
+      await axios
+      .get("https://yodamobi.sagaramedia.id/api/dropdown/nama-cabang")
+      .then((response) => {
+        var tempData = response.data.nama_cabang;
+        console.log(tempData, "CABANG");
+        setCabangArr(tempData, "CABANG ARR")
+        // let listCabang = tempData.data.filter(
+          //   (v, i, a) => a.findIndex((t) => t.provinsi === v.provinsi) === i
+        // );
+
+        // setWilayah(tempData.data);
+        // setProvinsiArr(listProvinsi)
       });
   }
 
@@ -106,13 +125,16 @@ export default function CMLWilayah(props) {
   }
 
   async function InsertData() {
-    await axiosBackend
-      .post("/cm/wilayah", {
-        provinsi: InputProvince.value,
-        kota: InputCity.value,
-        kecamatan: InputKecamatan.value,
-        cabang_pengelola: InputCabangPengelola.value,
-      })
+    await axios.post("https://yodamobi.sagaramedia.id/api/cm/wilayah", {
+        provinsi: Provinsi,
+        kota: Kota,
+        kecamatan: Kecamatan,
+        cabang_pengelola: Cabang,
+      },{
+        headers: {
+        // Authorization: auth.token == null ? null : `Bearer ${auth.token}`
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`
+      }})
       .then((response) => {
         console.log(response.data);
         setMenuAnchorEl(null);
@@ -166,11 +188,11 @@ export default function CMLWilayah(props) {
         >
           <DynamicContentMenu
             header={"Tambah baru"}
-            // actionButtons={
-            //   <>
-            //     <Button size="large" fullWidth variant="contained" onClick={handleSubmit} >Tambah</Button>
-            //   </>
-            // }
+            actionButtons={
+              <>
+                <Button size="large" fullWidth variant="contained" onClick={handleSubmit} >Tambah</Button>
+              </>
+            }
           >
             <FormControl
               variant="outlined"
@@ -282,7 +304,7 @@ export default function CMLWilayah(props) {
               <InputLabel htmlFor="input-4">
                 {InputCabangPengelola.label}
               </InputLabel>
-              <OutlinedInput
+              {/* <OutlinedInput
                 id="input-4"
                 type="text"
                 value={InputCabangPengelola.value}
@@ -293,7 +315,23 @@ export default function CMLWilayah(props) {
                   })
                 }
                 label={InputCabangPengelola.label}
-              />
+              /> */}
+              <Select
+                labelId="cabang"
+                id="cabang"
+                value={Cabang}
+              >
+                {CabangArr?.map((data, idx) => {
+                  console.log(data, "CABANG INPUT");
+                  return (
+                  <MenuItem value={data.nama_cabang} key={idx} onClick={() => {
+                    setCabang(data.nama_cabang)
+                  }}>
+                    {data.nama_cabang}
+                  </MenuItem>
+                  )
+                })}
+              </Select>
             </FormControl>
             {/* <Autocomplete
               disablePortal

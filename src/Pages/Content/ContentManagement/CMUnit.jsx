@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Box } from '@mui/system'
 import { Button, Collapse, Stack } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Remove from '@mui/icons-material/Remove';
+import Delete from '@mui/icons-material/Delete';
 import axiosBackend from '../../../Helper/axiosBackend'
 import CMUMerkModelVariant from './SubPage/CMUnit/CMUMerkModelVariant';
 import CMUTahun from './SubPage/CMUnit/CMUTahun';
@@ -90,8 +90,8 @@ export default function CMUnit() {
             </Button>:
             <Button
               variant="contained" size="large"
-              color="error"
-              startIcon={<Remove />}
+              color="inherit"
+              startIcon={<Delete />}
               onClick={multiDelete}
             >
               {'Hapus'}
