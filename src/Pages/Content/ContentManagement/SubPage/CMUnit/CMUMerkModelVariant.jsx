@@ -12,7 +12,9 @@ const INPUTS = [
 ]
 
 export default function CMUMerkModelVariant(props) {
+  console.log('props CMUMerkModelVariant', props)
   const [Data, setData] = useState([])
+  const [DataMerek, setDataMerek] = useState(props.dataFiltered)
 
   useEffect(() => { LoadData() }, [])
 
@@ -20,7 +22,10 @@ export default function CMUMerkModelVariant(props) {
     setMenuAnchorEl(null);
     ResetInputs();
     LoadData();
-  }, [props.val]);
+    if(props.dataFiltered){
+      setData(props.dataFiltered)
+    }
+  }, [props.val, props.dataFiltered]);
 
   async function LoadData() {
     await axiosBackend.get('/cm/merek-model-varian')

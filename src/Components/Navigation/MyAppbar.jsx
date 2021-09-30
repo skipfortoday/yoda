@@ -465,7 +465,7 @@ export default function MyAppbar(props) {
     setSelectedArea(selectedArea.concat(item))
     console.log('item', item.name)
     var filtered = defaultArea.filter(function(value){ 
-      console.log('value', value.name)
+      // console.log('value', value.name)
       return value.name !== item.name
     })
     setDefaultArea(filtered)
@@ -476,7 +476,7 @@ export default function MyAppbar(props) {
     setDefaultArea(defaultArea.concat(item))
     console.log('item', item.name)
     var filtered = selectedArea.filter(function(value){ 
-      console.log('value', value.name)
+      // console.log('value', value.name)
       return value.name !== item.name
     })
     setSelectedArea(filtered)
@@ -539,7 +539,7 @@ export default function MyAppbar(props) {
     setSelectedArea(selectedArea.concat(item))
     console.log('item', item.name)
     var filtered = defaultArea.filter(function(value){ 
-      console.log('value', value.name)
+      // console.log('value', value.name)
       return value.name !== item.name
     })
     setDefaultArea(filtered)
@@ -555,6 +555,7 @@ export default function MyAppbar(props) {
   const doFilterData = async () => {
     console.log('selectedArea', selectedArea)
     console.log('selectedMerek', selectedMerek)
+    props.getDataFilter(selectedMerek)
     const filters            = {
       Merek   : selectedMerek,
     }
@@ -566,16 +567,16 @@ export default function MyAppbar(props) {
       return data
     }
     // const filters = multi()
-    console.log('filters => ', filters)
-    await axios.post('https://yodamobi.sagaramedia.id/api/filter',{
-      table: 'Merek, model, varian', filters
-    })
-    .then((response) =>{ 
-      console.log('res', response)
-    })
-    .catch((err) => { 
-      console.warn(err.response)
-    })
+    // console.log('filters => ', filters)
+    // await axios.post('https://yodamobi.sagaramedia.id/api/filter',{
+    //   table: 'Merek, model, varian', filters
+    // })
+    // .then((response) =>{ 
+    //   console.log('res', response)
+    // })
+    // .catch((err) => { 
+    //   console.warn(err.response)
+    // })
   }
 
   const doFilterData2 = () => {
