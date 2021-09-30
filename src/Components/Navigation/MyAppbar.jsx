@@ -432,10 +432,14 @@ export default function MyAppbar(props) {
   ]
 
   const [selectedArea, setSelectedArea] = useState([]);
+  const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState(areas);
 
   const cek = () => {
-    console.log('selected', selectedArea)
+    setDefaultArea(defaultArea)
+    const data = defaultArea.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
+    setDefaultArea(data)
+    console.log('data', data)
   }
 
   const pushArea = (item) => {
@@ -495,7 +499,13 @@ export default function MyAppbar(props) {
         );
     });
     setDefaultArea(filteredCharacters)
-    console.log(filteredCharacters);
+    console.log('doSearch',filteredCharacters);
+    // if(e === 0){
+    //   cek()
+    // } else {
+    //   setDefaultArea(filteredCharacters)
+    //   console.log(filteredCharacters);
+    // }
 })
 
   // useEffect(() => {
@@ -624,7 +634,7 @@ export default function MyAppbar(props) {
                       />
                     </Search>
                     </div>
-                    {/* <button onClick={() => cek()}>cek</button> */}
+                    <button onClick={() => cek()}>cek</button>
                     <div>
                       <p>Selected</p>
                       {areasSelected()}
