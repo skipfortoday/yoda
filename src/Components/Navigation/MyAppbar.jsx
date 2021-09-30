@@ -255,27 +255,34 @@ export default function MyAppbar(props) {
     };
 
   // sort data
-  const [dataSort, setDataSort] = useState("nameAsc");
+  const [typeSort, setTypeSort] = useState("Asc");
+
   const sortData = () => {
-    // if(value === "nameDesc"){
-    //   setAnchorElSort(null);
-    //   props.sendData('nameDesc')
-    // }
-    // if(value === "nameAsc"){
-    //   setAnchorElSort(null);
-    //   props.sendData('nameAsc')
-    // }
-    if(dataSort === "nameDesc"){
-      props.sendData('nameAsc')
-      setDataSort('nameAsc')
+    if(typeSort === "Desc"){
+      props.sendData('nameDesc')
+      setTypeSort('Desc')
       setAnchorElSort(null);
     }
-    if(dataSort === "nameAsc"){
-      props.sendData('nameDesc')
-      setDataSort('nameDesc')
+    if(typeSort === "Asc"){
+      props.sendData('nameAsc')
+      setTypeSort('Asc')
       setAnchorElSort(null);
     }
   }
+  
+  // const [dataSort, setDataSort] = useState("nameAsc");
+  // const sortData = () => {
+  //   if(dataSort === "nameDesc"){
+  //     props.sendData('nameAsc')
+  //     setDataSort('nameAsc')
+  //     setAnchorElSort(null);
+  //   }
+  //   if(dataSort === "nameAsc"){
+  //     props.sendData('nameDesc')
+  //     setDataSort('nameDesc')
+  //     setAnchorElSort(null);
+  //   }
+  // }
 
   // sort data
   const [dataSortHp, setDataSortHp] = useState("hpDesc");
@@ -297,10 +304,6 @@ export default function MyAppbar(props) {
     props.getDataFilter(loc)
   }
 
-  // const lohehAsc = () => {
-  //   props.sendData('nameAsc')
-  // }
-
   const [openSub, setOpenSub] = React.useState(false);
 
   const handleClickSub = () => {
@@ -311,10 +314,12 @@ export default function MyAppbar(props) {
     {
       id  : 1,
       name: 'A-Z',
+      type: 'Asc'
     },
     {
       id  : 2,
       name: 'Z-A',
+      type: 'Desc'
     },
   ]
 
@@ -342,9 +347,10 @@ export default function MyAppbar(props) {
 
   // }
 
-  const [selectedTabId, setSelectedTabId] = useState(1);
-  const pushTabId = (id) => {
-    setSelectedTabId(id)
+  const [selectedTabId, setSelectedTabId] = useState({id:1});
+  const pushTabId = (item) => {
+    setSelectedTabId(item)
+    setTypeSort(item.type)
   }
 
   const [selectedId, setSelectedId] = useState({id:1});
@@ -363,7 +369,7 @@ export default function MyAppbar(props) {
   const choseTab = () => {
     return textsTab.map((number) => {
       // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
-      return <button onClick={() => pushTabId(number.id)} className={`btn-list-tab ${selectedTabId === number.id ? 'btn-active' : ''} ${number.id === 1 ? 'border-left' : 'border-right'}`}>{number.name}</button>
+      return <button onClick={() => pushTabId(number)} className={`btn-list-tab ${selectedTabId.id === number.id ? 'btn-active' : ''} ${number.id === 1 ? 'border-left' : 'border-right'}`}>{number.name}</button>
     })
   }
 
