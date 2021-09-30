@@ -512,6 +512,23 @@ export default function MyAppbar(props) {
   //   areasSelected()
   // }, [])
 
+  const doFilterData = async () => {
+    // console.log('selectedAreaString', selectedAreaString)
+    const filters            = {
+      Merek   : 'Aston Martin',
+    }
+    await axios.post('https://yodamobi.sagaramedia.id/api/filter',{
+      table: 'Merek, model, varian', filters
+      // filters[merek]: aston
+    })
+    .then((response) =>{ 
+      console.log('res', response)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -618,7 +635,7 @@ export default function MyAppbar(props) {
                         <Button disabled>Filter</Button>
                       </div>
                       <div>
-                        <button className="btn-terapkan" onClick={() => sortData()}>Terapkan</button>
+                        <button className="btn-terapkan" onClick={() => doFilterData()}>Terapkan</button>
                       </div>
                     </div>
                     <div className="mt-5">
