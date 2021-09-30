@@ -431,6 +431,25 @@ export default function MyAppbar(props) {
     },
   ]
 
+  const Merek = [
+    {
+      id  : 1,
+      name: 'Alfa Romeo',
+    },
+    {
+      id  : 2,
+      name: 'Aston Martin',
+    },
+    {
+      id  : 3,
+      name: 'BMW',
+    },
+    {
+      id  : 4,
+      name: 'Jeep',
+    },
+  ]
+
   const [selectedArea, setSelectedArea] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState(areas);
@@ -512,10 +531,31 @@ export default function MyAppbar(props) {
   //   areasSelected()
   // }, [])
 
+  
+
+  const [selectedMerek, setSelectedMerek] = useState();
+  const pushMerek = (item) => {
+    setSelectedMerek(item.name)
+    setSelectedArea(selectedArea.concat(item))
+    console.log('item', item.name)
+    var filtered = defaultArea.filter(function(value){ 
+      console.log('value', value.name)
+      return value.name !== item.name
+    })
+    setDefaultArea(filtered)
+    console.log('filtered', filtered)
+  }
+
+  const choseMerek = () => {
+    return Merek.map((merek) => {
+      return <button onClick={() => pushMerek(merek)} className={`btn-list-sort ${selectedId.id === merek.id ? 'btn-active' : ''}`}>{merek.name}</button>
+    })
+  }
+
   const doFilterData = async () => {
-    // console.log('selectedAreaString', selectedAreaString)
+    console.log('selectedMerek', selectedMerek)
     const filters            = {
-      Merek   : 'Aston Martin',
+      Merek   : selectedMerek,
     }
     await axios.post('https://yodamobi.sagaramedia.id/api/filter',{
       table: 'Merek, model, varian', filters
@@ -657,9 +697,13 @@ export default function MyAppbar(props) {
                       {areasSelected()}
                     </div>
                     <hr/>
-                    <div>
+                    {/* <div>
                       <p>Chose</p>
                       {choseAreas()}
+                    </div> */}
+                    <div>
+                      <p>Merek</p>
+                      {choseMerek()}
                     </div>
                   </div>
                 </Menu>
