@@ -41,6 +41,7 @@ import SendIcon from "@mui/icons-material/Send";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
+import axiosBackend from "../../Helper/axiosBackend";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -307,6 +308,34 @@ export default function MyAppbar(props) {
     setOpenSub(!openSub);
   };
 
+  async function uploadExcel(e) {
+    for (let i = 0; i < e.target.files.length; i++) {
+      if (e.target.files[i].name.split(".").pop() === "xlsx") {
+        console.log(e.target.files[i]);
+        axios
+          .post(
+            "https://yodamobi.sagaramedia.id/api/upload-excel",
+            {
+              excel: e.target.files[i],
+            },
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((err) => {
+            console.warn(err.response);
+          });
+      }
+    }
+    // let ext = e.target.files.split(".").pop();
+    // console.log(ext, "EXT");
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -383,6 +412,26 @@ export default function MyAppbar(props) {
                 >
                   Dashboard
                 </Button> */}
+                <input
+                  accept=".xlsx"
+                  // className={classes.input}
+                  style={{ display: "none" }}
+                  id="raised-button-file"
+                  multiple
+                  type="file"
+                  onChange={(e) => {
+                    uploadExcel(e);
+                  }}
+                />
+                <label htmlFor="raised-button-file">
+                  <Button
+                    variant="raised"
+                    component="span"
+                    // className={classes.button}
+                  >
+                    Upload
+                  </Button>
+                </label>
                 <Button
                   disableRipple
                   id="basic-button"
