@@ -348,11 +348,19 @@ export default function MyAppbar(props) {
         props.sendData('nameDesc')
         setAnchorElSort(null);
       }
+      if(nameSort === 'Tanggal'){
+        props.sendData('dateDesc')
+        setAnchorElSort(null);
+      }
     }
     if(typeSort === "Asc"){
       console.log('do Asc')
       if(nameSort === 'Nama & Email'){
         props.sendData('nameAsc')
+        setAnchorElSort(null);
+      }
+      if(nameSort === 'Tanggal'){
+        props.sendData('dateAsc')
         setAnchorElSort(null);
       }
     }
