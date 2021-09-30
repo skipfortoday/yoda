@@ -553,13 +553,22 @@ export default function MyAppbar(props) {
   }
 
   const doFilterData = async () => {
+    console.log('selectedArea', selectedArea)
     console.log('selectedMerek', selectedMerek)
     const filters            = {
       Merek   : selectedMerek,
     }
+    const multi = () => {
+      const data = selectedArea.map((x) => {
+        const obj = {"Merek" : x.name}
+        return obj
+      })
+      return data
+    }
+    // const filters = multi()
+    console.log('filters => ', filters)
     await axios.post('https://yodamobi.sagaramedia.id/api/filter',{
       table: 'Merek, model, varian', filters
-      // filters[merek]: aston
     })
     .then((response) =>{ 
       console.log('res', response)
@@ -568,6 +577,26 @@ export default function MyAppbar(props) {
       console.warn(err.response)
     })
   }
+
+  const doFilterData2 = () => {
+    const requests = [];
+    const url = 'https://yodamobi.sagaramedia.id/api/filter';
+    const filters            = {
+      Merek   : selectedMerek,
+    }
+    for (let i = 0; i < selectedArea.length; i++) {
+        requests.push(axios.post(url, { params: {
+            table: 'Merek, model, varian',
+            filters
+        }})
+        )
+    }
+
+    axios.all(requests)
+        .then((res) => {
+            console.log(res);
+        });
+  };
 
 
   return (
@@ -691,7 +720,7 @@ export default function MyAppbar(props) {
                       />
                     </Search>
                     </div>
-                    <button onClick={() => cek()}>cek</button>
+                    {/* <button onClick={() => cek()}>cek</button> */}
                     <div>
                       <p>Selected</p>
                       {areasSelected()}
