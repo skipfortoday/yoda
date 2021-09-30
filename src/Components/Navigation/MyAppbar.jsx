@@ -432,6 +432,7 @@ export default function MyAppbar(props) {
   ]
 
   const [selectedArea, setSelectedArea] = useState([]);
+  const [defaultArea, setDefaultArea] = useState(areas);
 
   const cek = () => {
     console.log('selected', selectedArea)
@@ -439,17 +440,35 @@ export default function MyAppbar(props) {
 
   const pushArea = (item) => {
     setSelectedArea(selectedArea.concat(item))
+    console.log('item', item.name)
+    var filtered = defaultArea.filter(function(value){ 
+      console.log('value', value.name)
+      return value.name !== item.name
+    })
+    setDefaultArea(filtered)
+    console.log('filtered', filtered)
+  }
+
+  const pushAreaDefault = (item) => {
+    setDefaultArea(defaultArea.concat(item))
+    console.log('item', item.name)
+    var filtered = selectedArea.filter(function(value){ 
+      console.log('value', value.name)
+      return value.name !== item.name
+    })
+    setSelectedArea(filtered)
+    console.log('filtered', filtered)
   }
 
   const choseAreas = () => {
-    return areas.map((area) => {
+    return defaultArea.map((area) => {
       return <button onClick={() => pushArea(area)} className={`btn-list-sort ${selectedId.id === area.id ? 'btn-active' : ''}`}>{area.name}</button>
     })
   }
 
   const areasSelected = () => {
     return selectedArea.map((area) => {
-      return <button onClick={() => pushArea(area)} className={`btn-list-sort ${selectedId.id === area.id ? 'btn-active' : ''}`}>{area.name}</button>
+      return <button onClick={() => pushAreaDefault(area)} className={`btn-list-sort ${selectedId.id === area.id ? 'btn-active' : ''}`}>{area.name}</button>
     })
   }
 
