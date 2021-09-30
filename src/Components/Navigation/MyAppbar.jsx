@@ -352,6 +352,10 @@ export default function MyAppbar(props) {
         props.sendData('dateDesc')
         setAnchorElSort(null);
       }
+      if(nameSort === 'No. Handphone'){
+        props.sendData('hpDesc')
+        setAnchorElSort(null);
+      }
     }
     if(typeSort === "Asc"){
       console.log('do Asc')
@@ -361,6 +365,10 @@ export default function MyAppbar(props) {
       }
       if(nameSort === 'Tanggal'){
         props.sendData('dateAsc')
+        setAnchorElSort(null);
+      }
+      if(nameSort === 'No. Handphone'){
+        props.sendData('hpAsc')
         setAnchorElSort(null);
       }
     }
