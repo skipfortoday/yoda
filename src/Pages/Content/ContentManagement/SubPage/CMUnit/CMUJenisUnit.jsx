@@ -14,6 +14,12 @@ export default function CMUJenisUnit(props) {
 
   useEffect(() => { LoadData() }, [])
 
+  useEffect(() => {
+    setMenuAnchorEl(null);
+    ResetInputs();
+    LoadData();
+  }, [props.val]);
+
   async function LoadData() {
     await axiosBackend.get('/cm/jenis-unit')
     .then((response) => { 
@@ -113,6 +119,10 @@ export default function CMUJenisUnit(props) {
           columns={DATAGRID_COLUMNS}
           rows={Data}
           checkboxSelection
+          onSelectionModelChange={(newId) => {
+            props.changeIcons(newId, "jenis-unit")
+            console.log(newId);
+          }}
           disableColumnResize={false}
           disableSelectionOnClick
         />

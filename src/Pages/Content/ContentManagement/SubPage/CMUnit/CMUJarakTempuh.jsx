@@ -14,6 +14,12 @@ export default function CMUJarakTempuh(props) {
 
   useEffect(() => { LoadData() }, [])
 
+  useEffect(() => {
+    setMenuAnchorEl(null);
+    ResetInputs();
+    LoadData();
+  }, [props.val]);
+
   async function LoadData() {
     await axiosBackend.get('/cm/jarak-tempuh')
     .then((response) => { 
@@ -114,6 +120,10 @@ export default function CMUJarakTempuh(props) {
           columns={DATAGRID_COLUMNS}
           rows={Data}
           checkboxSelection
+          onSelectionModelChange={(newId) => {
+            props.changeIcons(newId, "jarak-tempuh")
+            console.log(newId);
+          }}
           disableColumnResize={false}
           disableSelectionOnClick
         />

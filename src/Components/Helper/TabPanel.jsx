@@ -5,8 +5,6 @@ import React from 'react'
 export default function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
-  console.log(children, "CHILDREN");
-
   return (
     <div
       role="tabpanel"
