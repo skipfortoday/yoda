@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -6,15 +5,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-=======
-import React, { useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
->>>>>>> 49c41661c7412485347be2b5d18ba673bea3fe01
 // import InputBase from '@mui/material/InputBase';
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Badge from "@mui/material/Badge";
@@ -279,26 +269,18 @@ export default function MyAppbar(props) {
 
   // sort data
   const [dataSort, setDataSort] = useState("nameDesc");
-  const sortData = () => {
-    // if(value === "nameDesc"){
-    //   setAnchorElSort(null);
-    //   props.sendData('nameDesc')
-    // }
-    // if(value === "nameAsc"){
-    //   setAnchorElSort(null);
-    //   props.sendData('nameAsc')
-    // }
-    if (dataSort === "nameDesc") {
-      props.sendData("nameAsc");
-      setDataSort("nameAsc");
-      setAnchorElSort(null);
-    }
-    if (dataSort === "nameAsc") {
-      props.sendData("nameDesc");
-      setDataSort("nameDesc");
-      setAnchorElSort(null);
-    }
-  };
+  // const sortData = () => {
+  //   if (dataSort === "nameDesc") {
+  //     props.sendData("nameAsc");
+  //     setDataSort("nameAsc");
+  //     setAnchorElSort(null);
+  //   }
+  //   if (dataSort === "nameAsc") {
+  //     props.sendData("nameDesc");
+  //     setDataSort("nameDesc");
+  //     setAnchorElSort(null);
+  //   }
+  // };
 
   // sort data
   const [dataSortHp, setDataSortHp] = useState("hpDesc");
@@ -812,8 +794,8 @@ export default function MyAppbar(props) {
                     </Search>
                     </div>
                     {/* <button onClick={() => cek()}>cek</button> */}
-                    <div>
-                      <p>Selected</p>
+                    <div className="mt-5">
+                      {/* <p>Selected</p> */}
                       {areasSelected()}
                     </div>
                     <hr/>
