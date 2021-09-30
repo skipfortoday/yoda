@@ -586,7 +586,8 @@ export default function MyAppbar(props) {
                       </div>
                     </div>
                     <div className="mt-5">
-                    <Search>
+                    <Search
+                    onChange={() => console.log('asd')}>
                       <SearchIconWrapper>
                         <SearchIcon sx={{ color: 'tint.black.60' }} />
                       </SearchIconWrapper>
