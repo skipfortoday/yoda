@@ -472,6 +472,32 @@ export default function MyAppbar(props) {
     })
   }
 
+  const doSearch1 = (x) => {
+    console.log('x', x)
+    const inventory = [
+      {name: 'apples', quantity: 2},
+      {name: 'bananas', quantity: 0},
+      {name: 'cherries', quantity: 5}
+    ];
+    
+    const result = inventory.find( ({ name }) => name === x );
+    
+    console.log(result) // { name: 'cherries', quantity: 5 }
+  }
+
+  const doSearch = ((e) => {
+    const searchString = e.toLowerCase();
+    console.log('searchString', searchString)
+
+    const filteredCharacters = areas.filter((character) => {
+        return (
+            character.name.toLowerCase().includes(searchString)
+        );
+    });
+    setDefaultArea(filteredCharacters)
+    console.log(filteredCharacters);
+})
+
   // useEffect(() => {
   //   areasSelected()
   // }, [])
@@ -587,7 +613,7 @@ export default function MyAppbar(props) {
                     </div>
                     <div className="mt-5">
                     <Search
-                    onChange={() => console.log('asd')}>
+                    onChange={(filed) => doSearch(filed.target.value)}>
                       <SearchIconWrapper>
                         <SearchIcon sx={{ color: 'tint.black.60' }} />
                       </SearchIconWrapper>
@@ -598,7 +624,7 @@ export default function MyAppbar(props) {
                       />
                     </Search>
                     </div>
-                    <button onClick={() => cek()}>cek</button>
+                    {/* <button onClick={() => cek()}>cek</button> */}
                     <div>
                       <p>Selected</p>
                       {areasSelected()}
@@ -611,7 +637,7 @@ export default function MyAppbar(props) {
                   </div>
                 </Menu>
               </div>
-              <Search>
+              {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ color: 'tint.black.60' }} />
                 </SearchIconWrapper>
@@ -620,7 +646,7 @@ export default function MyAppbar(props) {
                   placeholder="Search…"
                   inputProps={{ 'aria-label': 'search' }}
                 />
-              </Search>
+              </Search> */}
             </>
           ) : null }
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
