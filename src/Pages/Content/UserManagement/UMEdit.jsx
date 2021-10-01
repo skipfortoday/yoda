@@ -183,25 +183,6 @@ export default function UMEdit(props) {
     reload()
   };
 
-  const SendData = async () => {
-    // console.log("SEND DATA");
-    await axiosBackend
-      .post("/user-management", {
-        target_email: data.email,
-        user_status: "Active",
-        role: Switch ? "External" : InputRole.value,
-        location: Switch ? "Not set" : InputKantor.value,
-      })
-      .then((response) => {
-        console.log(response.data);
-        acceptBtnClick();
-        setMenuAnchorEl(null);
-      })
-      .catch((err) => {
-        console.warn(err.response);
-      });
-  };
-
   return (
     <>
       <Card sx={{ width: 305, paddingBottom: 6, paddingTop: 1 }}>

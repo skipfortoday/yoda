@@ -33,13 +33,8 @@ export default function UserManagementPage() {
   async function GetAllUsers() {
     const thisToken = sessionStorage.getItem('token')
     console.log('thisToken', thisToken)
-<<<<<<< HEAD
-    const baseURL= "https://yodacentral.herokuapp.com/api"
-    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
-=======
     const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
 
->>>>>>> 4a6d3492dcf3e615f41e308b116210de547eb53d
     // console.log('GetAllUsers')
     var AllUsers = [];
     try {
@@ -48,10 +43,8 @@ export default function UserManagementPage() {
           Authorization: `Bearer ${thisToken}`,
         },
       })
-<<<<<<< HEAD
       console.log('data', data)
-=======
->>>>>>> 4a6d3492dcf3e615f41e308b116210de547eb53d
+
       if(data.status === 200){
         AllUsers = data.data.users
         return AllUsers
@@ -87,7 +80,6 @@ export default function UserManagementPage() {
         // (user.user_status.toString().toLowerCase() === "active" ||
         // user.user_status.toString().toLowerCase() === "non aktif") 
         && user?.role?.name !== "Super Admin"
-<<<<<<< HEAD
       )
     })
     tempUsers.forEach((user, index) => {
@@ -95,16 +87,6 @@ export default function UserManagementPage() {
       user.user_code = "#" + user.id.toString().padStart(5, '0')
     });
     setAcceptedData(tempUsers)
-=======
-        )
-      })
-      console.log(tempUsers, "TU")
-      tempUsers.forEach((user, index) => {
-        user.index = index + 1;
-        user.user_code = "#" + user.id.toString().padStart(5, '0')
-      });
-      setAcceptedData(tempUsers)
->>>>>>> 4a6d3492dcf3e615f41e308b116210de547eb53d
   }
   async function LoadRejectedData() {
     console.log('LoadRejectedData')
