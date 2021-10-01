@@ -12,6 +12,63 @@ const INPUTS = [
 export default function CMCPembayaranAsuransi(props) {
   const [Data, setData] = useState([])
 
+  const { dataSort } = props;
+
+  const dataType = {
+    "pembayaranAsuransi": "pembayaran_asuransi",
+  }
+  
+  function sortAsc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortDesc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "pembayaranAsuransiDesc") {
+        sortDesc("pembayaranAsuransi");
+      }
+      if (dataSort === "pembayaranAsuransiAsc") {
+        sortAsc("pembayaranAsuransi");
+      }
+    }else{
+      sortDesc("pembayaranAsuransi");
+    }
+  }, [dataSort]);
+
   useEffect(() => { LoadData() }, [])
 
   async function LoadData() {

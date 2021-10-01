@@ -15,9 +15,10 @@ import UMEdit from "./UMEdit";
 
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
-  const { data, reload } = props;
+  const { reload } = props;
   const [ActiveRole, setActiveRole] = useState(0);
   const [EditData, setEditData] = useState(null);
+  const [data, setdata] = useState(props.data)
 
   const [CurentData, setCurentData] = useState([]);
   const [CurentDataFiltered, setCurentDataFiltered] = useState([]);
@@ -28,6 +29,99 @@ export default function UMAccepted(props) {
   useEffect(() => {
     handleChangeTab(0);
   }, []);
+
+  function myFunctionDesc() {
+    const mydata = [...CurentDataFiltered].sort(function(a, b){
+      let x = a.name.toLowerCase();
+      let y = b.name.toLowerCase();
+      if (x < y) {return 1;}
+      if (x > y) {return -1;}
+      return 0;
+    });
+    setCurentDataFiltered(mydata)
+    console.log('mydata', mydata)
+  }
+
+  function myFunctionAsc() {
+    const mydata = [...CurentDataFiltered].sort(function(a, b){
+      let x = a.name.toLowerCase();
+      let y = b.name.toLowerCase();
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    data.map((item) => {
+      console.log('item', item.name)
+    })
+    setCurentDataFiltered(mydata)
+    console.log('mydata', mydata)
+  }
+
+  function sortHpDesc() {
+    const mydata = [...CurentDataFiltered].sort(function(a, b){
+      let x = a.phone_number;
+      let y = b.phone_number;
+      if (x < y) {return 1;}
+      if (x > y) {return -1;}
+      return 0;
+    });
+    setCurentDataFiltered(mydata)
+    console.log('mydata', mydata)
+  }
+
+  function sortHpAsc() {
+    const mydata = [...CurentDataFiltered].sort(function(a, b){
+      let x = a.phone_number;
+      let y = b.phone_number;
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    data.map((item) => {
+      console.log('item', item.name)
+    })
+    setCurentDataFiltered(mydata)
+    console.log('mydata', mydata)
+  }
+
+  function sortDateAsc() {
+    const mydata = [...CurentDataFiltered].sort((a, b) => (new Date(a.created_at)) - (new Date(b.created_at)))
+
+    setCurentDataFiltered(mydata)
+  }
+
+  function sortDateDesc() {
+    const mydata = [...CurentDataFiltered].sort((a, b) => (new Date(b.created_at)) - new Date(a.created_at))
+
+    setCurentDataFiltered(mydata)
+  }
+
+  // const [SelectedItems, setSelectedItems] = useState([])
+
+  // console.warn(SelectedItems)
+
+  useEffect(() => {
+    if(props.dataSort){
+      if(props.dataSort === "nameDesc"){
+        myFunctionDesc()
+      }
+      if(props.dataSort === "nameAsc"){
+        myFunctionAsc()
+      }
+      if(props.dataSort === "hpAsc"){
+        sortHpAsc()
+      }
+      if(props.dataSort === "hpDesc"){
+        sortHpDesc()
+      }
+      if(props.dataSort === "dateAsc"){
+        sortDateAsc()
+      }
+      if(props.dataSort === "dateDesc"){
+        sortDateDesc()
+      }
+    }
+  }, [props.dataSort])
 
   const handleChangeTab = (newTabIndex) => {
     setActiveRole(newTabIndex);

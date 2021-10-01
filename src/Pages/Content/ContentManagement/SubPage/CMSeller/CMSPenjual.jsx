@@ -19,6 +19,98 @@ const INPUTS = [
 export default function CMSPenjual(props) {
   const [Data, setData] = useState([])
 
+  const { dataSort } = props;
+
+  const dataType = {
+    "namaPenjual":"nama",
+    "nomerTelponPenjual":"no_telepon",
+    "alamatPenjual":"alamat",
+    "provinsiPenjual":"provinsi",
+    "kotaPenjual":"kota",
+    "kecamatanPenjual":"kecamatan",
+  }
+  
+  function sortAsc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortDesc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "namaPenjualDesc") {
+        sortDesc("namaPenjual");
+      }
+      if (dataSort === "namaPenjualAsc") {
+        sortAsc("namaPenjual");
+      }
+      if (dataSort === "nomerTelponPenjualDesc") {
+        sortDesc("nomerTelponPenjual");
+      }
+      if (dataSort === "nomerTelponPenjualAsc") {
+        sortAsc("nomerTelponPenjual");
+      }
+      if (dataSort === "alamatPenjualDesc") {
+        sortDesc("alamatPenjual");
+      }
+      if (dataSort === "alamatPenjualAsc") {
+        sortAsc("alamatPenjual");
+      }
+      if (dataSort === "provinsiPenjualDesc") {
+        sortDesc("provinsiPenjual");
+      }
+      if (dataSort === "provinsiPenjualAsc") {
+        sortAsc("provinsiPenjual");
+      }
+      if (dataSort === "kotaPenjualDesc") {
+        sortDesc("kotaPenjual");
+      }
+      if (dataSort === "kotaPenjualAsc") {
+        sortAsc("kotaPenjual");
+      }
+      if (dataSort === "kecamatanPenjualDesc") {
+        sortDesc("kecamatanPenjual");
+      }
+      if (dataSort === "kecamatanPenjualAsc") {
+        sortAsc("kecamatanPenjual");
+      }
+    }else{
+      sortDesc("kategori");
+    }
+  }, [dataSort]);
+
   useEffect(() => { LoadData() }, [])
 
   async function LoadData() {

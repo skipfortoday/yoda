@@ -84,7 +84,7 @@ const StyledInputBaseFilter = styled(OutlinedInput)(({ theme }) => ({
 }));
 
 const uploadData = async (e) => {
-  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT;
+  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const file = e.target.files[0];
   console.log("file", file);
   const bodyFormData = new FormData();
@@ -119,6 +119,7 @@ export default function MyAppbar(props) {
 
   const { header, tabsMenu } = props;
   const { ActiveTab, setActiveTab } = props;
+  const { ActiveSubTab } = props;
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -292,7 +293,7 @@ export default function MyAppbar(props) {
     },
   ];
 
-  const texts = [
+  let texts = [
     {
       id: 1,
       name: "Nama & Email",
@@ -306,6 +307,211 @@ export default function MyAppbar(props) {
       name: "No. Handphone",
     },
   ];
+
+  if (ActivePage === 2) {
+    if (ActiveTab === 0) {
+      if (ActiveSubTab === 0) {
+        texts = [
+          {
+            id: 1,
+            name: "Merek",
+          },
+          {
+            id: 2,
+            name: "Model",
+          },
+          {
+            id: 3,
+            name: "Varian",
+          },
+        ];
+      } else if (ActiveSubTab === 1) {
+        texts = [
+          {
+            id: 1,
+            name: "Tahun",
+          },
+        ];
+      } else if (ActiveSubTab === 2) {
+        texts = [
+          {
+            id: 1,
+            name: "Jarak tempuh unit",
+          },
+        ];
+      } else if (ActiveSubTab === 3) {
+        texts = [
+          {
+            id: 1,
+            name: "Warna unit",
+          },
+        ];
+      } else if (ActiveSubTab === 4) {
+        texts = [
+          {
+            id: 1,
+            name: "Jenis bahan bakar",
+          },
+        ];
+      } else if (ActiveSubTab === 5) {
+        texts = [
+          {
+            id: 1,
+            name: "Jenis transmisi",
+          },
+        ];
+      } else if (ActiveSubTab === 6) {
+        texts = [
+          {
+            id: 1,
+            name: "Kondisi unit",
+          },
+        ];
+      } else if (ActiveSubTab === 7) {
+        texts = [
+          {
+            id: 1,
+            name: "Jenis unit",
+          },
+        ];
+      }
+    } else if (ActiveTab === 1) {
+      if (ActiveSubTab === 0) {
+        texts = [
+          {
+            id: 1,
+            name: "Nama",
+          },
+          {
+            id: 2,
+            name: "Kode cabang",
+          },
+          {
+            id: 3,
+            name: "Nomer telpon",
+          },
+          {
+            id: 4,
+            name: "Alamat",
+          },
+          {
+            id: 5,
+            name: "Tanggal",
+          },
+        ];
+      } else if (ActiveSubTab === 1) {
+        texts = [
+          {
+            id: 1,
+            name: "Provinsi",
+          },
+          {
+            id: 2,
+            name: "Kota",
+          },
+          {
+            id: 3,
+            name: "Kecamatan",
+          },
+          {
+            id: 4,
+            name: "Cabang pengelola",
+          },
+          {
+            id: 5,
+            name: "Tanggal",
+          },
+        ];
+      }
+    } else if (ActiveTab === 2) {
+      if (ActiveSubTab === 0) {
+        texts = [
+          {
+            id: 1,
+            name: "Tujuan pengunaan",
+          },
+        ];
+      } else if (ActiveSubTab === 1) {
+        texts = [
+          {
+            id: 1,
+            name: "Kategori",
+          },
+        ];
+      } else if (ActiveSubTab === 2) {
+        texts = [
+          {
+            id: 1,
+            name: "Tipe asuransi",
+          },
+        ];
+      } else if (ActiveSubTab === 3) {
+        texts = [
+          {
+            id: 1,
+            name: "Kesertaan asuransi",
+          },
+        ];
+      } else if (ActiveSubTab === 4) {
+        texts = [
+          {
+            id: 1,
+            name: "Nilai pertanggungan",
+          },
+        ];
+      } else if (ActiveSubTab === 5) {
+        texts = [
+          {
+            id: 1,
+            name: "Pembayaran asuransi",
+          },
+        ];
+      } else if (ActiveSubTab === 6) {
+        texts = [
+          {
+            id: 1,
+            name: "Tenor",
+          },
+        ];
+      } else if (ActiveSubTab === 7) {
+        texts = [
+          {
+            id: 1,
+            name: "Angsuran pertama",
+          },
+        ];
+      }
+    } else if (ActiveTab === 3) {
+      if (ActiveSubTab === 0) {
+        texts = [
+          {
+            id: 1,
+            name: "Nama",
+          },
+          {
+            id: 2,
+            name: "Nomer telpon",
+          },
+          {
+            id: 3,
+            name: "Alamat",
+          },
+          {
+            id: 4,
+            name: "Provinsi",
+          },
+          {
+            id: 5,
+            name: "Kota",
+          },
+          {
+            id: 6,
+            name: "Kecamatan",
+          },
+        ];
+      }
+    }
+  }
 
   // const choseListFilter = () => {
   //   const array = [1, 2, 3 ,4, 5]
@@ -339,6 +545,156 @@ export default function MyAppbar(props) {
         props.sendData("hpDesc");
         setAnchorElSort(null);
       }
+      if (nameSort === "Merek") {
+        props.sendData("merekDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Model") {
+        props.sendData("modelDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Varian") {
+        props.sendData("varianDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tahun") {
+        props.sendData("tahunDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jarak tempuh unit") {
+        props.sendData("jarakTempuhUnitDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Warna unit") {
+        props.sendData("warnaUnitDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis bahan bakar") {
+        props.sendData("jenisBahanBakarDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis transmisi") {
+        props.sendData("jenisTransmisiDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kondisi unit") {
+        props.sendData("kondisiUnitDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis unit") {
+        props.sendData("jenisUnitDesc");
+        setAnchorElSort(null);
+      }
+
+      // ------------------------------------------------
+      if (ActiveTab === 1 && ActiveSubTab === 0) {
+        if (nameSort === "Nama") {
+          props.sendData("namaKantorDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kode cabang") {
+          props.sendData("kodeCabangDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Nomer telpon") {
+          props.sendData("nomerTelponKantorDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Alamat") {
+          props.sendData("alamatKantorDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Tanggal") {
+          props.sendData("tanggalKantorDesc");
+          setAnchorElSort(null);
+        }
+      }
+      if (ActiveTab === 1 && ActiveSubTab === 1) {
+        if (nameSort === "Provinsi") {
+          props.sendData("provinsiWilayahDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kota") {
+          props.sendData("kotaWilayahDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kecamatan") {
+          props.sendData("kecamatanWilayahDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Cabang pengelola") {
+          props.sendData("cabangPengelolaDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Tanggal") {
+          props.sendData("tanggalWilayahDesc");
+          setAnchorElSort(null);
+        }
+      }
+
+      // ------------------------------------------------
+
+      if (nameSort === "Tujuan pengunaan") {
+        props.sendData("tujuanPengunaanDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kategori") {
+        props.sendData("kategoriDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tipe asuransi") {
+        props.sendData("tipeAsuransiDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kesertaan asuransi") {
+        props.sendData("kesertaanAsuransiDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Nilai pertanggungan") {
+        props.sendData("nilaiPertanggunganDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Pembayaran asuransi") {
+        props.sendData("pembayaranAsuransiDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tenor") {
+        props.sendData("tenorDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Angsuran pertama") {
+        props.sendData("angsuranPertamaDesc");
+        setAnchorElSort(null);
+      }
+
+      // -------------------------------------------
+
+      if (ActiveTab === 3 && ActiveSubTab === 0) {
+        if (nameSort === "Nama") {
+          props.sendData("namaPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Nomer telpon") {
+          props.sendData("nomerTelponPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Alamat") {
+          props.sendData("alamatPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Provinsi") {
+          props.sendData("provinsiPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kota") {
+          props.sendData("kotaPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kecamatan") {
+          props.sendData("kecamatanPenjualDesc");
+          setAnchorElSort(null);
+        }
+      }
     }
     if (typeSort === "Asc") {
       console.log("do Asc");
@@ -353,6 +709,157 @@ export default function MyAppbar(props) {
       if (nameSort === "No. Handphone") {
         props.sendData("hpAsc");
         setAnchorElSort(null);
+      }
+      if (nameSort === "Merek") {
+        props.sendData("merekAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Model") {
+        props.sendData("modelAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Varian") {
+        props.sendData("varianAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tahun") {
+        props.sendData("tahunAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jarak tempuh unit") {
+        props.sendData("jarakTempuhUnitAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Warna unit") {
+        props.sendData("warnaUnitAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis bahan bakar") {
+        props.sendData("jenisBahanBakarAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis transmisi") {
+        props.sendData("jenisTransmisiAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kondisi unit") {
+        props.sendData("kondisiUnitAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis unit") {
+        props.sendData("jenisUnitAsc");
+        setAnchorElSort(null);
+      }
+
+      // ------------------------------------------------
+      if (ActiveTab === 1 && ActiveSubTab === 0) {
+        if (nameSort === "Nama") {
+          props.sendData("namaKantorAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kode cabang") {
+          props.sendData("kodeCabangAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Nomer telpon") {
+          props.sendData("nomerTelponKantorAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Alamat") {
+          props.sendData("alamatKantorAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Tanggal") {
+          props.sendData("tanggalKantorAsc");
+          setAnchorElSort(null);
+        }
+      }
+
+      if (ActiveTab === 1 && ActiveSubTab === 1) {
+        if (nameSort === "Provinsi") {
+          props.sendData("provinsiWilayahAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kota") {
+          props.sendData("kotaWilayahAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kecamatan") {
+          props.sendData("kecamatanWilayahAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Cabang pengelola") {
+          props.sendData("cabangPengelolaAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Tanggal") {
+          props.sendData("tanggalWilayahAsc");
+          setAnchorElSort(null);
+        }
+      }
+
+      // ------------------------------------------------
+
+      if (nameSort === "Tujuan pengunaan") {
+        props.sendData("tujuanPengunaanAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kategori") {
+        props.sendData("kategoriAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tipe asuransi") {
+        props.sendData("tipeAsuransiAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kesertaan asuransi") {
+        props.sendData("kesertaanAsuransiAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Nilai pertanggungan") {
+        props.sendData("nilaiPertanggunganAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Pembayaran asuransi") {
+        props.sendData("pembayaranAsuransiAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tenor") {
+        props.sendData("tenorAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Angsuran pertama") {
+        props.sendData("angsuranPertamaAsc");
+        setAnchorElSort(null);
+      }
+
+      // -------------------------------------------
+
+      if (ActiveTab === 3 && ActiveSubTab === 0) {
+        if (nameSort === "Nama") {
+          props.sendData("namaPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Nomer telpon") {
+          props.sendData("nomerTelponPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Alamat") {
+          props.sendData("alamatPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Provinsi") {
+          props.sendData("provinsiPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kota") {
+          props.sendData("kotaPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kecamatan") {
+          props.sendData("kecamatanPenjualAsc");
+          setAnchorElSort(null);
+        }
       }
     }
   };
@@ -734,6 +1241,14 @@ export default function MyAppbar(props) {
   };
 
   useEffect(() => {
+    setNameSort(texts[0].name);
+  }, [ActiveSubTab]);
+
+  useEffect(() => {
+    setNameSort(texts[0].name);
+  }, [ActiveTab]);
+
+  useEffect(() => {
     if (defaultArea.length === 0) {
       if (selectedArea.length === 0) {
         setnoArea(true);
@@ -741,6 +1256,7 @@ export default function MyAppbar(props) {
     } else {
       setnoArea(false);
     }
+    setNameSort(texts[0].name);
   }, [defaultArea]);
 
   return (

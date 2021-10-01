@@ -19,6 +19,92 @@ const INPUTS = [
 export default function CMLKantor(props) {
   const [Data, setData] = useState([])
 
+  const { dataSort } = props;
+
+  const dataType = {
+    "namaKantor": "nama_cabang",
+    "kodeCabang": "kode_cabang",
+    "nomerTelponKantor": "no_telepon",
+    "alamatKantor": "alamat",
+    "tanggalKantor": "tanggal_registrasi",
+
+  }
+  
+  function sortAsc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortDesc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "namaKantorDesc") {
+        sortDesc("namaKantor");
+      }
+      if (dataSort === "namaKantorAsc") {
+        sortAsc("namaKantor");
+      }
+      if (dataSort === "kodeCabangDesc") {
+        sortDesc("kodeCabang");
+      }
+      if (dataSort === "kodeCabangAsc") {
+        sortAsc("kodeCabang");
+      }
+      if (dataSort === "nomerTelponKantorDesc") {
+        sortDesc("nomerTelponKantor");
+      }
+      if (dataSort === "nomerTelponKantorAsc") {
+        sortAsc("nomerTelponKantor");
+      }
+      if (dataSort === "alamatKantorDesc") {
+        sortDesc("alamatKantor");
+      }
+      if (dataSort === "alamatKantorAsc") {
+        sortAsc("alamatKantor");
+      }
+      if (dataSort === "tanggalKantorDesc") {
+        sortDesc("tanggalKantor");
+      }
+      if (dataSort === "tanggalKantorAsc") {
+        sortAsc("tanggalKantor");
+      }
+    }else{
+      sortDesc("kodeCabang");
+    }
+  }, [dataSort]);
+
   useEffect(() => { LoadData() }, [])
 
   async function LoadData() {

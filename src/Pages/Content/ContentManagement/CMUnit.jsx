@@ -18,10 +18,12 @@ export default function CMUnit(props) {
   // console.log('props CMUnit', props)
 
   const [ActiveSubPage, setActiveSubPage] = useState(0);
+  // const { currentSubTab } = props;
   const [DeleteButton, setDeleteButton] = useState(false);
   const [DeleteChosenId, setDeleteChosenId] = useState([]);
   const [DeleteType, setDeleteType] = useState(false);
   const [Deleted, setDeleted] = useState(false);
+  const { currentSubTab, dataSort } = props;
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
@@ -590,6 +592,7 @@ export default function CMUnit(props) {
           ActiveSubPage={ActiveSubPage}
           changeIcons={changeIcons}
           val={Deleted}
+          dataSort={dataSort}
         />
       ),
     },
@@ -605,6 +608,7 @@ export default function CMUnit(props) {
           ActiveSubPage={ActiveSubPage}
           changeIcons={changeIcons}
           val={Deleted}
+          dataSort={dataSort}
         />
       ),
     },
@@ -620,6 +624,7 @@ export default function CMUnit(props) {
           ActiveSubPage={ActiveSubPage}
           changeIcons={changeIcons}
           val={Deleted}
+          dataSort={dataSort}
         />
       ),
     },
@@ -635,6 +640,7 @@ export default function CMUnit(props) {
           ActiveSubPage={ActiveSubPage}
           changeIcons={changeIcons}
           val={Deleted}
+          dataSort={dataSort}
         />
       ),
     },
@@ -650,6 +656,7 @@ export default function CMUnit(props) {
           ActiveSubPage={ActiveSubPage}
           changeIcons={changeIcons}
           val={Deleted}
+          dataSort={dataSort}
         />
       ),
     },
@@ -665,6 +672,7 @@ export default function CMUnit(props) {
           ActiveSubPage={ActiveSubPage}
           changeIcons={changeIcons}
           val={Deleted}
+          dataSort={dataSort}
         />
       ),
     },
@@ -680,6 +688,7 @@ export default function CMUnit(props) {
           ActiveSubPage={ActiveSubPage}
           changeIcons={changeIcons}
           val={Deleted}
+          dataSort={dataSort}
         />
       ),
     },
@@ -695,6 +704,7 @@ export default function CMUnit(props) {
           ActiveSubPage={ActiveSubPage}
           changeIcons={changeIcons}
           val={Deleted}
+          dataSort={dataSort}
         />
       ),
     },
@@ -707,6 +717,8 @@ export default function CMUnit(props) {
     if (props.dataFilterMulti) {
       doFilterData();
     }
+    currentSubTab(0);
+    
   }, [props.dataFilter, props.dataFilterMulti]);
 
   return (
@@ -725,6 +737,7 @@ export default function CMUnit(props) {
                 color={ActiveSubPage === index ? "mint20" : "grey20"}
                 onClick={() => {
                   setActiveSubPage(index);
+                  currentSubTab(index);
                   setDeleteChosenId(false);
                 }}
                 sx={{ marginRight: 1.5, marginBottom: 1.5 }}

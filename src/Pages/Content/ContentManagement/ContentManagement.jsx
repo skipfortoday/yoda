@@ -10,6 +10,7 @@ import CMCredit from "./CMCredit";
 export default function ContentManagementPage() {
   const ActivePage = 2; // Staticly Setup for Active Menu
   const [ActiveTab, setActiveTab] = useState(0);
+  const [ActiveSubTab, setActiveSubTab] = useState(0);
 
   const [dataFilter, setDataFilter] = useState([]);
   const [dataFilterMulti, setDataFilterMulti] = useState([]);
@@ -27,6 +28,23 @@ export default function ContentManagementPage() {
     // setDataFilter("Audi")
   };
 
+  const [dataSort, setDataSort] = useState([])
+  const getData = (val) => {
+    // do not forget to bind getData in constructor
+    setDataSort(val)
+  }
+
+  const currentSubTab = (val) => {
+    setActiveSubTab(val)
+  }
+
+  // const [dataFilter, setDataFilter] = useState([])
+  // const getDataFilter = (val) => {
+  //   // do not forget to bind getData in constructor
+  //   console.log(val);
+  //   setDataFilter(val)
+  // }
+
   const DATA = {
     header: "Manajemen konten",
     tabsMenu: [
@@ -34,13 +52,13 @@ export default function ContentManagementPage() {
         value: 0,
         label: "Unit",
         content: (
-          <CMUnit dataFilter={dataFilter} dataFilterMulti={dataFilterMulti} />
+          <CMUnit dataFilter={dataFilter} dataFilterMulti={dataFilterMulti} dataSort={dataSort} currentSubTab={(val) => {currentSubTab(val)}}/>
         ),
       },
 
-      { value: 1, label: "Lokasi", content: <CMLocation /> },
-      { value: 2, label: "Kredit", content: <CMCredit /> },
-      { value: 3, label: "Penjual", content: <CMSeller /> },
+      { value: 1, label: "Lokasi", content: <CMLocation dataSort={dataSort} currentSubTab={(val) => {currentSubTab(val)}}/> },
+      { value: 2, label: "Kredit", content: <CMCredit dataSort={dataSort} currentSubTab={(val) => {currentSubTab(val)}} /> },
+      { value: 3, label: "Penjual", content: <CMSeller dataSort={dataSort} currentSubTab={(val) => {currentSubTab(val)}} /> },
     ],
   };
 
@@ -52,6 +70,8 @@ export default function ContentManagementPage() {
         ActiveTab={ActiveTab}
         setActiveTab={setActiveTab}
         ActivePage={ActivePage}
+        sendData={getData}
+        ActiveSubTab={ActiveSubTab}
         getDataFilter={getDataFilter}
         getDataFilterMulti={getDataFilterMulti}
       />

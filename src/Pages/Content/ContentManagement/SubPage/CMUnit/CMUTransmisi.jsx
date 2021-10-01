@@ -11,8 +11,60 @@ const INPUTS = [
 
 export default function CMUTransmisi(props) {
   const [Data, setData] = useState([])
-  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
   const thisToken = sessionStorage.getItem('token')
+  const { dataSort } = props;
+  
+  function sortJenisTransmisiAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = a.transmisi.toLowerCase();
+      let y = b.transmisi.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortJenisTransmisiDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = a.transmisi.toLowerCase();
+      let y = b.transmisi.toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "jenisTransmisiDesc") {
+        sortJenisTransmisiDesc();
+      }
+      if (dataSort === "jenisTransmisiAsc") {
+        sortJenisTransmisiAsc();
+      }
+    }else{
+      sortJenisTransmisiDesc();
+    }
+  }, [dataSort]);
 
   useEffect(() => { LoadData() }, [])
 
