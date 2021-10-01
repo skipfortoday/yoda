@@ -13,6 +13,7 @@ export default function ContentManagementPage() {
   const [ActiveTab, setActiveTab] = useState(0)
 
   const [dataFilter, setDataFilter] = useState([])
+<<<<<<< HEAD
   const [dataFilterMulti, setDataFilterMulti] = useState([])
   const getDataFilter = (val) => {
     // do not forget to bind getData in constructor
@@ -26,12 +27,22 @@ export default function ContentManagementPage() {
     // console.log('+ getDataFilterMulti ContentManagementPage => ',val);
     setDataFilterMulti(val)
     // setDataFilter("Audi")
+=======
+  const getDataFilter = (val) => {
+    // do not forget to bind getData in constructor
+    console.log(val);
+    setDataFilter(val)
+>>>>>>> 4a6d3492dcf3e615f41e308b116210de547eb53d
   }
 
   const DATA = {
     header: 'Manajemen konten',
     tabsMenu: [
+<<<<<<< HEAD
       { value: 0, label: 'Unit', content: <CMUnit dataFilter={dataFilter} dataFilterMulti={dataFilterMulti}  /> },
+=======
+      { value: 0, label: 'Unit', content: <CMUnit dataFilter={dataFilter}  /> },
+>>>>>>> 4a6d3492dcf3e615f41e308b116210de547eb53d
       { value: 1, label: 'Lokasi', content: <CMLocation /> },
       { value: 2, label: 'Kredit', content: <CMCredit /> },
       { value: 3, label: 'Penjual', content: <CMSeller /> },
@@ -47,7 +58,10 @@ export default function ContentManagementPage() {
         ActiveTab={ActiveTab} setActiveTab={setActiveTab}
         ActivePage={ActivePage}
         getDataFilter={getDataFilter}
+<<<<<<< HEAD
         getDataFilterMulti={getDataFilterMulti}
+=======
+>>>>>>> 4a6d3492dcf3e615f41e308b116210de547eb53d
       />
 
       <Container maxWidth="xl">

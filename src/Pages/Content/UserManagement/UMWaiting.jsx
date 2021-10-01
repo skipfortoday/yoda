@@ -121,11 +121,13 @@ export default function UMWaiting(props) {
 
   function sortDateAsc() {
     const mydata = [...data].sort((a, b) => (new Date(a.created_at)) - (new Date(b.created_at)))
+
     setdata(mydata)
   }
 
   function sortDateDesc() {
     const mydata = [...data].sort((a, b) => (new Date(b.created_at)) - new Date(a.created_at))
+
     setdata(mydata)
   }
 

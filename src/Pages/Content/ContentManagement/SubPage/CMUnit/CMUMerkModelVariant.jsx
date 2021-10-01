@@ -16,6 +16,7 @@ export default function CMUMerkModelVariant(props) {
   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
   const thisToken = sessionStorage.getItem('token')
   // console.log('thisToken CMUJarakTempuh', thisToken)
+
   const [Data, setData] = useState([])
   const [DataMerek, setDataMerek] = useState(props.dataFiltered)
 
@@ -28,17 +29,20 @@ export default function CMUMerkModelVariant(props) {
       setData(props.dataFiltered)
       if(props.dataFiltered.length === 0){
         // console.log('props dataFiltered === 0')
+
         LoadData();
       }
     }
     if(props.dataFiltered === "resetFilter"){
       // console.log('props.dataFiltered reset')
+
       LoadData();
     }
   }, [props.val, props.dataFiltered]);
 
   async function LoadData() {
     // console.log('loadData')
+
     await axios.get(`${baseURL}/cm/merek-model-varian`, {
       headers: {
         Authorization: `Bearer ${thisToken}`,
@@ -86,6 +90,7 @@ export default function CMUMerkModelVariant(props) {
     })
     .then((response) => {
       // console.log(response.data)
+
       setMenuAnchorEl(null)
       ResetInputs()
       LoadData()
@@ -116,6 +121,7 @@ export default function CMUMerkModelVariant(props) {
     });
     
     // console.log(filteredPeople);
+
     setData(filteredPeople)
   }
 
@@ -185,7 +191,8 @@ export default function CMUMerkModelVariant(props) {
           </DynamicContentMenu>
         </Popover>
       ) }
-      {/* <button onClick={() => doFilter()}>doFilter</button> */}
+
+      <button onClick={() => doFilter()}>doFilter</button>
       <Box fullWidth sx={{ maxHeight: '70vh', height: '70vh'}}>
         <DataGrid
           columns={DATAGRID_COLUMNS}

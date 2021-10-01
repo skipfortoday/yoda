@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import React, { useState, useEffect } from "react";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 // import InputBase from '@mui/material/InputBase';
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Badge from "@mui/material/Badge";
@@ -29,7 +29,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 // import NestedMenuItem from "material-ui-nested-menu-item";
 import axios from "axios";
 
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -72,14 +72,14 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
 }));
 
 const StyledInputBaseFilter = styled(OutlinedInput)(({ theme }) => ({
-  color: 'inherit',
+  color: "inherit",
   borderRadius: 50,
-  '& .MuiOutlinedInput-input': {
+  "& .MuiOutlinedInput-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
+    transition: theme.transitions.create("width"),
+    width: "100%",
   },
 }));
 
@@ -110,7 +110,8 @@ async function uploadData1(image) {
 }
 
 export default function MyAppbar(props) {
-  const userInfo = sessionStorage.getItem('user')
+  const userInfo = sessionStorage.getItem("user");
+
   const { ActivePage } = props;
   const theme = useTheme();
   const upMd = useMediaQuery(theme.breakpoints.up("md"));
@@ -280,31 +281,31 @@ export default function MyAppbar(props) {
 
   const textsTab = [
     {
-      id  : 1,
-      name: 'A-Z',
-      type: 'Asc'
+      id: 1,
+      name: "A-Z",
+      type: "Asc",
     },
     {
-      id  : 2,
-      name: 'Z-A',
-      type: 'Desc'
+      id: 2,
+      name: "Z-A",
+      type: "Desc",
     },
-  ]
+  ];
 
   const texts = [
     {
-      id  : 1,
-      name: 'Nama & Email',
+      id: 1,
+      name: "Nama & Email",
     },
     {
-      id  : 2,
-      name: 'Tanggal',
+      id: 2,
+      name: "Tanggal",
     },
     {
-      id  : 3,
-      name: 'No. Handphone',
+      id: 3,
+      name: "No. Handphone",
     },
-  ]
+  ];
 
   // const choseListFilter = () => {
   //   const array = [1, 2, 3 ,4, 5]
@@ -318,68 +319,85 @@ export default function MyAppbar(props) {
   // sorting
   const [typeSort, setTypeSort] = useState("Asc");
   const [nameSort, setNameSort] = useState("Nama & Email");
-  const [selectedTabId, setSelectedTabId] = useState({id:1});
-  const [selectedId, setSelectedId] = useState({id:1});
+  const [selectedTabId, setSelectedTabId] = useState({ id: 1 });
+  const [selectedId, setSelectedId] = useState({ id: 1 });
 
   const sortData = () => {
-    console.log('typeSort', typeSort)
-    console.log('nameSort', nameSort)
-    if(typeSort === "Desc"){
-      console.log('do Desc')
-      if(nameSort === 'Nama & Email'){
-        props.sendData('nameDesc')
+    console.log("typeSort", typeSort);
+    console.log("nameSort", nameSort);
+    if (typeSort === "Desc") {
+      console.log("do Desc");
+      if (nameSort === "Nama & Email") {
+        props.sendData("nameDesc");
         setAnchorElSort(null);
       }
-      if(nameSort === 'Tanggal'){
-        props.sendData('dateDesc')
+      if (nameSort === "Tanggal") {
+        props.sendData("dateDesc");
         setAnchorElSort(null);
       }
-      if(nameSort === 'No. Handphone'){
-        props.sendData('hpDesc')
-        setAnchorElSort(null);
-      }
-    }
-    if(typeSort === "Asc"){
-      console.log('do Asc')
-      if(nameSort === 'Nama & Email'){
-        props.sendData('nameAsc')
-        setAnchorElSort(null);
-      }
-      if(nameSort === 'Tanggal'){
-        props.sendData('dateAsc')
-        setAnchorElSort(null);
-      }
-      if(nameSort === 'No. Handphone'){
-        props.sendData('hpAsc')
+      if (nameSort === "No. Handphone") {
+        props.sendData("hpDesc");
         setAnchorElSort(null);
       }
     }
-  }
+    if (typeSort === "Asc") {
+      console.log("do Asc");
+      if (nameSort === "Nama & Email") {
+        props.sendData("nameAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tanggal") {
+        props.sendData("dateAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "No. Handphone") {
+        props.sendData("hpAsc");
+        setAnchorElSort(null);
+      }
+    }
+  };
 
   const pushTabId = (item) => {
-    setSelectedTabId(item)
-    setTypeSort(item.type)
-  }
+    setSelectedTabId(item);
+    setTypeSort(item.type);
+  };
 
   const pushId = (item) => {
-    setSelectedId(item)
-    setNameSort(item.name)
-  }
-  
+    setSelectedId(item);
+    setNameSort(item.name);
+  };
 
   const choseTab = () => {
     return textsTab.map((number) => {
       // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
-      return <button onClick={() => pushTabId(number)} className={`btn-list-tab ${selectedTabId.id === number.id ? 'btn-active' : ''} ${number.id === 1 ? 'border-left' : 'border-right'}`}>{number.name}</button>
-    })
-  }
+      return (
+        <button
+          onClick={() => pushTabId(number)}
+          className={`btn-list-tab ${
+            selectedTabId.id === number.id ? "btn-active" : ""
+          } ${number.id === 1 ? "border-left" : "border-right"}`}
+        >
+          {number.name}
+        </button>
+      );
+    });
+  };
 
   const choseListFilter = () => {
     return texts.map((number) => {
       // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
-      return <button onClick={() => pushId(number)} className={`btn-list-sort ${selectedId.id === number.id ? 'btn-active' : ''}`}>{number.name}</button>
-    })
-  }
+      return (
+        <button
+          onClick={() => pushId(number)}
+          className={`btn-list-sort ${
+            selectedId.id === number.id ? "btn-active" : ""
+          }`}
+        >
+          {number.name}
+        </button>
+      );
+    });
+  };
 
   const [selectedArea, setSelectedArea] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
@@ -388,207 +406,249 @@ export default function MyAppbar(props) {
   const [defaultAreaModel, setDefaultAreaModel] = useState([]);
 
   const cek = () => {
-    setDefaultArea(defaultArea)
-    const data = defaultArea.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
-    setDefaultArea(data)
-    console.log('data', data)
-  }
+    setDefaultArea(defaultArea);
+    const data = defaultArea.filter(
+      (item, pos, self) => self.findIndex((v) => v.name === item.name) === pos
+    );
+    setDefaultArea(data);
+    console.log("data", data);
+  };
 
   const pushArea = (item) => {
-    setSelectedArea(selectedArea.concat(item))
-    console.log('item', item.name)
-    var filtered = defaultArea.filter(function(value){ 
+    setSelectedArea(selectedArea.concat(item));
+    console.log("item", item.name);
+    var filtered = defaultArea.filter(function (value) {
       // console.log('value', value.name)
-      return value.name !== item.name
-    })
-    setDefaultArea(filtered)
-    if(filtered === ""){
-      console.log("filtered kosong")
+      return value.name !== item.name;
+    });
+    setDefaultArea(filtered);
+    if (filtered === "") {
+      console.log("filtered kosong");
     }
-    console.log('filtered', filtered)
-  }
+    console.log("filtered", filtered);
+  };
 
   const pushAreaDefault = (item) => {
-    const array = selectedArea.filter(function(element, i) {
+    const array = selectedArea.filter(function (element, i) {
       return element.id !== item.id;
     });
     // console.log('data', array)
-    setSelectedArea(array)
-    setSelectedMerek(item.name)
-  }
+    setSelectedArea(array);
+    setSelectedMerek(item.name);
+  };
 
   const choseAreas = () => {
     return defaultArea.map((area) => {
-      return <button onClick={() => pushArea(area)} className={`btn-list-sort ${selectedId.id === area.id ? 'btn-active' : ''}`}>{area.name}</button>
-    })
-  }
+      return (
+        <button
+          onClick={() => pushArea(area)}
+          className={`btn-list-sort ${
+            selectedId.id === area.id ? "btn-active" : ""
+          }`}
+        >
+          {area.name}
+        </button>
+      );
+    });
+  };
 
   const areasSelectedOri = () => {
     return selectedArea.map((area) => {
       // return <button onClick={() => pushAreaDefault(area)} className="btn-list-sort btn-active">{area.name}<HighlightOffIcon/></button>
-      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
-              {area.name}
-            </Button>
-    })
-  }
+      return (
+        <Button
+          className="m-1"
+          onClick={() => pushAreaDefault(area)}
+          variant="outlined"
+          endIcon={<HighlightOffIcon />}
+        >
+          {area.name}
+        </Button>
+      );
+    });
+  };
 
   const areasSelected = () => {
     return selectedArea.map((area) => {
-      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
-              {area.merek}
-            </Button>
-    })
-  }
+      return (
+        <Button
+          className="m-1"
+          onClick={() => pushAreaDefault(area)}
+          variant="outlined"
+          endIcon={<HighlightOffIcon />}
+        >
+          {area.merek}
+        </Button>
+      );
+    });
+  };
 
   const doSearch1 = (x) => {
-    console.log('x', x)
+    console.log("x", x);
     const inventory = [
-      {name: 'apples', quantity: 2},
-      {name: 'bananas', quantity: 0},
-      {name: 'cherries', quantity: 5}
+      { name: "apples", quantity: 2 },
+      { name: "bananas", quantity: 0 },
+      { name: "cherries", quantity: 5 },
     ];
-    
-    const result = inventory.find( ({ name }) => name === x );
-    
-    console.log(result) // { name: 'cherries', quantity: 5 }
-  }
 
-  const doSearchOri = ((e) => {
+    const result = inventory.find(({ name }) => name === x);
+
+    console.log(result); // { name: 'cherries', quantity: 5 }
+  };
+
+  const doSearchOri = (e) => {
     const searchString = e.toLowerCase();
-    console.log('searchString', searchString)
-    console.log('defaultArea search', defaultArea)
+    console.log("searchString", searchString);
+    console.log("defaultArea search", defaultArea);
 
     const filteredCharacters = defaultArea.filter((character) => {
-        return (
-            character.name.toLowerCase().includes(searchString)
-        );
+      return character.name.toLowerCase().includes(searchString);
     });
-    setDefaultArea(filteredCharacters)
-    console.log('doSearch',filteredCharacters);
-})
+    setDefaultArea(filteredCharacters);
+    console.log("doSearch", filteredCharacters);
+  };
 
   const [selectedMerek, setSelectedMerek] = useState();
 
   const pushMerekOri = (item) => {
-    setSelectedMerek(item.name)
-    setSelectedArea(selectedArea.concat(item))
-    console.log('item', item.name)
-    var filtered = defaultArea.filter(function(value){
-      return value.name !== item.name
-    })
-    setDefaultArea(filtered)
-    console.log('filtered', filtered)
-  }
+    setSelectedMerek(item.name);
+    setSelectedArea(selectedArea.concat(item));
+    console.log("item", item.name);
+    var filtered = defaultArea.filter(function (value) {
+      return value.name !== item.name;
+    });
+    setDefaultArea(filtered);
+    console.log("filtered", filtered);
+  };
 
   const pushMerekOri2 = (item) => {
-    setSelectedMerek(item.name)
-    const data = selectedArea.concat(item)
+    setSelectedMerek(item.name);
+    const data = selectedArea.concat(item);
     // cek duplicated
-    console.log('data', data)
-    const ids = data.map(o => o.id)
-    const duplicated = data.filter(({id}, index) => !ids.includes(id, index + 1))
+    console.log("data", data);
+    const ids = data.map((o) => o.id);
+    const duplicated = data.filter(
+      ({ id }, index) => !ids.includes(id, index + 1)
+    );
     // console.log('duplicated', duplicated)
-    setSelectedArea(duplicated)
-  }
+    setSelectedArea(duplicated);
+  };
 
   const pushMerek = (item) => {
-    setSelectedMerek(item.merek)
-    const data = selectedArea.concat(item)
+    setSelectedMerek(item.merek);
+    const data = selectedArea.concat(item);
     // cek duplicated
     // console.log('data', data)
-    const ids = data.map(o => o.merek)
-    const duplicated = data.filter(({merek}, index) => !ids.includes(merek, index + 1))
+    const ids = data.map((o) => o.merek);
+    const duplicated = data.filter(
+      ({ merek }, index) => !ids.includes(merek, index + 1)
+    );
     // console.log('duplicated', duplicated)
-    setSelectedArea(duplicated)
-  }
+
+    setSelectedArea(duplicated);
+  };
 
   const choseMerek = () => {
     return defaultArea.map((merek) => {
       // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
-      return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.merek}</button>
-    })
-  }
+      return (
+        <button onClick={() => pushMerek(merek)} className="btn-list-sort">
+          {merek.merek}
+        </button>
+      );
+    });
+  };
 
   const choseModel = () => {
     return defaultAreaModel.map((model) => {
       // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
-      return <button onClick={() => pushMerek(model)} className="btn-list-sort">{model.model}</button>
-    })
-  }
+      return (
+        <button onClick={() => pushMerek(model)} className="btn-list-sort">
+          {model.model}
+        </button>
+      );
+    });
+  };
 
   const [doMore, setdoMore] = useState(true);
   const [myindex, setindex] = useState();
 
-const doConcat = () => {
-  // const dahlah = data
-  // const dataThree = dataO.concat(dataT)
-  console.log('***doConcat',areaBeforeSearch)
-}
-  
+  const doConcat = () => {
+    // const dahlah = data
+    // const dataThree = dataO.concat(dataT)
+    console.log("***doConcat", areaBeforeSearch);
+  };
+
   const multiFilter = async (x, index) => {
     // console.log('index', index)
-    console.log('---1 areaBeforeSearch data', index, areaBeforeSearch)
-    setdoMore(false)
+    console.log("---1 areaBeforeSearch data", index, areaBeforeSearch);
+    setdoMore(false);
     var tempData = [];
     // console.log('get ke => ', x.id)
-      const filters = {
-        Merek   : x.merek,
-      }
-      // console.log('filters => ', filters)
-      axios.post('https://yodamobi.sagaramedia.id/api/filter',{
-        table: 'Merek, model, varian', filters
+    const filters = {
+      Merek: x.merek,
+    };
+    // console.log('filters => ', filters)
+    axios
+      .post("https://yodamobi.sagaramedia.id/api/filter", {
+        table: "Merek, model, varian",
+        filters,
       })
-      .then((response) =>{ 
-        console.log('++++res ', index, response.data.results)
+      .then((response) => {
+        console.log("++++res ", index, response.data.results);
         // pushMerek()
         response.data.results.forEach((x) => {
           // console.log('looping data', x)
-          tempData.push({...x})
-        })
+          tempData.push({ ...x });
+        });
         // console.log('tempdata', tempData)
-        console.log('---2 areaBeforeSearch data', areaBeforeSearch)
+        console.log("---2 areaBeforeSearch data", areaBeforeSearch);
         // const dataSatu = areaBeforeSearch
-        
+
         // console.log('&*&% dataCo => ', dataCo.type)
-        const dataCo = areaBeforeSearch.concat(response.data.results)
-        setAreaBeforeSearch(dataCo)
+        const dataCo = areaBeforeSearch.concat(response.data.results);
+        setAreaBeforeSearch(dataCo);
         setTimeout(() => {
-          console.log('dataSettimeout dataCo => ', dataCo)
-          console.log('dataSettimeout areaBeforeSearch => ', areaBeforeSearch)
-        }, 3000)
+          console.log("dataSettimeout dataCo => ", dataCo);
+          console.log("dataSettimeout areaBeforeSearch => ", areaBeforeSearch);
+        }, 3000);
         // setAreaBeforeSearch([...areaBeforeSearch].tempData)
-        setdoMore(true)
+        setdoMore(true);
       })
-      .catch((err) => { 
-        console.warn(err.response)
-      })
-  }
+      .catch((err) => {
+        console.warn(err.response);
+      });
+  };
 
   const doFilterData = async () => {
-    setAreaBeforeSearch([])
+    setAreaBeforeSearch([]);
 
-    props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
-    props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
-  }
+    props.getDataFilter(
+      selectedArea[0] ? selectedArea[0].merek : "resetFilter"
+    );
+    props.getDataFilterMulti(selectedArea ? selectedArea : "resetFilter");
+  };
 
   const doFilterData2 = () => {
     const requests = [];
-    const url = 'https://yodamobi.sagaramedia.id/api/filter';
-    const filters            = {
-      Merek   : selectedMerek,
-    }
+    const url = "https://yodamobi.sagaramedia.id/api/filter";
+    const filters = {
+      Merek: selectedMerek,
+    };
     for (let i = 0; i < selectedArea.length; i++) {
-        requests.push(axios.post(url, { params: {
-            table: 'Merek, model, varian',
-            filters
-        }})
-        )
+      requests.push(
+        axios.post(url, {
+          params: {
+            table: "Merek, model, varian",
+            filters,
+          },
+        })
+      );
     }
 
-    axios.all(requests)
-        .then((res) => {
-            console.log(res);
-        });
+    axios.all(requests).then((res) => {
+      console.log(res);
+    });
   };
 
   async function uploadExcel(e) {
@@ -619,62 +679,69 @@ const doConcat = () => {
 
   const cekFilterOri = () => {
     // const arr = [{id: 1, name: 'one'}, {id: 2, name: 'two'}, {id: 1, name: 'one'}]
-    const ids = selectedArea.map(o => o.id)
-    const filtered = selectedArea.filter(({id}, index) => !ids.includes(id, index + 1))
-    setSelectedArea(filtered)
+    const ids = selectedArea.map((o) => o.id);
+    const filtered = selectedArea.filter(
+      ({ id }, index) => !ids.includes(id, index + 1)
+    );
+    setSelectedArea(filtered);
     // console.log(filtered)
-  }
+  };
 
-  const doSearch = ((e) => {
-    cekFilter(e)
-  })
+  const doSearch = (e) => {
+    cekFilter(e);
+  };
 
   const [searchEmpty, setsearchEmpty] = useState(false);
   const [noArea, setnoArea] = useState(true);
   const [allDataMerek, setAllDataMerek] = useState([]);
-  
+
   const cekFilter = async (item) => {
-    await axios.post('https://yodacentral.herokuapp.com/api/filter2',{
-      table: 'Merek, model, varian',
-      keyword: item
-    })
-    .then((response) =>{ 
-      setAllDataMerek(response.data.results)
-      // console.log('res get filter', response.data.results)
-      const ids = response.data.results.merek.map(o => o.merek)
-      const duplicated = response.data.results.merek.filter(({merek}, index) => !ids.includes(merek, index + 1))
-      // console.log('duplicated', duplicated)
-      const idsModel = response.data.results.model.map(o => o.model)
-      const duplicatedModel = response.data.results.model.filter(({model}, index) => !idsModel.includes(model, index + 1))
-      // console.log('setAllDataMerek', allDataMerek)
-      // console.log('res get filter', response.data.results)
-      setDefaultArea(duplicated)
-      setDefaultAreaModel(duplicatedModel)
-      if(duplicated.length === 0){
-        setsearchEmpty(true)
-        if(defaultArea > 0){
-          setnoArea(false)
+    await axios
+      .post("https://yodacentral.herokuapp.com/api/filter2", {
+        table: "Merek, model, varian",
+        keyword: item,
+      })
+      .then((response) => {
+        setAllDataMerek(response.data.results);
+        // console.log('res get filter', response.data.results)
+        const ids = response.data.results.merek.map((o) => o.merek);
+        const duplicated = response.data.results.merek.filter(
+          ({ merek }, index) => !ids.includes(merek, index + 1)
+        );
+        // console.log('duplicated', duplicated)
+        const idsModel = response.data.results.model.map((o) => o.model);
+        const duplicatedModel = response.data.results.model.filter(
+          ({ model }, index) => !idsModel.includes(model, index + 1)
+        );
+        // console.log('setAllDataMerek', allDataMerek)
+        // console.log('res get filter', response.data.results)
+
+        setDefaultArea(duplicated);
+        setDefaultAreaModel(duplicatedModel);
+        if (duplicated.length === 0) {
+          setsearchEmpty(true);
+          if (defaultArea > 0) {
+            setnoArea(false);
+          }
+        } else {
+          setnoArea(false);
+          setsearchEmpty(false);
         }
-      } else {
-        setnoArea(false)
-        setsearchEmpty(false)
-      }
-    })
-    .catch((err) => { 
-      console.warn(err.response)
-    })
-  }
+      })
+      .catch((err) => {
+        console.warn(err.response);
+      });
+  };
 
   useEffect(() => {
-    if (defaultArea.length === 0){
-      // console.log('default area length', defaultArea.length)
-      if(selectedArea.length === 0){
-        setnoArea(true)
+    if (defaultArea.length === 0) {
+      if (selectedArea.length === 0) {
+        setnoArea(true);
       }
     } else {
-      setnoArea(false)
+      setnoArea(false);
     }
-  }, [defaultArea])
+  }, [defaultArea]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -789,17 +856,20 @@ const doConcat = () => {
                         <Button disabled>Sortir</Button>
                       </div>
                       <div>
-                        <button className="btn-terapkan" onClick={() => sortData()}>Terapkan</button>
+                        <button
+                          className="btn-terapkan"
+                          onClick={() => sortData()}
+                        >
+                          Terapkan
+                        </button>
                       </div>
                     </div>
-                    <div className="flex tab-sort mt-8">
-                      {choseTab()}
-                    </div>
+                    <div className="flex tab-sort mt-8">{choseTab()}</div>
                     <hr className="border-grey my-5" />
-                    <p><b>Urutkan Berdasarkan</b></p>
-                    <div className="list-filter">
-                      {choseListFilter()}
-                    </div>
+                    <p>
+                      <b>Urutkan Berdasarkan</b>
+                    </p>
+                    <div className="list-filter">{choseListFilter()}</div>
                   </div>
                 </Menu>
               </div>
@@ -831,23 +901,29 @@ const doConcat = () => {
                         <Button disabled>Filter</Button>
                       </div>
                       <div>
-                        <button className="btn-terapkan" onClick={() => doFilterData()}>Terapkan</button>
+                        <button
+                          className="btn-terapkan"
+                          onClick={() => doFilterData()}
+                        >
+                          Terapkan
+                        </button>
                         {/* <button className="btn-terapkan" onClick={() => doConcat()}>doConcat</button> */}
                       </div>
                     </div>
                     <div className="mt-5">
-                    {/* <button onClick={() => cekFilter()}>cek</button> */}
-                    <Search
-                    onChange={(filed) => doSearch(filed.target.value)}>
-                      <SearchIconWrapper>
-                        <SearchIcon sx={{ color: 'tint.black.60' }} />
-                      </SearchIconWrapper>
-                      <StyledInputBaseFilter
-                        color="primary"
-                        placeholder="Cari . . ."
-                        inputProps={{ 'aria-label': 'search' }}
-                      />
-                    </Search>
+                      {/* <button onClick={() => cekFilter()}>cek</button> */}
+                      <Search
+                        onChange={(filed) => doSearch(filed.target.value)}
+                      >
+                        <SearchIconWrapper>
+                          <SearchIcon sx={{ color: "tint.black.60" }} />
+                        </SearchIconWrapper>
+                        <StyledInputBaseFilter
+                          color="primary"
+                          placeholder="Cari . . ."
+                          inputProps={{ "aria-label": "search" }}
+                        />
+                      </Search>
                     </div>
                     {/* <button onClick={() => cek()}>cek</button> */}
                     <div className="mt-5">
@@ -855,7 +931,7 @@ const doConcat = () => {
                       {/* {areasSelected()} */}
                       {areasSelected()}
                     </div>
-                    <hr/>
+                    <hr />
                     {/* <div>
                       <p>Chose</p>
                       {choseAreas()}
@@ -866,6 +942,7 @@ const doConcat = () => {
                       {/* <p>Model</p>
                       {choseModel()} */}
                       {/* {noArea ? 
+
                         <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
                         <span></span>
                       }
@@ -873,7 +950,6 @@ const doConcat = () => {
                         <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div> : 
                         <span></span>
                       } */}
-
                     </div>
                   </div>
                 </Menu>
@@ -915,7 +991,12 @@ const doConcat = () => {
               color="inherit"
             >
               {/* <Avatar src="./images/web/avatar-example.png" /> */}
-              {userInfo.profile_picture ? <Avatar src={userInfo.profile_picture} /> : <Avatar src="./images/web/avatar-example.png" />}
+              {userInfo.profile_picture ? (
+                <Avatar src={userInfo.profile_picture} />
+              ) : (
+                <Avatar src="./images/web/avatar-example.png" />
+              )}
+
               {/* <AccountCircle /> */}
             </IconButton>
           </Box>

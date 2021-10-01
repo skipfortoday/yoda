@@ -15,6 +15,7 @@ export default function CMUJarakTempuh(props) {
   const thisToken = sessionStorage.getItem('token')
   // console.log('thisToken CMUJarakTempuh', thisToken)
 
+
   useEffect(() => { LoadData() }, [])
 
   useEffect(() => {
