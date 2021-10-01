@@ -12,16 +12,24 @@ export default function ContentManagementPage() {
   const ActivePage = 2; // Staticly Setup for Active Menu
   const [ActiveTab, setActiveTab] = useState(0)
 
+  const [dataFilter, setDataFilter] = useState([])
+  const getDataFilter = (val) => {
+    // do not forget to bind getData in constructor
+    console.log(val);
+    setDataFilter(val)
+  }
+
   const DATA = {
     header: 'Manajemen konten',
     tabsMenu: [
-      { value: 0, label: 'Unit', content: <CMUnit /> },
+      { value: 0, label: 'Unit', content: <CMUnit dataFilter={dataFilter}  /> },
       { value: 1, label: 'Lokasi', content: <CMLocation /> },
       { value: 2, label: 'Kredit', content: <CMCredit /> },
       { value: 3, label: 'Penjual', content: <CMSeller /> },
     ]
   }
 
+  
   return (
     <>
       <MyAppbar
@@ -29,6 +37,7 @@ export default function ContentManagementPage() {
         tabsMenu={DATA.tabsMenu}
         ActiveTab={ActiveTab} setActiveTab={setActiveTab}
         ActivePage={ActivePage}
+        getDataFilter={getDataFilter}
       />
 
       <Container maxWidth="xl">

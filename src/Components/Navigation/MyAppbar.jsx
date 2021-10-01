@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+import React, { useState, useEffect } from 'react';
+import { styled, alpha } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 // import InputBase from '@mui/material/InputBase';
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Badge from "@mui/material/Badge";
@@ -29,19 +29,20 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 // import NestedMenuItem from "material-ui-nested-menu-item";
 import axios from "axios";
 
-import ListSubheader from "@mui/material/ListSubheader";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import SendIcon from "@mui/icons-material/Send";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
-import axiosBackend from "../../Helper/axiosBackend";
+// import ListSubheader from "@mui/material/ListSubheader";
+// import List from "@mui/material/List";
+// import ListItemButton from "@mui/material/ListItemButton";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import ListItemText from "@mui/material/ListItemText";
+// import Collapse from "@mui/material/Collapse";
+// import InboxIcon from "@mui/icons-material/MoveToInbox";
+// import DraftsIcon from "@mui/icons-material/Drafts";
+// import SendIcon from "@mui/icons-material/Send";
+// import ExpandLess from "@mui/icons-material/ExpandLess";
+// import ExpandMore from "@mui/icons-material/ExpandMore";
+// import StarBorder from "@mui/icons-material/StarBorder";
+// import axiosBackend from "../../Helper/axiosBackend";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -80,6 +81,18 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
     [theme.breakpoints.up("md")]: {
       width: "20ch",
     },
+  },
+}));
+
+const StyledInputBaseFilter = styled(OutlinedInput)(({ theme }) => ({
+  color: 'inherit',
+  borderRadius: 50,
+  '& .MuiOutlinedInput-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
   },
 }));
 
@@ -257,26 +270,18 @@ export default function MyAppbar(props) {
 
   // sort data
   const [dataSort, setDataSort] = useState("nameDesc");
-  const sortData = () => {
-    // if(value === "nameDesc"){
-    //   setAnchorElSort(null);
-    //   props.sendData('nameDesc')
-    // }
-    // if(value === "nameAsc"){
-    //   setAnchorElSort(null);
-    //   props.sendData('nameAsc')
-    // }
-    if (dataSort === "nameDesc") {
-      props.sendData("nameAsc");
-      setDataSort("nameAsc");
-      setAnchorElSort(null);
-    }
-    if (dataSort === "nameAsc") {
-      props.sendData("nameDesc");
-      setDataSort("nameDesc");
-      setAnchorElSort(null);
-    }
-  };
+  // const sortData = () => {
+  //   if (dataSort === "nameDesc") {
+  //     props.sendData("nameAsc");
+  //     setDataSort("nameAsc");
+  //     setAnchorElSort(null);
+  //   }
+  //   if (dataSort === "nameAsc") {
+  //     props.sendData("nameDesc");
+  //     setDataSort("nameDesc");
+  //     setAnchorElSort(null);
+  //   }
+  // };
 
   // sort data
   const [dataSortHp, setDataSortHp] = useState("hpDesc");
@@ -298,14 +303,384 @@ export default function MyAppbar(props) {
     props.getDataFilter(loc);
   };
 
-  // const lohehAsc = () => {
-  //   props.sendData('nameAsc')
-  // }
-
   const [openSub, setOpenSub] = React.useState(false);
 
   const handleClickSub = () => {
     setOpenSub(!openSub);
+  };
+
+  const textsTab = [
+    {
+      id  : 1,
+      name: 'A-Z',
+      type: 'Asc'
+    },
+    {
+      id  : 2,
+      name: 'Z-A',
+      type: 'Desc'
+    },
+  ]
+
+  const texts = [
+    {
+      id  : 1,
+      name: 'Nama & Email',
+    },
+    {
+      id  : 2,
+      name: 'Tanggal',
+    },
+    {
+      id  : 3,
+      name: 'No. Handphone',
+    },
+  ]
+
+  // const choseListFilter = () => {
+  //   const array = [1, 2, 3 ,4, 5]
+
+  //   return array.map((number) => {
+  //     return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
+  //   })
+
+  // }
+
+  // sorting
+  const [typeSort, setTypeSort] = useState("Asc");
+  const [nameSort, setNameSort] = useState("Nama & Email");
+  const [selectedTabId, setSelectedTabId] = useState({id:1});
+  const [selectedId, setSelectedId] = useState({id:1});
+
+  const sortData = () => {
+    console.log('typeSort', typeSort)
+    console.log('nameSort', nameSort)
+    if(typeSort === "Desc"){
+      console.log('do Desc')
+      if(nameSort === 'Nama & Email'){
+        props.sendData('nameDesc')
+        setAnchorElSort(null);
+      }
+      if(nameSort === 'Tanggal'){
+        props.sendData('dateDesc')
+        setAnchorElSort(null);
+      }
+      if(nameSort === 'No. Handphone'){
+        props.sendData('hpDesc')
+        setAnchorElSort(null);
+      }
+    }
+    if(typeSort === "Asc"){
+      console.log('do Asc')
+      if(nameSort === 'Nama & Email'){
+        props.sendData('nameAsc')
+        setAnchorElSort(null);
+      }
+      if(nameSort === 'Tanggal'){
+        props.sendData('dateAsc')
+        setAnchorElSort(null);
+      }
+      if(nameSort === 'No. Handphone'){
+        props.sendData('hpAsc')
+        setAnchorElSort(null);
+      }
+    }
+  }
+
+  const pushTabId = (item) => {
+    setSelectedTabId(item)
+    setTypeSort(item.type)
+  }
+
+  const pushId = (item) => {
+    setSelectedId(item)
+    setNameSort(item.name)
+  }
+  
+
+  const choseTab = () => {
+    return textsTab.map((number) => {
+      // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
+      return <button onClick={() => pushTabId(number)} className={`btn-list-tab ${selectedTabId.id === number.id ? 'btn-active' : ''} ${number.id === 1 ? 'border-left' : 'border-right'}`}>{number.name}</button>
+    })
+  }
+
+  const choseListFilter = () => {
+    return texts.map((number) => {
+      // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
+      return <button onClick={() => pushId(number)} className={`btn-list-sort ${selectedId.id === number.id ? 'btn-active' : ''}`}>{number.name}</button>
+    })
+  }
+
+  const areas = [
+    {
+      id  : 1,
+      name: 'Jakarta',
+    },
+    {
+      id  : 2,
+      name: 'Jawa Timur',
+    },
+    {
+      id  : 3,
+      name: 'Malang',
+    },
+    {
+      id  : 4,
+      name: 'Yogyakarta',
+    },
+  ]
+
+  const Merek = [
+    {
+      id  : 1,
+      name: 'Alfa Romeo',
+    },
+    {
+      id  : 2,
+      name: 'Aston Martin',
+    },
+    {
+      id  : 4,
+      name: 'Jeep',
+    },
+  ]
+
+  const MerekNew = [
+    {
+      id  : 1,
+      merek: 'Alfa Romeo',
+    },
+    {
+      id  : 2,
+      merek: 'Aston Martin',
+    },
+    {
+      id  : 4,
+      merek: 'Jeep',
+    },
+  ]
+
+  const [selectedArea, setSelectedArea] = useState([]);
+  const [selectedAreaNew, setSelectedAreaNew] = useState([]);
+  const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
+  const [defaultArea, setDefaultArea] = useState([]);
+  const [defaultAreaModel, setDefaultAreaModel] = useState([]);
+
+  const cek = () => {
+    setDefaultArea(defaultArea)
+    const data = defaultArea.filter((item, pos, self) => self.findIndex(v => v.name === item.name) === pos);
+    setDefaultArea(data)
+    console.log('data', data)
+  }
+
+  const pushArea = (item) => {
+    setSelectedArea(selectedArea.concat(item))
+    console.log('item', item.name)
+    var filtered = defaultArea.filter(function(value){ 
+      // console.log('value', value.name)
+      return value.name !== item.name
+    })
+    setDefaultArea(filtered)
+    if(filtered === ""){
+      console.log("filtered kosong")
+    }
+    console.log('filtered', filtered)
+  }
+
+  const pushAreaDefault = (item) => {
+    // const data = selectedArea.map((x) => {
+    //   console.log('item',item)
+    //   console.log('x',x)
+    //   if(x.name !== item.name){
+    //     return x
+    //   }
+    // })
+    const array = selectedArea.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    console.log('data', array)
+    setSelectedArea(array)
+    setSelectedMerek(item.name)
+    // setDefaultArea(defaultArea.concat(item))
+    // console.log('item remove from selected', item.name)
+    // var filtered = selectedArea.filter(function(value){
+    //   return value.name !== item.name
+    // })
+
+    // setDefaultArea(selectedArea.pop(item))
+    // if(selectedArea.length === 0){
+    //   setSelectedMerek("resetFilter")
+    // }
+    // console.log('filtered', filtered)
+  }
+
+  const choseAreas = () => {
+    return defaultArea.map((area) => {
+      return <button onClick={() => pushArea(area)} className={`btn-list-sort ${selectedId.id === area.id ? 'btn-active' : ''}`}>{area.name}</button>
+    })
+  }
+
+  const areasSelectedOri = () => {
+    return selectedArea.map((area) => {
+      // return <button onClick={() => pushAreaDefault(area)} className="btn-list-sort btn-active">{area.name}<HighlightOffIcon/></button>
+      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {area.name}
+            </Button>
+    })
+  }
+
+  const areasSelected = () => {
+    return selectedArea.map((area) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {area.merek}
+            </Button>
+    })
+  }
+
+  const doSearch1 = (x) => {
+    console.log('x', x)
+    const inventory = [
+      {name: 'apples', quantity: 2},
+      {name: 'bananas', quantity: 0},
+      {name: 'cherries', quantity: 5}
+    ];
+    
+    const result = inventory.find( ({ name }) => name === x );
+    
+    console.log(result) // { name: 'cherries', quantity: 5 }
+  }
+
+  const doSearchOri = ((e) => {
+    const searchString = e.toLowerCase();
+    console.log('searchString', searchString)
+    console.log('defaultArea search', defaultArea)
+
+    const filteredCharacters = defaultArea.filter((character) => {
+        return (
+            character.name.toLowerCase().includes(searchString)
+        );
+    });
+    setDefaultArea(filteredCharacters)
+    console.log('doSearch',filteredCharacters);
+    // if(e === 0){
+    //   cek()
+    // } else {
+    //   setDefaultArea(filteredCharacters)
+    //   console.log(filteredCharacters);
+    // }
+})
+
+  const [selectedMerek, setSelectedMerek] = useState();
+
+  const pushMerekOri = (item) => {
+    setSelectedMerek(item.name)
+    setSelectedArea(selectedArea.concat(item))
+    console.log('item', item.name)
+    var filtered = defaultArea.filter(function(value){
+      return value.name !== item.name
+    })
+    setDefaultArea(filtered)
+    console.log('filtered', filtered)
+  }
+
+  const pushMerekOri2 = (item) => {
+    setSelectedMerek(item.name)
+    const data = selectedArea.concat(item)
+    // cek duplicated
+    console.log('data', data)
+    const ids = data.map(o => o.id)
+    const duplicated = data.filter(({id}, index) => !ids.includes(id, index + 1))
+    console.log('duplicated', duplicated)
+    setSelectedArea(duplicated)
+    
+    // setSelectedArea(selectedArea.concat(item))
+    
+    
+    // console.log('item', item.name)
+    // var filtered = defaultArea.filter(function(value){
+    //   return value.name !== item.name
+    // })
+    // setDefaultArea(filtered)
+    // console.log('filtered', filtered)
+  }
+
+  const pushMerek = (item) => {
+    setSelectedMerek(item.merek)
+    const data = selectedArea.concat(item)
+    // cek duplicated
+    console.log('data', data)
+    const ids = data.map(o => o.merek)
+    const duplicated = data.filter(({merek}, index) => !ids.includes(merek, index + 1))
+    console.log('duplicated', duplicated)
+    setSelectedArea(duplicated)
+  }
+
+  const choseMerek = () => {
+    return defaultArea.map((merek) => {
+      // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
+      return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.merek}</button>
+    })
+  }
+
+  const choseModel = () => {
+    return defaultAreaModel.map((model) => {
+      // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
+      return <button onClick={() => pushMerek(model)} className="btn-list-sort">{model.model}</button>
+    })
+  }
+
+  const doFilterData = async () => {
+    console.log('selectedArea', selectedArea)
+    console.log('selectedMerek', selectedMerek)
+    // props.getDataFilter(selectedMerek)
+
+    // awal
+    // props.getDataFilter(selectedArea[0] ? selectedArea[0].name : 'resetFilter')
+
+
+    props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
+    // const filters            = {
+    //   Merek   : selectedMerek,
+    // }
+    // const multi = () => {
+    //   const data = selectedArea.map((x) => {
+    //     const obj = {"Merek" : x.name}
+    //     return obj
+    //   })
+    //   return data
+    // }
+    // const filters = multi()
+    // console.log('filters => ', filters)
+    // await axios.post('https://yodamobi.sagaramedia.id/api/filter',{
+    //   table: 'Merek, model, varian', filters
+    // })
+    // .then((response) =>{ 
+    //   console.log('res', response)
+    // })
+    // .catch((err) => { 
+    //   console.warn(err.response)
+    // })
+  }
+
+  const doFilterData2 = () => {
+    const requests = [];
+    const url = 'https://yodamobi.sagaramedia.id/api/filter';
+    const filters            = {
+      Merek   : selectedMerek,
+    }
+    for (let i = 0; i < selectedArea.length; i++) {
+        requests.push(axios.post(url, { params: {
+            table: 'Merek, model, varian',
+            filters
+        }})
+        )
+    }
+
+    axios.all(requests)
+        .then((res) => {
+            console.log(res);
+        });
   };
 
   async function uploadExcel(e) {
@@ -335,6 +710,79 @@ export default function MyAppbar(props) {
     // let ext = e.target.files.split(".").pop();
     // console.log(ext, "EXT");
   }
+
+  const cekFilterOri = () => {
+    // const arr = [{id: 1, name: 'one'}, {id: 2, name: 'two'}, {id: 1, name: 'one'}]
+    const ids = selectedArea.map(o => o.id)
+    const filtered = selectedArea.filter(({id}, index) => !ids.includes(id, index + 1))
+    setSelectedArea(filtered)
+    console.log(filtered)
+  }
+
+  const doSearch = ((e) => {
+    const searchString = e.toLowerCase();
+    console.log('searchString', searchString)
+    console.log('defaultArea search', defaultArea)
+    cekFilter(e)
+  })
+
+  const [searchEmpty, setsearchEmpty] = useState(false);
+  const [noArea, setnoArea] = useState(true);
+
+  
+  const cekFilter = async (item) => {
+    console.log('item search', item)
+    // const filters            = {
+    //   Merek   : "Aston",
+    // }
+    // const multi = () => {
+    //   const data = selectedArea.map((x) => {
+    //     const obj = {"Merek" : x.name}
+    //     return obj
+    //   })
+    //   return data
+    // }
+    // const filters = multi()
+    // console.log('filters => ', filters)
+    await axios.post('https://yodacentral.herokuapp.com/api/filter2',{
+      table: 'Merek, model, varian',
+      keyword: item
+    })
+    .then((response) =>{ 
+      console.log('res get filter', response)
+      const ids = response.data.results.merek.map(o => o.merek)
+      const duplicated = response.data.results.merek.filter(({merek}, index) => !ids.includes(merek, index + 1))
+      console.log('duplicated', duplicated)
+      const idsModel = response.data.results.model.map(o => o.model)
+      const duplicatedModel = response.data.results.model.filter(({model}, index) => !idsModel.includes(model, index + 1))
+      console.log('duplicatedModel', duplicatedModel)
+      setDefaultArea(duplicated)
+      setDefaultAreaModel(duplicatedModel)
+      if(duplicated.length === 0){
+        setsearchEmpty(true)
+        if(defaultArea > 0){
+          setnoArea(false)
+        }
+      } else {
+        setnoArea(false)
+        setsearchEmpty(false)
+      }
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  useEffect(() => {
+    if (defaultArea.length === 0){
+      console.log('default area length', defaultArea.length)
+      if(selectedArea.length === 0){
+        setnoArea(true)
+      }
+    } else {
+      setnoArea(false)
+    }
+  }, [defaultArea])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -392,16 +840,6 @@ export default function MyAppbar(props) {
           </Box>
           {upMd ? (
             <>
-              {/* <button onClick={() => sortData('nameAsc')}>Asc</button>
-              <button onClick={() => sortData('nameDesc')}>Desc</button> */}
-              {/* <input type="file" accept=".xlsx,.xls" className="custom-file-input" onChange={(e) => uploadData(e)}/> */}
-              {/* <Button disableRipple
-                color="primary"
-                startIcon={<UploadIcon />}
-                onClick={() => uploadData()}
-              >
-                {'Unggah data'}
-              </Button> */}
               <div>
                 {/* <Button
                   id="basic-button"
@@ -453,9 +891,24 @@ export default function MyAppbar(props) {
                     "aria-labelledby": "basic-button",
                   }}
                 >
-                  <MenuItem onClick={() => sortData()}>Name</MenuItem>
-                  <MenuItem onClick={() => sortDataHp()}>Hp</MenuItem>
-                  {/* <MenuItem onClick={() => sortData('nameDesc')}>Name Desc</MenuItem> */}
+                  <div className="menuSort">
+                    <div className="switch">
+                      <div>
+                        <Button disabled>Sortir</Button>
+                      </div>
+                      <div>
+                        <button className="btn-terapkan" onClick={() => sortData()}>Terapkan</button>
+                      </div>
+                    </div>
+                    <div className="flex tab-sort mt-8">
+                      {choseTab()}
+                    </div>
+                    <hr className="border-grey my-5" />
+                    <p><b>Urutkan Berdasarkan</b></p>
+                    <div className="list-filter">
+                      {choseListFilter()}
+                    </div>
+                  </div>
                 </Menu>
               </div>
               <div>
@@ -480,74 +933,59 @@ export default function MyAppbar(props) {
                     "aria-labelledby": "basic-button",
                   }}
                 >
-                  {/* <MenuItem onClick={() => filterData('Malang')}>Malang</MenuItem>
-                  <MenuItem onClick={() => filterData('Test')}>Test</MenuItem>
-                  <MenuItem onClick={() => filterData('Reset')}>Reset</MenuItem> */}
-                  {/* <NestedMenuItem
-                    label="Button 5"
-                  >
-                    <MenuItem>Sub-Button 1</MenuItem>
-                    <MenuItem>Sub-Button 2</MenuItem>
-                  </NestedMenuItem> */}
-                  {/* <MenuItem>
-                  <List>
-                    <ListItem disablePadding>
-                      <ListItemButton>
-                        <ListItemText primary="Trash" />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                      <ListItemButton component="a" href="#simple-list">
-                        <ListItemText primary="Spam" />
-                      </ListItemButton>
-                    </ListItem>
-                  </List>
-                  </MenuItem> */}
-                  {/* <MenuItem> */}
-                  <List
-                    sx={{
-                      width: "100%",
-                      maxWidth: 360,
-                      bgcolor: "background.paper",
-                    }}
-                    component="nav"
-                    aria-labelledby="nested-list-subheader"
-                  >
-                    <ListItemButton onClick={handleClickSub}>
-                      <ListItemText primary="Cabang" />
-                      {openSub ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={openSub} timeout="auto" unmountOnExit>
-                      <List component="div" disablePadding>
-                        <ListItemButton
-                          sx={{ pl: 4 }}
-                          onClick={() => filterData("Malang")}
-                        >
-                          <ListItemText primary="Malang" />
-                        </ListItemButton>
-                        <ListItemButton sx={{ pl: 4 }}>
-                          <ListItemText
-                            primary="Test"
-                            onClick={() => filterData("Test")}
-                          />
-                        </ListItemButton>
-                        {/* <ListItemButton sx={{ pl: 4 }} >
-                            <ListItemText primary="Reset" onClick={() => filterData('Reset')}/>
-                          </ListItemButton> */}
-                      </List>
-                    </Collapse>
-                  </List>
-                  {/* </MenuItem> */}
-                  <MenuItem onClick={() => filterData("Reset")}>Reset</MenuItem>
+                  <div className="menuSort">
+                    <div className="switch">
+                      <div>
+                        <Button disabled>Filter</Button>
+                      </div>
+                      <div>
+                        <button className="btn-terapkan" onClick={() => doFilterData()}>Terapkan</button>
+                      </div>
+                    </div>
+                    <div className="mt-5">
+                    {/* <button onClick={() => cekFilter()}>cek</button> */}
+                    <Search
+                    onChange={(filed) => doSearch(filed.target.value)}>
+                      <SearchIconWrapper>
+                        <SearchIcon sx={{ color: 'tint.black.60' }} />
+                      </SearchIconWrapper>
+                      <StyledInputBaseFilter
+                        color="primary"
+                        placeholder="Cari . . ."
+                        inputProps={{ 'aria-label': 'search' }}
+                      />
+                    </Search>
+                    </div>
+                    {/* <button onClick={() => cek()}>cek</button> */}
+                    <div className="mt-5">
+                      {/* <p>Selected</p> */}
+                      {/* {areasSelected()} */}
+                      {areasSelected()}
+                    </div>
+                    <hr/>
+                    {/* <div>
+                      <p>Chose</p>
+                      {choseAreas()}
+                    </div> */}
+                    <div>
+                      {/* <p>Merek</p> */}
+                      {choseMerek()}
+                      {/* <p>Model</p>
+                      {choseModel()} */}
+                      {noArea ? 
+                        <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
+                        <span></span>
+                      }
+                      {searchEmpty ? 
+                        <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div> : 
+                        <span></span>
+                      }
+
+                    </div>
+                  </div>
                 </Menu>
               </div>
-              {/* <Button disableRipple
-                color="primary"
-                startIcon={<ImportExportIcon />}
-              >
-                {'Sortir'}
-              </Button> */}
-              <Search>
+              {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ color: "tint.black.60" }} />
                 </SearchIconWrapper>
@@ -556,7 +994,7 @@ export default function MyAppbar(props) {
                   placeholder="Search…"
                   inputProps={{ "aria-label": "search" }}
                 />
-              </Search>
+              </Search> */}
             </>
           ) : null}
           <Box sx={{ display: { xs: "none", md: "flex" } }}>

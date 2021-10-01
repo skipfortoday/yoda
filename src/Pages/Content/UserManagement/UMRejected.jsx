@@ -47,15 +47,23 @@ export default function UMRejected(props) {
     )
   }
 
+  console.log(props.data, "REJECTED USERS");
+
+
   const handleAcceptUser = () => {
     // Acc user request here
     // console.log('reloading Acc')
     reload()
   }
 
-  const handleDeleteUser = () => {
+  const handleDeleteUser = async () => {
     // Del user request here
-    // console.log('reloading Del')
+    console.log('reloading Del')
+    // await axiosBackend.post('/um/delete/')
+    // .then((response) => {
+    //   console.log(response.data)
+    // })
+    // .catch((err) => { console.warn(err.response) })
     reload()
   }
 

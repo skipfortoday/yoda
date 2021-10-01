@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import axios from 'axios'
 
 const INPUTS = [
   { label: 'Tahun', value: '', error: false, disabled: false,},
@@ -11,6 +11,8 @@ const INPUTS = [
 
 export default function CMUTahun(props) {
   const [Data, setData] = useState([])
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+  const thisToken = sessionStorage.getItem('token')
 
   useEffect(() => { LoadData() }, [])
 
@@ -21,7 +23,11 @@ export default function CMUTahun(props) {
   }, [props.val]);
 
   async function LoadData() {
-    await axiosBackend.get('/cm/tahun-pembuatan')
+    await axios.get(`${baseURL}/cm/tahun-pembuatan`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+    })
     .then((response) => { 
       var tempData = response.data
       tempData.forEach((dat, idx) => {
@@ -50,7 +56,10 @@ export default function CMUTahun(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/tahun-pembuatan', {
+    await axios.post(`${baseURL}/cm/tahun-pembuatan`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
       tahun: InputTahun.value,
     })
     .then((response) => {

@@ -12,8 +12,10 @@ import CMUBahanBakar from './SubPage/CMUnit/CMUBahanBakar';
 import CMUTransmisi from './SubPage/CMUnit/CMUTransmisi';
 import CMUKondisiUnit from './SubPage/CMUnit/CMUKondisiUnit';
 import CMUJenisUnit from './SubPage/CMUnit/CMUJenisUnit';
+import axios from 'axios'
 
-export default function CMUnit() {
+export default function CMUnit(props) {
+  console.log('props CMUnit', props)
   const [ActiveSubPage, setActiveSubPage] = useState(0)
   const [DeleteButton, setDeleteButton] = useState(false)
   const [DeleteChosenId, setDeleteChosenId] = useState([])
@@ -28,7 +30,7 @@ export default function CMUnit() {
     setDeleteChosenId(val);
     setDeleteType(type);
   }
-
+  
   const multiDelete = async () => {
     await axiosBackend.post(`/delete/${DeleteType}`, {
       id: DeleteChosenId,
@@ -39,10 +41,52 @@ export default function CMUnit() {
     })
     .catch((err) => { console.warn(err.response) })
   }
+  
+  const [dataFiltered, setDataFiltered] = useState([]);
+  const doFilterData = async () => {
+    console.log('doFilterData CMUnit')
+    // console.log('selectedArea', selectedArea)
+    // console.log('selectedMerek', selectedMerek)
+    // props.getDataFilter(selectedMerek)
+    // const multi = () => {
+    //   const data = selectedArea.map((x) => {
+    //     const obj = {"Merek" : x.name}
+    //     return obj
+    //   })
+    //   return data
+    // }
+    // const filters = multi()
+    if(props.dataFilter === ""){
+      console.log('filters kosong ')
+      await axiosBackend.get('/cm/merek-model-varian')
+      .then((response) => { 
+        var tempData = response.data
+        tempData.forEach((dat, idx) => {
+          dat.index = idx + 1;
+        });
+        setDataFiltered(tempData)
+      })
+    } else {
+      const filters = {
+        Merek   : props.dataFilter,
+      }
+      console.log('filters => ', filters)
+      await axios.post('https://yodamobi.sagaramedia.id/api/filter',{
+        table: 'Merek, model, varian', filters
+      })
+      .then((response) =>{ 
+        console.log('res', response)
+        setDataFiltered(response.data.results)
+      })
+      .catch((err) => { 
+        console.warn(err.response)
+      })
+    }
+  }
 
   const TABS = [
     { index: 0, label: 'Merk, model, varian',
-      dataGrid: <CMUMerkModelVariant indexPage={0} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} changeIcons={changeIcons} val={Deleted}/> },
+      dataGrid: <CMUMerkModelVariant dataFiltered={dataFiltered} indexPage={0} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} changeIcons={changeIcons} val={Deleted}/> },
     { index: 1, label: 'Tahun',
       dataGrid: <CMUTahun indexPage={1} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} changeIcons={changeIcons} val={Deleted}/> },
     { index: 2, label: 'Jarak tempuh',
@@ -58,6 +102,13 @@ export default function CMUnit() {
     { index: 7, label: 'Jenis unit',
       dataGrid: <CMUJenisUnit indexPage={7} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} changeIcons={changeIcons} val={Deleted}/> },
   ]
+
+  useEffect(() => {
+    if(props.dataFilter){
+      console.log('props dataFilter cmunit', props.dataFilter)
+      doFilterData()
+    }
+  }, [props.dataFilter])
 
   return (
     <>

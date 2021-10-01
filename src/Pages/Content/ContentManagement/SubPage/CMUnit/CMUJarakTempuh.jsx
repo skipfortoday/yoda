@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import axios from 'axios'
 
 const INPUTS = [
   { label: 'Jarak tempuh', value: '', error: false, disabled: false,},
@@ -11,6 +11,9 @@ const INPUTS = [
 
 export default function CMUJarakTempuh(props) {
   const [Data, setData] = useState([])
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+  const thisToken = sessionStorage.getItem('token')
+  console.log('thisToken CMUJarakTempuh', thisToken)
 
   useEffect(() => { LoadData() }, [])
 
@@ -21,7 +24,11 @@ export default function CMUJarakTempuh(props) {
   }, [props.val]);
 
   async function LoadData() {
-    await axiosBackend.get('/cm/jarak-tempuh')
+    await axios.get(`${baseURL}/cm/jarak-tempuh`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+    })
     .then((response) => { 
       var tempData = response.data
       tempData.forEach((dat, idx) => {
@@ -50,7 +57,10 @@ export default function CMUJarakTempuh(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/jarak-tempuh', {
+    await axios.post('/cm/jarak-tempuh', {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
       jarak_tempuh: InputJarakTempuh.value,
     })
     .then((response) => {

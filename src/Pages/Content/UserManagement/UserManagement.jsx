@@ -33,7 +33,8 @@ export default function UserManagementPage() {
   async function GetAllUsers() {
     const thisToken = sessionStorage.getItem('token')
     console.log('thisToken', thisToken)
-    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+
     // console.log('GetAllUsers')
     var AllUsers = [];
     try {
@@ -42,7 +43,6 @@ export default function UserManagementPage() {
           Authorization: `Bearer ${thisToken}`,
         },
       })
-      console.log('data', data)
       if(data.status === 200){
         AllUsers = data.data.users
         return AllUsers
@@ -78,13 +78,14 @@ export default function UserManagementPage() {
         // (user.user_status.toString().toLowerCase() === "active" ||
         // user.user_status.toString().toLowerCase() === "non aktif") 
         && user?.role?.name !== "Super Admin"
-      )
-    })
-    tempUsers.forEach((user, index) => {
-      user.index = index + 1;
-      user.user_code = "#" + user.id.toString().padStart(5, '0')
-    });
-    setAcceptedData(tempUsers)
+        )
+      })
+      console.log(tempUsers, "TU")
+      tempUsers.forEach((user, index) => {
+        user.index = index + 1;
+        user.user_code = "#" + user.id.toString().padStart(5, '0')
+      });
+      setAcceptedData(tempUsers)
   }
   async function LoadRejectedData() {
     console.log('LoadRejectedData')

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import axios from 'axios'
 
 const INPUTS = [
   { label: 'Merek', value: '', error: false, disabled: false,},
@@ -12,18 +12,39 @@ const INPUTS = [
 ]
 
 export default function CMUMerkModelVariant(props) {
+  console.log('props CMUMerkModelVariant', props)
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+  const thisToken = sessionStorage.getItem('token')
+  console.log('thisToken CMUJarakTempuh', thisToken)
   const [Data, setData] = useState([])
+  const [DataMerek, setDataMerek] = useState(props.dataFiltered)
 
   useEffect(() => { LoadData() }, [])
 
   useEffect(() => {
     setMenuAnchorEl(null);
     ResetInputs();
-    LoadData();
-  }, [props.val]);
+    if(props.dataFiltered){
+      console.log('ada props dataFiltered', props.dataFiltered)
+      setData(props.dataFiltered)
+      if(props.dataFiltered.length === 0){
+        console.log('props dataFiltered === 0')
+        LoadData();
+      }
+    }
+    if(props.dataFiltered === "resetFilter"){
+      console.log('props.dataFiltered reset')
+      LoadData();
+    }
+  }, [props.val, props.dataFiltered]);
 
   async function LoadData() {
-    await axiosBackend.get('/cm/merek-model-varian')
+    console.log('loadData')
+    await axios.get(`${baseURL}/cm/merek-model-varian`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+    })
     .then((response) => { 
       var tempData = response.data
       tempData.forEach((dat, idx) => {
@@ -56,7 +77,10 @@ export default function CMUMerkModelVariant(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/merek-model-varian', {
+    await axios.post(`${baseURL}/cm/merek-model-varian`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
       merek: InputMerek.value,
       model: InputModel.value,
       varian: InputVarian.value,
@@ -74,9 +98,27 @@ export default function CMUMerkModelVariant(props) {
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
     { field: 'merek', headerName: 'Merek', minWidth: 180, flex: 1 },
-    { field: 'model', headerName: 'Colt', minWidth: 160 },
+    { field: 'model', headerName: 'Model', minWidth: 160 },
     { field: 'varian', headerName: 'Varian', minWidth: 160, flex: 1 },
   ]
+
+  // const [InputVarian, setInputVarian] = useState(INPUTS[2])
+  const doFilter = () => {
+    // const datafil = ['Audi', 'Renegade']
+    // const newLop = datafil.map((x) => {
+    //     return (currentElement.merek === x)
+    //   })
+    let filteredPeople = Data.filter(function (currentElement) {
+      // the current value is an object, so you can check on its properties
+      // const newLop = datafil.map((x) => {
+      //   return currentElement.merek === x
+      // })
+      return currentElement.merek === "Audi" || currentElement.model === "Renegade";
+    });
+    
+    console.log(filteredPeople);
+    setData(filteredPeople)
+  }
 
   return (
     <>
@@ -144,6 +186,7 @@ export default function CMUMerkModelVariant(props) {
           </DynamicContentMenu>
         </Popover>
       ) }
+      <button onClick={() => doFilter()}>doFilter</button>
       <Box fullWidth sx={{ maxHeight: '70vh', height: '70vh'}}>
         <DataGrid
           columns={DATAGRID_COLUMNS}

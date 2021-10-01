@@ -36,26 +36,21 @@ export default function AcceptingAction(props) {
       .catch((err) => {console.log(err.response) })
     }
     else if (fromPage==="UMRejected") {
-      const config = { 
-        target_email: row.email,
-        user_status: 'Deleted',
-        role: 'Deleted',
-        location: 'Not set',
-      }
-      console.log(config)
-      // SALAH GANTI NANTI
-      // await axiosBackend.post('/user-management', { 
+      // const config = { 
       //   target_email: row.email,
       //   user_status: 'Deleted',
       //   role: 'Deleted',
       //   location: 'Not set',
-      // })
-      // .then((response) => {
-      //   console.log(response.data)
-      //   redBtnClick()
-      // })
-      // .catch((err) => {console.log(err.response) })
-      redBtnClick()
+      // }
+      console.log(row, "ROW")
+      // SALAH GANTI NANTI
+      await axiosBackend.get(`/um/delete/${row.id}`,)
+      .then((response) => {
+        console.log(response.data)
+        redBtnClick()
+      })
+      .catch((err) => {console.log(err.response) })
+      // redBtnClick()
     }
   }
 
@@ -70,7 +65,7 @@ export default function AcceptingAction(props) {
             onClose={() => setMenuAnchorEl(null) }
             anchorEl={MenuanchorEl}
             anchorOrigin={{
-              vertical: 'bottom',
+              vertical: 'top',
               horizontal: 'right',
             }}
             transformOrigin={{

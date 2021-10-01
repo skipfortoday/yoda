@@ -17,7 +17,11 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { CheckEmail, CheckNumber } from '../../Helper/RegexHelper';
 import axiosBackend from '../../Helper/axiosBackend';
-
+import axios from 'axios'
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function RegisterWeb(props) {
   const theme = useTheme();
@@ -35,12 +39,30 @@ export default function RegisterWeb(props) {
 
   
   const [ActiveSection, setActiveSection] = useState(0)
+  const [emailExist, setEmailExist] = useState(false)
 
   function handleNextClick() {
     setActiveSection(ActiveSection + 1)
   }
   function handleResetClick() {
     setActiveSection(0)
+  }
+
+  async function checkEmailExist() {
+    const thisToken = sessionStorage.getItem('token')
+    console.log('thisToken', thisToken)
+    const baseURL= `https://yodacentral.herokuapp.com/api`
+    try {
+      const data = await axios.post(`${baseURL}/check-email`, {
+        email: InputEmail,
+      })
+      console.log('data', data)
+      handleNextClick()
+    } catch (err){
+      console.log('not passed')
+      setEmailExist(true)
+      console.log('err', err)
+    }
   }
 
   function handleValidateFirstPage () {
@@ -65,7 +87,8 @@ export default function RegisterWeb(props) {
     if (InputCPassword.value!==InputPassword.value) { isPassed = false; }
 
     if (isPassed) {
-      handleNextClick()
+      // handleNextClick()
+      checkEmailExist()
     }
   }
 
@@ -115,6 +138,17 @@ export default function RegisterWeb(props) {
     history.push('/login')
   }
 
+  const LightTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: 'rgba(0, 0, 0, 0.87)',
+      boxShadow: theme.shadows[1],
+      fontSize: 14,
+    },
+  }));
+
 
   return (
     <Box component="section" 
@@ -138,7 +172,8 @@ export default function RegisterWeb(props) {
           </>
         ) : null }
         <Grid item xs={12} md={6}>
-          <Box paddingLeft={upMd?Math.ceil(spaceBetween/2):0}>
+          <Box paddingRight={4}>
+            { emailExist ? <p>Email sudah terdaftar</p> : <span></span> } 
             <Collapse in={ActiveSection===0} timeout="auto">
               <Stack direction="column" sx={{ paddingY: 2, marginBottom: upMd?8:0 }} alignItems="center">
                 <img src="./images/web/Logo_Yodacentral.png" alt="Yodacentral" width={upMd?"211px":"375px"} />
@@ -208,28 +243,35 @@ export default function RegisterWeb(props) {
                   error={InputCPassword.error} disabled={InputCPassword.disabled}
                 >
                   <InputLabel htmlFor="login-form-cpassword">{TEXTS.form1.cpassword}</InputLabel>
-                  <OutlinedInput
-                    disabled={InputCPassword.disabled}
-                    id="login-form-cpassword"
-                    type={InputCPassword.visible?"text":"password"}
-                    value={InputCPassword.value}
-                    onChange={(e) => setInputCPassword({...InputCPassword, value: e.target.value})}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        { InputCPassword.disabled? ( <BlockIcon /> )
-                          : InputCPassword.value===''? ( <LockRoundedIcon /> )
-                          :  (
-                            <IconButton edge="end"
-                              onClick={() => setInputCPassword({...InputCPassword, visible: !InputCPassword.visible}) }
-                            >
-                              { InputCPassword.visible? <VisibilityIcon /> : <VisibilityOffIcon />}
-                            </IconButton>
-                          )
-                        }
-                      </InputAdornment>
-                    }
-                    label={TEXTS.form1.cpassword}
-                  />
+                  {/* <LightTooltip title={<div>
+                      <div className="iconTooltip">{InputPassword.length > 8 ? <CheckIcon fontSize="small" /> : <CloseIcon/>}8 - 20 karakter</div>
+                      <div className="iconTooltip"><CheckIcon fontSize="small" />1 angka</div>
+                      <div className="iconTooltip"><CheckIcon fontSize="small" />1 huruf kapital</div>
+                      <div className="iconTooltip"><CheckIcon fontSize="small" />1 huruf kecil</div>
+                    </div>} arrow placement="right-start"> */}
+                    <OutlinedInput
+                      disabled={InputCPassword.disabled}
+                      id="login-form-cpassword"
+                      type={InputCPassword.visible?"text":"password"}
+                      value={InputCPassword.value}
+                      onChange={(e) => setInputCPassword({...InputCPassword, value: e.target.value})}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          { InputCPassword.disabled? ( <BlockIcon /> )
+                            : InputCPassword.value===''? ( <LockRoundedIcon /> )
+                            :  (
+                              <IconButton edge="end"
+                                onClick={() => setInputCPassword({...InputCPassword, visible: !InputCPassword.visible}) }
+                              >
+                                { InputCPassword.visible? <VisibilityIcon /> : <VisibilityOffIcon />}
+                              </IconButton>
+                            )
+                          }
+                        </InputAdornment>
+                      }
+                      label={TEXTS.form1.cpassword}
+                    />
+                  {/* </LightTooltip> */}
                 </FormControl>
                 <FormControl fullWidth sx={{ paddingY: 2 }}>
                   <Button variant="contained" color="primary" size="large" onClick={handleValidateFirstPage}>{TEXTS.form1.submitButton}</Button>

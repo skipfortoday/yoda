@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/Global.css';
+import './index.css';
 import App from './App';
 import { theme } from './Helper/theme'
 import { CssBaseline, ThemeProvider } from '@mui/material';

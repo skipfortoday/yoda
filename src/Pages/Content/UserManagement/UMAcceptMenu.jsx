@@ -31,7 +31,7 @@ export default function UMAcceptMenu(props) {
   const handleAcceptUser = () => {
     const config = { 
       target_email: data.email,
-      user_status: 'Active',
+      user_status: 'Aktif',
       role: Switch?'External':InputRole.value,
       location: InputKantor.value,
     }
@@ -61,7 +61,7 @@ export default function UMAcceptMenu(props) {
     // console.log("SEND DATA");
     await axiosBackend.post('/user-management', { 
       target_email: data.email,
-      user_status: 'Active',
+      user_status: 'Aktif',
       role: Switch?'External':InputRole.value,
       location: Switch?'Not set':InputKantor.value,
     })

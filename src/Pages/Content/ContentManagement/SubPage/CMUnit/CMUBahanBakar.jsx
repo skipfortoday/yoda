@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axiosBackend from "../../../../../Helper/axiosBackend";
 import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
 import {
@@ -10,6 +9,7 @@ import {
   Popover,
 } from "@mui/material";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
+import axios from 'axios'
 
 const INPUTS = [
   { label: "Bahan bakar", value: "", error: false, disabled: false },
@@ -19,6 +19,8 @@ let count = 1
 
 export default function CMUBahanBakar(props) {
   const [Data, setData] = useState([]);
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+  const thisToken = sessionStorage.getItem('token')
 
   useEffect(() => {
     LoadData();
@@ -33,7 +35,11 @@ export default function CMUBahanBakar(props) {
   async function LoadData() {
     count +=1
     console.log(count, "Count");
-    await axiosBackend.get("/cm/bahan-bakar").then((response) => {
+    await axios.get(`${baseURL}/cm/bahan-bakar`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+    }).then((response) => {
       var tempData = response.data;
       tempData.forEach((dat, idx) => {
         dat.index = idx + 1;
@@ -61,8 +67,11 @@ export default function CMUBahanBakar(props) {
   }
 
   async function InsertData() {
-    await axiosBackend
-      .post("/cm/bahan-bakar", {
+    await axios
+      .post(`${baseURL}/cm/bahan-bakar`, {
+        headers: {
+          Authorization: `Bearer ${thisToken}`,
+        },
         bahan_bakar: InputBahanBakar.value,
       })
       .then((response) => {
