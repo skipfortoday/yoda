@@ -964,34 +964,6 @@ export default function MyAppbar(props) {
     })
   }
 
-  const doSearch1 = (x) => {
-    console.log('x', x)
-    const inventory = [
-      {name: 'apples', quantity: 2},
-      {name: 'bananas', quantity: 0},
-      {name: 'cherries', quantity: 5}
-    ];
-    
-    const result = inventory.find( ({ name }) => name === x );
-    
-    console.log(result) // { name: 'cherries', quantity: 5 }
-  }
-
-  const doSearchOri = ((e) => {
-    const searchString = e.toLowerCase();
-    console.log('searchString', searchString)
-    console.log('defaultArea search', defaultArea)
-
-    const filteredCharacters = defaultArea.filter((character) => {
-        return (
-            character.name.toLowerCase().includes(searchString)
-        );
-    });
-    setDefaultArea(filteredCharacters)
-    console.log('doSearch',filteredCharacters);
-})
-
-
   const [selectedMerek, setSelectedMerek] = useState();
 
   const pushMerekOri = (item) => {
@@ -1003,17 +975,6 @@ export default function MyAppbar(props) {
     })
     setDefaultArea(filtered)
     console.log('filtered', filtered)
-  }
-
-  const pushMerekOri2 = (item) => {
-    setSelectedMerek(item.name)
-    const data = selectedArea.concat(item)
-    // cek duplicated
-    console.log('data', data)
-    const ids = data.map(o => o.id)
-    const duplicated = data.filter(({id}, index) => !ids.includes(id, index + 1))
-    // console.log('duplicated', duplicated)
-    setSelectedArea(duplicated)
   }
 
   const pushMerek = (item) => {
@@ -1042,82 +1003,22 @@ export default function MyAppbar(props) {
     })
   }
 
-
-  const [doMore, setdoMore] = useState(true);
-  const [myindex, setindex] = useState();
-
-const doConcat = () => {
-  // const dahlah = data
-  // const dataThree = dataO.concat(dataT)
-  console.log('***doConcat',areaBeforeSearch)
-}
   
-  const multiFilter = async (x, index) => {
-    // console.log('index', index)
-    console.log('---1 areaBeforeSearch data', index, areaBeforeSearch)
-    setdoMore(false)
-    var tempData = [];
-    // console.log('get ke => ', x.id)
-      const filters = {
-        Merek   : x.merek,
-      }
-      // console.log('filters => ', filters)
-      axios.post('https://yodamobi.sagaramedia.id/api/filter',{
-        table: 'Merek, model, varian', filters
-      })
-      .then((response) =>{ 
-        console.log('++++res ', index, response.data.results)
-        // pushMerek()
-        response.data.results.forEach((x) => {
-          // console.log('looping data', x)
-          tempData.push({...x})
-        })
-        // console.log('tempdata', tempData)
-        console.log('---2 areaBeforeSearch data', areaBeforeSearch)
-        // const dataSatu = areaBeforeSearch
-        
-        // console.log('&*&% dataCo => ', dataCo.type)
-        const dataCo = areaBeforeSearch.concat(response.data.results)
-        setAreaBeforeSearch(dataCo)
-        setTimeout(() => {
-          console.log('dataSettimeout dataCo => ', dataCo)
-          console.log('dataSettimeout areaBeforeSearch => ', areaBeforeSearch)
-        }, 3000)
-        // setAreaBeforeSearch([...areaBeforeSearch].tempData)
-        setdoMore(true)
-      })
-      .catch((err) => { 
-        console.warn(err.response)
-      })
-  }
-
   const doFilterData = async () => {
+    console.log('selectedArea', selectedArea)
     setAreaBeforeSearch([])
+    const filterModel = []
+    selectedArea.forEach((y) => {
+      filterModel.push(y.merek)
+    })
+    
+    console.log('filterModel.toString(',filterModel.toString())
+    getDataKu(filterModel.toString())
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
-    getDataKu("Audi")
+    // getDataKu("Audi")
   }
-
-  const doFilterData2 = () => {
-    const requests = [];
-    const url = 'https://yodamobi.sagaramedia.id/api/filter';
-    const filters            = {
-      Merek   : selectedMerek,
-    }
-    for (let i = 0; i < selectedArea.length; i++) {
-        requests.push(axios.post(url, { params: {
-            table: 'Merek, model, varian',
-            filters
-        }})
-        )
-    }
-
-    axios.all(requests)
-        .then((res) => {
-            console.log(res);
-        });
-  };
 
   async function uploadExcel(e) {
     for (let i = 0; i < e.target.files.length; i++) {
@@ -1145,55 +1046,46 @@ const doConcat = () => {
     }
   }
 
-  const cekFilterOri = () => {
-    // const arr = [{id: 1, name: 'one'}, {id: 2, name: 'two'}, {id: 1, name: 'one'}]
-    const ids = selectedArea.map(o => o.id)
-    const filtered = selectedArea.filter(({id}, index) => !ids.includes(id, index + 1))
-    setSelectedArea(filtered)
-    // console.log(filtered)
-  }
-
-  const doSearch = ((e) => {
-    cekFilter(e)
-  })
+  // const doSearch = ((e) => {
+  //   cekFilter(e)
+  // })
 
   const [searchEmpty, setsearchEmpty] = useState(false);
   const [noArea, setnoArea] = useState(true);
   const [allDataMerek, setAllDataMerek] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-  const cekFilter = async (item) => {
+  const doSearch = async (item) => {
     await axiosBackend
       .post("/filter2", {
-        table: "Merek, model, varian",
+        table: "merek_model_varians",
         keyword: item,
       })
       .then((response) => {
         setAllDataMerek(response.data.results);
-        // console.log('res get filter', response.data.results)
-        const ids = response.data.results.merek.map((o) => o.merek);
-        const duplicated = response.data.results.merek.filter(
+        console.log('res get filter', response.data.results)
+        const ids = response.data.results.map((o) => o.merek);
+        const duplicated = response.data.results.filter(
           ({ merek }, index) => !ids.includes(merek, index + 1)
         );
-        // console.log('duplicated', duplicated)
+        setDefaultArea(duplicated);
+        console.log('duplicated', duplicated)
         const idsModel = response.data.results.model.map((o) => o.model);
         const duplicatedModel = response.data.results.model.filter(
           ({ model }, index) => !idsModel.includes(model, index + 1)
         );
-        // console.log('setAllDataMerek', allDataMerek)
         // console.log('res get filter', response.data.results)
 
-        setDefaultArea(duplicated);
         setDefaultAreaModel(duplicatedModel);
-        if (duplicated.length === 0) {
-          setsearchEmpty(true);
-          if (defaultArea > 0) {
-            setnoArea(false);
-          }
-        } else {
-          setnoArea(false);
-          setsearchEmpty(false);
-        }
+        // if (duplicated.length === 0) {
+        //   setsearchEmpty(true);
+        //   if (defaultArea > 0) {
+        //     setnoArea(false);
+        //   }
+        // } else {
+        //   setnoArea(false);
+        //   setsearchEmpty(false);
+        // }
       })
       .catch((err) => {
         console.warn(err.response);
@@ -1425,8 +1317,8 @@ const doConcat = () => {
                     <div>
                       {/* <p>Merek</p> */}
                       {choseMerek()}
-                      {/* <p>Model</p>
-                      {choseModel()} */}
+                      <button onClick={() => console.log('defaultArea', defaultArea)}>Model</button>
+                      {choseModel()}
                       {/* {noArea ? 
                         <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
                         <span></span>
