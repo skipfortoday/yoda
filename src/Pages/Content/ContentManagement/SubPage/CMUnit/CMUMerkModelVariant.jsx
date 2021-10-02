@@ -18,18 +18,22 @@ const INPUTS = [
 ];
 
 export default function CMUMerkModelVariant(props) {
-  // console.log('props CMUMerkModelVariant', props)
+  console.log('props CMUMerkModelVariant', props)
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
 
   const [Data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const { dataSort } = props;
   // const [DataMerek, setDataMerek] = useState(props.dataFiltered);
 
   useEffect(() => {
     LoadData();
-  }, []);
+    if(props.filteredData){
+      setFilteredData(props.filteredData)
+    }
+  }, [props.filteredData]);
 
   useEffect(() => {
     setMenuAnchorEl(null);
@@ -371,7 +375,7 @@ export default function CMUMerkModelVariant(props) {
 
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={Data}
+          rows={filteredData}
           checkboxSelection
           onSelectionModelChange={(newId) => {
             props.changeIcons(newId, "merek-model-varian");

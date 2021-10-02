@@ -15,7 +15,7 @@ import CMUJenisUnit from "./SubPage/CMUnit/CMUJenisUnit";
 import axios from "axios";
 
 export default function CMUnit(props) {
-  // console.log('props CMUnit', props)
+  console.log('props CMUnit', props)
 
   const [ActiveSubPage, setActiveSubPage] = useState(0);
   // const { currentSubTab } = props;
@@ -24,6 +24,7 @@ export default function CMUnit(props) {
   const [DeleteType, setDeleteType] = useState(false);
   const [Deleted, setDeleted] = useState(false);
   const { currentSubTab, dataSort } = props;
+  const [filteredData, setFilteredData] = useState([]);
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
@@ -593,6 +594,7 @@ export default function CMUnit(props) {
           changeIcons={changeIcons}
           val={Deleted}
           dataSort={dataSort}
+          filteredData={filteredData}
         />
       ),
     },
@@ -718,8 +720,11 @@ export default function CMUnit(props) {
       doFilterData();
     }
     currentSubTab(0);
+    if(props.filteredData){
+      setFilteredData(props.filteredData)
+    }
     
-  }, [props.dataFilter, props.dataFilterMulti]);
+  }, [props.dataFilter, props.dataFilterMulti, props.filteredData]);
 
   return (
     <>

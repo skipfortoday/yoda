@@ -13,6 +13,7 @@ export default function ContentManagementPage() {
   const [ActiveSubTab, setActiveSubTab] = useState(0);
 
   const [dataFilter, setDataFilter] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [dataFilterMulti, setDataFilterMulti] = useState([]);
   const getDataFilter = (val) => {
     // do not forget to bind getData in constructor
@@ -45,6 +46,11 @@ export default function ContentManagementPage() {
   //   setDataFilter(val)
   // }
 
+  const getFilteredData = (val) => {
+    console.log('dataFiltered', val)
+    setFilteredData(val)
+  }
+
   const DATA = {
     header: "Manajemen konten",
     tabsMenu: [
@@ -52,7 +58,13 @@ export default function ContentManagementPage() {
         value: 0,
         label: "Unit",
         content: (
-          <CMUnit dataFilter={dataFilter} dataFilterMulti={dataFilterMulti} dataSort={dataSort} currentSubTab={(val) => {currentSubTab(val)}}/>
+          <CMUnit
+            dataFilter={dataFilter}
+            dataFilterMulti={dataFilterMulti}
+            dataSort={dataSort}
+            currentSubTab={(val) => {currentSubTab(val)}}
+            filteredData={filteredData}
+          />
         ),
       },
 
@@ -74,6 +86,7 @@ export default function ContentManagementPage() {
         ActiveSubTab={ActiveSubTab}
         getDataFilter={getDataFilter}
         getDataFilterMulti={getDataFilterMulti}
+        getFilteredData={getFilteredData}
       />
 
       <Container maxWidth="xl">

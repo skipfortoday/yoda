@@ -1094,8 +1094,9 @@ const doConcat = () => {
   const doFilterData = async () => {
     setAreaBeforeSearch([])
 
-    props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
-    props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
+    // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
+    // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
+    getDataKu("Audi")
   }
 
   const doFilterData2 = () => {
@@ -1159,6 +1160,7 @@ const doConcat = () => {
   const [searchEmpty, setsearchEmpty] = useState(false);
   const [noArea, setnoArea] = useState(true);
   const [allDataMerek, setAllDataMerek] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   const cekFilter = async (item) => {
     await axiosBackend
@@ -1197,6 +1199,21 @@ const doConcat = () => {
         console.warn(err.response);
       });
   };
+
+  const getDataKu = async (item) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/filter2',{
+      table: 'merek_model_varians',
+      keyword: item
+    })
+    .then((response) =>{ 
+      console.log('res hasil filter', response.data.results)
+      setFilteredData(response.data.results)
+      props.getFilteredData(response.data.results)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
 
   useEffect(() => {
     setNameSort(texts[0].name);
