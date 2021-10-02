@@ -52,7 +52,7 @@ export default function RegisterWeb(props) {
   async function checkEmailExist() {
     const thisToken = sessionStorage.getItem('token')
     console.log('thisToken', thisToken)
-    const baseURL= `https://yodacentral.herokuapp.com/api`
+    const baseURL=  process.env.REACT_APP_BACKEND_ENDPOINT_DEV
     try {
       const data = await axios.post(`${baseURL}/check-email`, {
         email: InputEmail,

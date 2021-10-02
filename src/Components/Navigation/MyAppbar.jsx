@@ -30,6 +30,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import axios from "axios";
 
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import axiosBackend from "../../Helper/axiosBackend";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -1160,8 +1161,8 @@ const doConcat = () => {
   const [allDataMerek, setAllDataMerek] = useState([]);
 
   const cekFilter = async (item) => {
-    await axios
-      .post("https://yodacentral.herokuapp.com/api/filter2", {
+    await axiosBackend
+      .post("/filter2", {
         table: "Merek, model, varian",
         keyword: item,
       })

@@ -34,7 +34,7 @@ export default function UserManagementPage() {
     const thisToken = sessionStorage.getItem('token')
     console.log('thisToken', thisToken)
     // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
-    const baseURL= "https://yodacentral.herokuapp.com/api"
+    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
 
     // console.log('GetAllUsers')
     var AllUsers = [];
