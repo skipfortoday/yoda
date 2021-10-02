@@ -910,6 +910,7 @@ export default function MyAppbar(props) {
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
   const [defaultAreaModel, setDefaultAreaModel] = useState([]);
+  const [defaultAreaJarak, setDefaultAreaJarak] = useState([]);
 
   const cek = () => {
     setDefaultArea(defaultArea)
@@ -1003,6 +1004,12 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseJarak = () => {
+    return defaultAreaJarak.map((jarak) => {
+      return <button onClick={() => pushMerek(jarak)} className="btn-list-sort">{jarak.jarak_tempuh}</button>
+    })
+  }
+
   
   const doFilterData = async () => {
     console.log('selectedArea', selectedArea)
@@ -1054,11 +1061,12 @@ export default function MyAppbar(props) {
   const [noArea, setnoArea] = useState(true);
   const [allDataMerek, setAllDataMerek] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [activeTabel, setActiveTabel] = useState('');
 
   const doSearch = async (item) => {
     await axiosBackend
       .post("/filter2", {
-        table: "merek_model_varians",
+        table: activeTabel,
         keyword: item,
       })
       .then((response) => {
@@ -1068,6 +1076,10 @@ export default function MyAppbar(props) {
         const duplicated = response.data.results.filter(
           ({ merek }, index) => !ids.includes(merek, index + 1)
         );
+        if(activeTabel === "jarak_tempuhs"){
+          console.log('jarak_tempuhs', response.data.results)
+          setDefaultAreaJarak(response.data.results)
+        }
         setDefaultArea(duplicated);
         console.log('duplicated', duplicated)
         const idsModel = response.data.results.model.map((o) => o.model);
@@ -1094,7 +1106,7 @@ export default function MyAppbar(props) {
 
   const getDataKu = async (item) => {
     await axios.post('https://yodacentral.herokuapp.com/api/filter2',{
-      table: 'merek_model_varians',
+      table: activeTabel,
       keyword: item
     })
     .then((response) =>{ 
@@ -1106,6 +1118,15 @@ export default function MyAppbar(props) {
       console.warn(err.response)
     })
   }
+
+  useEffect(() => {
+    if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+      setActiveTabel('jarak_tempuhs')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      setActiveTabel('merek_model_varians')
+    }
+  }, [ActivePage, ActiveSubTab, ActiveTab])
 
   useEffect(() => {
     setNameSort(texts[0].name);
@@ -1303,31 +1324,41 @@ export default function MyAppbar(props) {
                         />
                       </Search>
                     </div>
-                    {/* <button onClick={() => cek()}>cek</button> */}
-                    <div className="mt-5">
-                      {/* <p>Selected</p> */}
-                      {/* {areasSelected()} */}
-                      {areasSelected()}
-                    </div>
-                    <hr/>
-                    {/* <div>
-                      <p>Chose</p>
-                      {choseAreas()}
-                    </div> */}
+                    { (props.ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0) ?
                     <div>
-                      {/* <p>Merek</p> */}
-                      {choseMerek()}
-                      <button onClick={() => console.log('defaultArea', defaultArea)}>Model</button>
-                      {choseModel()}
-                      {/* {noArea ? 
-                        <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
-                        <span></span>
-                      }
-                      {searchEmpty ? 
-                        <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div> : 
-                        <span></span>
-                      } */}
+                      <div className="mt-5">
+                        {/* <p>Selected</p> */}
+                        {/* {areasSelected()} */}
+                        {areasSelected()}
+                      </div>
+                      <hr/>
+                      {/* <div>
+                        <p>Chose</p>
+                        {choseAreas()}
+                      </div> */}
+                      <div>
+                        {/* <p>Merek</p> */}
+                        {choseMerek()}
+                        {choseModel()}
+                        {/* {noArea ? 
+                          <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
+                          <span></span>
+                        }
+                        {searchEmpty ? 
+                          <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div> : 
+                          <span></span>
+                        } */}
+                      </div>
                     </div>
+                    : (props.ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0) 
+                    ? 
+                    <div>
+                      {choseJarak()}
+                      <button onClick={() => console.log('defaultAreaJarak', defaultAreaJarak)}>defaultAreaJarak</button>
+                    </div>
+                    : 
+                    <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
+                    {/* <button onClick={() => cek()}>cek</button> */}
                   </div>
                 </Menu>
               </div>
