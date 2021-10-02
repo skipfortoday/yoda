@@ -906,6 +906,8 @@ export default function MyAppbar(props) {
   };
 
   const [selectedArea, setSelectedArea] = useState([]);
+  const [selectedAreaModel, setSelectedAreaModel] = useState([]);
+  const [selectedAreaVarian, setSelectedAreaVarian] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -937,9 +939,15 @@ export default function MyAppbar(props) {
     const array = selectedArea.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayModel = selectedAreaModel.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
+    console.log('data arrayModel', arrayModel)
+    setSelectedAreaModel(arrayModel)
+
   }
 
   const choseAreas = () => {
@@ -961,6 +969,14 @@ export default function MyAppbar(props) {
     return selectedArea.map((area) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {area.merek}
+            </Button>
+    })
+  }
+
+  const areasSelectedModel = () => {
+    return selectedAreaModel.map((area) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {area.model}
             </Button>
     })
   }
@@ -989,6 +1005,15 @@ export default function MyAppbar(props) {
     setSelectedArea(duplicated)
   }
 
+  const pushModel = (item) => {
+    setSelectedMerek(item.model)
+    const data = selectedAreaModel.concat(item)
+    const ids = data.map(o => o.model)
+    const duplicated = data.filter(({model}, index) => !ids.includes(model, index + 1))
+    console.log('duplicated pushModel', duplicated)
+    setSelectedAreaModel(duplicated)
+  }
+
   const choseMerek = () => {
     return defaultArea.map((merek) => {
       // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
@@ -999,8 +1024,7 @@ export default function MyAppbar(props) {
 
   const choseModel = () => {
     return defaultAreaModel.map((model) => {
-      // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
-      return <button onClick={() => pushMerek(model)} className="btn-list-sort">{model.model}</button>
+      return <button onClick={() => pushModel(model)} className="btn-list-sort">{model.model}</button>
     })
   }
 
@@ -1017,6 +1041,9 @@ export default function MyAppbar(props) {
     const filterModel = []
     selectedArea.forEach((y) => {
       filterModel.push(y.merek)
+    })
+    selectedAreaModel.forEach((x) => {
+      filterModel.push(x.model)
     })
     
     console.log('filterModel.toString(',filterModel.toString())
@@ -1082,8 +1109,8 @@ export default function MyAppbar(props) {
         }
         setDefaultArea(duplicated);
         console.log('duplicated', duplicated)
-        const idsModel = response.data.results.model.map((o) => o.model);
-        const duplicatedModel = response.data.results.model.filter(
+        const idsModel = response.data.results.map((o) => o.model);
+        const duplicatedModel = response.data.results.filter(
           ({ model }, index) => !idsModel.includes(model, index + 1)
         );
         // console.log('res get filter', response.data.results)
@@ -1330,6 +1357,7 @@ export default function MyAppbar(props) {
                         {/* <p>Selected</p> */}
                         {/* {areasSelected()} */}
                         {areasSelected()}
+                        {areasSelectedModel()}
                       </div>
                       <hr/>
                       {/* <div>
@@ -1337,8 +1365,10 @@ export default function MyAppbar(props) {
                         {choseAreas()}
                       </div> */}
                       <div>
-                        {/* <p>Merek</p> */}
+                      <button onClick={() => console.log('defaultAreaModel', defaultAreaModel)}>defaultAreaModel</button>
+                        <p>Merek</p>
                         {choseMerek()}
+                        <p>Model</p>
                         {choseModel()}
                         {/* {noArea ? 
                           <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
