@@ -9,18 +9,67 @@ import {
   Popover,
 } from "@mui/material";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
-import axios from 'axios'
+
+import axios from "axios";
+import axiosBackend from "../../../../../Helper/axiosBackend";
 
 const INPUTS = [
   { label: "Bahan bakar", value: "", error: false, disabled: false },
 ];
 
-let count = 1
-
 export default function CMUBahanBakar(props) {
   const [Data, setData] = useState([]);
-  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
-  const thisToken = sessionStorage.getItem('token')
+  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
+  const thisToken = sessionStorage.getItem("token");
+
+  const { dataSort } = props;
+
+  function sortJenisBahanBakarAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.bahan_bakar.toLowerCase();
+      let y = b.bahan_bakar.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  function sortJenisBahanBakarDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.bahan_bakar.toLowerCase();
+      let y = b.bahan_bakar.toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "jenisBahanBakarDesc") {
+        sortJenisBahanBakarDesc();
+      }
+      if (dataSort === "jenisBahanBakarAsc") {
+        sortJenisBahanBakarAsc();
+      }
+    } else {
+      sortJenisBahanBakarDesc();
+    }
+  }, [dataSort]);
 
   useEffect(() => {
     LoadData();
@@ -33,19 +82,19 @@ export default function CMUBahanBakar(props) {
   }, [props.val]);
 
   async function LoadData() {
-    count +=1
-    console.log(count, "Count");
-    await axios.get(`${baseURL}/cm/bahan-bakar`, {
-      headers: {
-        Authorization: `Bearer ${thisToken}`,
-      },
-    }).then((response) => {
-      var tempData = response.data;
-      tempData.forEach((dat, idx) => {
-        dat.index = idx + 1;
+    await axiosBackend
+      .get(`/cm/bahan-bakar`, {
+        headers: {
+          Authorization: `Bearer ${thisToken}`,
+        },
+      })
+      .then((response) => {
+        var tempData = response.data;
+        tempData.forEach((dat, idx) => {
+          dat.index = idx + 1;
+        });
+        setData(tempData);
       });
-      setData(tempData);
-    });
   }
 
   const { indexPage, ActiveSubPage } = props;
@@ -67,11 +116,8 @@ export default function CMUBahanBakar(props) {
   }
 
   async function InsertData() {
-    await axios
-      .post(`${baseURL}/cm/bahan-bakar`, {
-        headers: {
-          Authorization: `Bearer ${thisToken}`,
-        },
+    await axiosBackend
+      .post(`/cm/bahan-bakar`, {
         bahan_bakar: InputBahanBakar.value,
       })
       .then((response) => {

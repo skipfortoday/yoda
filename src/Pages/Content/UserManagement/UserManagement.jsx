@@ -33,7 +33,9 @@ export default function UserManagementPage() {
   async function GetAllUsers() {
     const thisToken = sessionStorage.getItem('token')
     console.log('thisToken', thisToken)
-    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+    const baseURL= "https://yodacentral.herokuapp.com/api"
+
     // console.log('GetAllUsers')
     var AllUsers = [];
     try {
@@ -124,8 +126,8 @@ export default function UserManagementPage() {
     header: 'Manajemen pengguna',
     tabsMenu: [
       { value: 0, label: 'Menunggu konfirmasi', content: <UMWaiting data={WaitingData} dataSort={dataSort} reload={() => {LoadWaitingData(); /*console.log('LoadWaitingData')*/}} /> },
-      { value: 1, label: 'Disetujui', content: <UMAccepted data={AcceptedData} dataFilter={dataFilter} reload={() => {LoadAcceptedData(); /*console.log('LoadAcceptedData')*/}} /> },
-      { value: 2, label: 'Ditolak', content: <UMRejected data={RejectedData} reload={() => {LoadRejectedData(); /*console.log('LoadRejectedData')*/}} /> },
+      { value: 1, label: 'Disetujui', content: <UMAccepted data={AcceptedData} dataSort={dataSort} dataFilter={dataFilter} reload={() => {LoadAcceptedData(); /*console.log('LoadAcceptedData')*/}} /> },
+      { value: 2, label: 'Ditolak', content: <UMRejected data={RejectedData} dataSort={dataSort} reload={() => {LoadRejectedData(); /*console.log('LoadRejectedData')*/}} /> },
     ]
   }
 

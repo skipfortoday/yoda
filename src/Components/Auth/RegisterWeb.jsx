@@ -38,7 +38,6 @@ export default function RegisterWeb(props) {
   const { FullName, setFullName } = props;
   const { PhoneNumber, setPhoneNumber } = props;
   const { spaceBetween } = props;
-
   
   const [ActiveSection, setActiveSection] = useState(0)
   const [emailExist, setEmailExist] = useState(false)
@@ -141,6 +140,7 @@ export default function RegisterWeb(props) {
 
   function handleToLoginClick() {
     history.push('/login')
+
   }
 
   const LightTooltip = styled(({ className, ...props }) => (
@@ -149,11 +149,11 @@ export default function RegisterWeb(props) {
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: theme.palette.common.white,
       color: 'rgba(0, 0, 0, 0.87)',
+
       boxShadow: theme.shadows[1],
       fontSize: 14,
     },
   }));
-
 
   return (
     <Box component="section" 
@@ -171,30 +171,61 @@ export default function RegisterWeb(props) {
                   secondaryText={TEXTS.main.secondary}
                   buttonText={TEXTS.main.button}
                   buttonLink='/login'
+
                 />
               </Box>
             </Grid>
           </>
-        ) : null }
+        ) : null}
         <Grid item xs={12} md={6}>
           <Box paddingRight={4}>
-            
-            { emailExist ? <Alert severity="error">Email Sudah Terdaftar</Alert> : <span></span> } 
-            <Collapse in={ActiveSection===0} timeout="auto">
-              <Stack direction="column" sx={{ paddingY: 2, marginBottom: upMd?8:0 }} alignItems="center">
-                <img src="./images/web/Logo_Yodacentral.png" alt="Yodacentral" width={upMd?"211px":"375px"} />
-                { upMd? (
+            {emailExist ? (
+              <Alert severity="error">Email Sudah Terdaftar</Alert>
+            ) : (
+              <span></span>
+            )}
+
+            <Collapse in={ActiveSection === 0} timeout="auto">
+              <Stack
+                direction="column"
+                sx={{ paddingY: 2, marginBottom: upMd ? 8 : 0 }}
+                alignItems="center"
+              >
+                <img
+                  src="./images/web/Logo_Yodacentral.png"
+                  alt="Yodacentral"
+                  width={upMd ? "211px" : "375px"}
+                />
+                {upMd ? (
                   <>
-                    <Typography variant="div" fontWeight="bold" fontSize={36}>{TEXTS.form1.header1}</Typography>
-                    <Typography variant="div" fontSize={14} color="text.secondary">{TEXTS.form1.header2}</Typography>
+                    <Typography variant="div" fontWeight="bold" fontSize={36}>
+                      {TEXTS.form1.header1}
+                    </Typography>
+                    <Typography
+                      variant="div"
+                      fontSize={14}
+                      color="text.secondary"
+                    >
+                      {TEXTS.form1.header2}
+                    </Typography>
                   </>
-                ) : null }
+                ) : null}
               </Stack>
-              <Stack direction="column" sx={{ paddingX: upLg?16:upMd?6:2 }} alignItems="center" spacing={1.5}>
-                <FormControl variant="outlined" color="primary" fullWidth
+              <Stack
+                direction="column"
+                sx={{ paddingX: upLg ? 16 : upMd ? 6 : 2 }}
+                alignItems="center"
+                spacing={1.5}
+              >
+                <FormControl
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
                   error={InputEmail.error}
                 >
-                  <InputLabel htmlFor="login-form-email">{TEXTS.form1.email}</InputLabel>
+                  <InputLabel htmlFor="login-form-email">
+                    {TEXTS.form1.email}
+                  </InputLabel>
                   <OutlinedInput
                     id="login-form-email"
                     type="email"
@@ -245,10 +276,16 @@ export default function RegisterWeb(props) {
                     label={TEXTS.form1.password}
                   />
                 </FormControl>
-                <FormControl variant="outlined" color="primary" fullWidth 
-                  error={InputCPassword.error} disabled={InputCPassword.disabled}
+                <FormControl
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  error={InputCPassword.error}
+                  disabled={InputCPassword.disabled}
                 >
-                  <InputLabel htmlFor="login-form-cpassword">{TEXTS.form1.cpassword}</InputLabel>
+                  <InputLabel htmlFor="login-form-cpassword">
+                    {TEXTS.form1.cpassword}
+                  </InputLabel>
                   {/* <LightTooltip title={<div>
                       <div className="iconTooltip">{InputPassword.length > 8 ? <CheckIcon fontSize="small" /> : <CloseIcon/>}8 - 20 karakter</div>
                       <div className="iconTooltip"><CheckIcon fontSize="small" />1 angka</div>
@@ -389,5 +426,5 @@ export default function RegisterWeb(props) {
         </Grid>
       </Grid>
     </Box>
-  )
+  );
 }

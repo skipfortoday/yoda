@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import React, { useState, useEffect } from "react";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 // import InputBase from '@mui/material/InputBase';
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Badge from "@mui/material/Badge";
@@ -29,7 +29,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 // import NestedMenuItem from "material-ui-nested-menu-item";
 import axios from "axios";
 
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -72,19 +72,19 @@ const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
 }));
 
 const StyledInputBaseFilter = styled(OutlinedInput)(({ theme }) => ({
-  color: 'inherit',
+  color: "inherit",
   borderRadius: 50,
-  '& .MuiOutlinedInput-input': {
+  "& .MuiOutlinedInput-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
+    transition: theme.transitions.create("width"),
+    width: "100%",
   },
 }));
 
 const uploadData = async (e) => {
-  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT;
+  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const file = e.target.files[0];
   console.log("file", file);
   const bodyFormData = new FormData();
@@ -110,7 +110,7 @@ async function uploadData1(image) {
 }
 
 export default function MyAppbar(props) {
-  const userInfo = sessionStorage.getItem('user')
+  const userInfo = sessionStorage.getItem("user");
   const { ActivePage } = props;
   const theme = useTheme();
   const upMd = useMediaQuery(theme.breakpoints.up("md"));
@@ -118,6 +118,7 @@ export default function MyAppbar(props) {
 
   const { header, tabsMenu } = props;
   const { ActiveTab, setActiveTab } = props;
+  const { ActiveSubTab } = props;
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -280,31 +281,236 @@ export default function MyAppbar(props) {
 
   const textsTab = [
     {
-      id  : 1,
-      name: 'A-Z',
-      type: 'Asc'
+      id: 1,
+      name: "A-Z",
+      type: "Asc",
     },
     {
-      id  : 2,
-      name: 'Z-A',
-      type: 'Desc'
+      id: 2,
+      name: "Z-A",
+      type: "Desc",
     },
-  ]
+  ];
 
-  const texts = [
+  let texts = [
     {
-      id  : 1,
-      name: 'Nama & Email',
+      id: 1,
+      name: "Nama & Email",
     },
     {
-      id  : 2,
-      name: 'Tanggal',
+      id: 2,
+      name: "Tanggal",
     },
     {
-      id  : 3,
-      name: 'No. Handphone',
+      id: 3,
+      name: "No. Handphone",
     },
-  ]
+  ];
+
+  if (ActivePage === 2) {
+    if (ActiveTab === 0) {
+      if (ActiveSubTab === 0) {
+        texts = [
+          {
+            id: 1,
+            name: "Merek",
+          },
+          {
+            id: 2,
+            name: "Model",
+          },
+          {
+            id: 3,
+            name: "Varian",
+          },
+        ];
+      } else if (ActiveSubTab === 1) {
+        texts = [
+          {
+            id: 1,
+            name: "Tahun",
+          },
+        ];
+      } else if (ActiveSubTab === 2) {
+        texts = [
+          {
+            id: 1,
+            name: "Jarak tempuh unit",
+          },
+        ];
+      } else if (ActiveSubTab === 3) {
+        texts = [
+          {
+            id: 1,
+            name: "Warna unit",
+          },
+        ];
+      } else if (ActiveSubTab === 4) {
+        texts = [
+          {
+            id: 1,
+            name: "Jenis bahan bakar",
+          },
+        ];
+      } else if (ActiveSubTab === 5) {
+        texts = [
+          {
+            id: 1,
+            name: "Jenis transmisi",
+          },
+        ];
+      } else if (ActiveSubTab === 6) {
+        texts = [
+          {
+            id: 1,
+            name: "Kondisi unit",
+          },
+        ];
+      } else if (ActiveSubTab === 7) {
+        texts = [
+          {
+            id: 1,
+            name: "Jenis unit",
+          },
+        ];
+      }
+    } else if (ActiveTab === 1) {
+      if (ActiveSubTab === 0) {
+        texts = [
+          {
+            id: 1,
+            name: "Nama",
+          },
+          {
+            id: 2,
+            name: "Kode cabang",
+          },
+          {
+            id: 3,
+            name: "Nomer telpon",
+          },
+          {
+            id: 4,
+            name: "Alamat",
+          },
+          {
+            id: 5,
+            name: "Tanggal",
+          },
+        ];
+      } else if (ActiveSubTab === 1) {
+        texts = [
+          {
+            id: 1,
+            name: "Provinsi",
+          },
+          {
+            id: 2,
+            name: "Kota",
+          },
+          {
+            id: 3,
+            name: "Kecamatan",
+          },
+          {
+            id: 4,
+            name: "Cabang pengelola",
+          },
+          {
+            id: 5,
+            name: "Tanggal",
+          },
+        ];
+      }
+    } else if (ActiveTab === 2) {
+      if (ActiveSubTab === 0) {
+        texts = [
+          {
+            id: 1,
+            name: "Tujuan pengunaan",
+          },
+        ];
+      } else if (ActiveSubTab === 1) {
+        texts = [
+          {
+            id: 1,
+            name: "Kategori",
+          },
+        ];
+      } else if (ActiveSubTab === 2) {
+        texts = [
+          {
+            id: 1,
+            name: "Tipe asuransi",
+          },
+        ];
+      } else if (ActiveSubTab === 3) {
+        texts = [
+          {
+            id: 1,
+            name: "Kesertaan asuransi",
+          },
+        ];
+      } else if (ActiveSubTab === 4) {
+        texts = [
+          {
+            id: 1,
+            name: "Nilai pertanggungan",
+          },
+        ];
+      } else if (ActiveSubTab === 5) {
+        texts = [
+          {
+            id: 1,
+            name: "Pembayaran asuransi",
+          },
+        ];
+      } else if (ActiveSubTab === 6) {
+        texts = [
+          {
+            id: 1,
+            name: "Tenor",
+          },
+        ];
+      } else if (ActiveSubTab === 7) {
+        texts = [
+          {
+            id: 1,
+            name: "Angsuran pertama",
+          },
+        ];
+      }
+    } else if (ActiveTab === 3) {
+      if (ActiveSubTab === 0) {
+        texts = [
+          {
+            id: 1,
+            name: "Nama",
+          },
+          {
+            id: 2,
+            name: "Nomer telpon",
+          },
+          {
+            id: 3,
+            name: "Alamat",
+          },
+          {
+            id: 4,
+            name: "Provinsi",
+          },
+          {
+            id: 5,
+            name: "Kota",
+          },
+          {
+            id: 6,
+            name: "Kecamatan",
+          },
+        ];
+      }
+    }
+  }
 
   // const choseListFilter = () => {
   //   const array = [1, 2, 3 ,4, 5]
@@ -318,68 +524,385 @@ export default function MyAppbar(props) {
   // sorting
   const [typeSort, setTypeSort] = useState("Asc");
   const [nameSort, setNameSort] = useState("Nama & Email");
-  const [selectedTabId, setSelectedTabId] = useState({id:1});
-  const [selectedId, setSelectedId] = useState({id:1});
+  const [selectedTabId, setSelectedTabId] = useState({ id: 1 });
+  const [selectedId, setSelectedId] = useState({ id: 1 });
 
   const sortData = () => {
-    console.log('typeSort', typeSort)
-    console.log('nameSort', nameSort)
-    if(typeSort === "Desc"){
-      console.log('do Desc')
-      if(nameSort === 'Nama & Email'){
-        props.sendData('nameDesc')
+    console.log("typeSort", typeSort);
+    console.log("nameSort", nameSort);
+    if (typeSort === "Desc") {
+      console.log("do Desc");
+      if (nameSort === "Nama & Email") {
+        props.sendData("nameDesc");
         setAnchorElSort(null);
       }
-      if(nameSort === 'Tanggal'){
-        props.sendData('dateDesc')
+      if (nameSort === "Tanggal") {
+        props.sendData("dateDesc");
         setAnchorElSort(null);
       }
-      if(nameSort === 'No. Handphone'){
-        props.sendData('hpDesc')
+      if (nameSort === "No. Handphone") {
+        props.sendData("hpDesc");
         setAnchorElSort(null);
+      }
+      if (nameSort === "Merek") {
+        props.sendData("merekDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Model") {
+        props.sendData("modelDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Varian") {
+        props.sendData("varianDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tahun") {
+        props.sendData("tahunDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jarak tempuh unit") {
+        props.sendData("jarakTempuhUnitDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Warna unit") {
+        props.sendData("warnaUnitDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis bahan bakar") {
+        props.sendData("jenisBahanBakarDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis transmisi") {
+        props.sendData("jenisTransmisiDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kondisi unit") {
+        props.sendData("kondisiUnitDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis unit") {
+        props.sendData("jenisUnitDesc");
+        setAnchorElSort(null);
+      }
+
+      // ------------------------------------------------
+      if (ActiveTab === 1 && ActiveSubTab === 0) {
+        if (nameSort === "Nama") {
+          props.sendData("namaKantorDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kode cabang") {
+          props.sendData("kodeCabangDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Nomer telpon") {
+          props.sendData("nomerTelponKantorDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Alamat") {
+          props.sendData("alamatKantorDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Tanggal") {
+          props.sendData("tanggalKantorDesc");
+          setAnchorElSort(null);
+        }
+      }
+      if (ActiveTab === 1 && ActiveSubTab === 1) {
+        if (nameSort === "Provinsi") {
+          props.sendData("provinsiWilayahDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kota") {
+          props.sendData("kotaWilayahDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kecamatan") {
+          props.sendData("kecamatanWilayahDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Cabang pengelola") {
+          props.sendData("cabangPengelolaDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Tanggal") {
+          props.sendData("tanggalWilayahDesc");
+          setAnchorElSort(null);
+        }
+      }
+
+      // ------------------------------------------------
+
+      if (nameSort === "Tujuan pengunaan") {
+        props.sendData("tujuanPengunaanDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kategori") {
+        props.sendData("kategoriDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tipe asuransi") {
+        props.sendData("tipeAsuransiDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kesertaan asuransi") {
+        props.sendData("kesertaanAsuransiDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Nilai pertanggungan") {
+        props.sendData("nilaiPertanggunganDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Pembayaran asuransi") {
+        props.sendData("pembayaranAsuransiDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tenor") {
+        props.sendData("tenorDesc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Angsuran pertama") {
+        props.sendData("angsuranPertamaDesc");
+        setAnchorElSort(null);
+      }
+
+      // -------------------------------------------
+
+      if (ActiveTab === 3 && ActiveSubTab === 0) {
+        if (nameSort === "Nama") {
+          props.sendData("namaPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Nomer telpon") {
+          props.sendData("nomerTelponPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Alamat") {
+          props.sendData("alamatPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Provinsi") {
+          props.sendData("provinsiPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kota") {
+          props.sendData("kotaPenjualDesc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kecamatan") {
+          props.sendData("kecamatanPenjualDesc");
+          setAnchorElSort(null);
+        }
       }
     }
-    if(typeSort === "Asc"){
-      console.log('do Asc')
-      if(nameSort === 'Nama & Email'){
-        props.sendData('nameAsc')
+    if (typeSort === "Asc") {
+      console.log("do Asc");
+      if (nameSort === "Nama & Email") {
+        props.sendData("nameAsc");
         setAnchorElSort(null);
       }
-      if(nameSort === 'Tanggal'){
-        props.sendData('dateAsc')
+      if (nameSort === "Tanggal") {
+        props.sendData("dateAsc");
         setAnchorElSort(null);
       }
-      if(nameSort === 'No. Handphone'){
-        props.sendData('hpAsc')
+      if (nameSort === "No. Handphone") {
+        props.sendData("hpAsc");
         setAnchorElSort(null);
+      }
+      if (nameSort === "Merek") {
+        props.sendData("merekAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Model") {
+        props.sendData("modelAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Varian") {
+        props.sendData("varianAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tahun") {
+        props.sendData("tahunAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jarak tempuh unit") {
+        props.sendData("jarakTempuhUnitAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Warna unit") {
+        props.sendData("warnaUnitAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis bahan bakar") {
+        props.sendData("jenisBahanBakarAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis transmisi") {
+        props.sendData("jenisTransmisiAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kondisi unit") {
+        props.sendData("kondisiUnitAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Jenis unit") {
+        props.sendData("jenisUnitAsc");
+        setAnchorElSort(null);
+      }
+
+      // ------------------------------------------------
+      if (ActiveTab === 1 && ActiveSubTab === 0) {
+        if (nameSort === "Nama") {
+          props.sendData("namaKantorAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kode cabang") {
+          props.sendData("kodeCabangAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Nomer telpon") {
+          props.sendData("nomerTelponKantorAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Alamat") {
+          props.sendData("alamatKantorAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Tanggal") {
+          props.sendData("tanggalKantorAsc");
+          setAnchorElSort(null);
+        }
+      }
+
+      if (ActiveTab === 1 && ActiveSubTab === 1) {
+        if (nameSort === "Provinsi") {
+          props.sendData("provinsiWilayahAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kota") {
+          props.sendData("kotaWilayahAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kecamatan") {
+          props.sendData("kecamatanWilayahAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Cabang pengelola") {
+          props.sendData("cabangPengelolaAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Tanggal") {
+          props.sendData("tanggalWilayahAsc");
+          setAnchorElSort(null);
+        }
+      }
+
+      // ------------------------------------------------
+
+      if (nameSort === "Tujuan pengunaan") {
+        props.sendData("tujuanPengunaanAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kategori") {
+        props.sendData("kategoriAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tipe asuransi") {
+        props.sendData("tipeAsuransiAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Kesertaan asuransi") {
+        props.sendData("kesertaanAsuransiAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Nilai pertanggungan") {
+        props.sendData("nilaiPertanggunganAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Pembayaran asuransi") {
+        props.sendData("pembayaranAsuransiAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Tenor") {
+        props.sendData("tenorAsc");
+        setAnchorElSort(null);
+      }
+      if (nameSort === "Angsuran pertama") {
+        props.sendData("angsuranPertamaAsc");
+        setAnchorElSort(null);
+      }
+
+      // -------------------------------------------
+
+      if (ActiveTab === 3 && ActiveSubTab === 0) {
+        if (nameSort === "Nama") {
+          props.sendData("namaPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Nomer telpon") {
+          props.sendData("nomerTelponPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Alamat") {
+          props.sendData("alamatPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Provinsi") {
+          props.sendData("provinsiPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kota") {
+          props.sendData("kotaPenjualAsc");
+          setAnchorElSort(null);
+        }
+        if (nameSort === "Kecamatan") {
+          props.sendData("kecamatanPenjualAsc");
+          setAnchorElSort(null);
+        }
       }
     }
-  }
+  };
 
   const pushTabId = (item) => {
-    setSelectedTabId(item)
-    setTypeSort(item.type)
-  }
+    setSelectedTabId(item);
+    setTypeSort(item.type);
+  };
 
   const pushId = (item) => {
-    setSelectedId(item)
-    setNameSort(item.name)
-  }
-  
+    setSelectedId(item);
+    setNameSort(item.name);
+  };
 
   const choseTab = () => {
     return textsTab.map((number) => {
       // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
-      return <button onClick={() => pushTabId(number)} className={`btn-list-tab ${selectedTabId.id === number.id ? 'btn-active' : ''} ${number.id === 1 ? 'border-left' : 'border-right'}`}>{number.name}</button>
-    })
-  }
-
+      return (
+        <button
+          onClick={() => pushTabId(number)}
+          className={`btn-list-tab ${
+            selectedTabId.id === number.id ? "btn-active" : ""
+          } ${number.id === 1 ? "border-left" : "border-right"}`}
+        >
+          {number.name}
+        </button>
+      );
+    });
+  };
   const choseListFilter = () => {
     return texts.map((number) => {
       // return <button key={number} onClick={() => console.log('numb', number)}>{number}</button>
-      return <button onClick={() => pushId(number)} className={`btn-list-sort ${selectedId.id === number.id ? 'btn-active' : ''}`}>{number.name}</button>
-    })
-  }
+      return (
+        <button
+          onClick={() => pushId(number)}
+          className={`btn-list-sort ${
+            selectedId.id === number.id ? "btn-active" : ""
+          }`}
+        >
+          {number.name}
+        </button>
+      );
+    });
+  };
 
   const [selectedArea, setSelectedArea] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
@@ -467,6 +990,7 @@ export default function MyAppbar(props) {
     console.log('doSearch',filteredCharacters);
 })
 
+
   const [selectedMerek, setSelectedMerek] = useState();
 
   const pushMerekOri = (item) => {
@@ -509,12 +1033,14 @@ export default function MyAppbar(props) {
     })
   }
 
+
   const choseModel = () => {
     return defaultAreaModel.map((model) => {
       // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
       return <button onClick={() => pushMerek(model)} className="btn-list-sort">{model.model}</button>
     })
   }
+
 
   const [doMore, setdoMore] = useState(true);
   const [myindex, setindex] = useState();
@@ -632,49 +1158,63 @@ const doConcat = () => {
   const [searchEmpty, setsearchEmpty] = useState(false);
   const [noArea, setnoArea] = useState(true);
   const [allDataMerek, setAllDataMerek] = useState([]);
-  
+
   const cekFilter = async (item) => {
-    await axios.post('https://yodacentral.herokuapp.com/api/filter2',{
-      table: 'Merek, model, varian',
-      keyword: item
-    })
-    .then((response) =>{ 
-      setAllDataMerek(response.data.results)
-      // console.log('res get filter', response.data.results)
-      const ids = response.data.results.merek.map(o => o.merek)
-      const duplicated = response.data.results.merek.filter(({merek}, index) => !ids.includes(merek, index + 1))
-      // console.log('duplicated', duplicated)
-      const idsModel = response.data.results.model.map(o => o.model)
-      const duplicatedModel = response.data.results.model.filter(({model}, index) => !idsModel.includes(model, index + 1))
-      // console.log('setAllDataMerek', allDataMerek)
-      // console.log('res get filter', response.data.results)
-      setDefaultArea(duplicated)
-      setDefaultAreaModel(duplicatedModel)
-      if(duplicated.length === 0){
-        setsearchEmpty(true)
-        if(defaultArea > 0){
-          setnoArea(false)
+    await axios
+      .post("https://yodacentral.herokuapp.com/api/filter2", {
+        table: "Merek, model, varian",
+        keyword: item,
+      })
+      .then((response) => {
+        setAllDataMerek(response.data.results);
+        // console.log('res get filter', response.data.results)
+        const ids = response.data.results.merek.map((o) => o.merek);
+        const duplicated = response.data.results.merek.filter(
+          ({ merek }, index) => !ids.includes(merek, index + 1)
+        );
+        // console.log('duplicated', duplicated)
+        const idsModel = response.data.results.model.map((o) => o.model);
+        const duplicatedModel = response.data.results.model.filter(
+          ({ model }, index) => !idsModel.includes(model, index + 1)
+        );
+        // console.log('setAllDataMerek', allDataMerek)
+        // console.log('res get filter', response.data.results)
+
+        setDefaultArea(duplicated);
+        setDefaultAreaModel(duplicatedModel);
+        if (duplicated.length === 0) {
+          setsearchEmpty(true);
+          if (defaultArea > 0) {
+            setnoArea(false);
+          }
+        } else {
+          setnoArea(false);
+          setsearchEmpty(false);
         }
-      } else {
-        setnoArea(false)
-        setsearchEmpty(false)
-      }
-    })
-    .catch((err) => { 
-      console.warn(err.response)
-    })
-  }
+      })
+      .catch((err) => {
+        console.warn(err.response);
+      });
+  };
 
   useEffect(() => {
-    if (defaultArea.length === 0){
-      // console.log('default area length', defaultArea.length)
-      if(selectedArea.length === 0){
-        setnoArea(true)
+    setNameSort(texts[0].name);
+  }, [ActiveSubTab]);
+
+  useEffect(() => {
+    setNameSort(texts[0].name);
+  }, [ActiveTab]);
+
+  useEffect(() => {
+    if (defaultArea.length === 0) {
+      if (selectedArea.length === 0) {
+        setnoArea(true);
       }
     } else {
-      setnoArea(false)
+      setnoArea(false);
     }
-  }, [defaultArea])
+    setNameSort(texts[0].name);
+  }, [defaultArea]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -789,17 +1329,20 @@ const doConcat = () => {
                         <Button disabled>Sortir</Button>
                       </div>
                       <div>
-                        <button className="btn-terapkan" onClick={() => sortData()}>Terapkan</button>
+                        <button
+                          className="btn-terapkan"
+                          onClick={() => sortData()}
+                        >
+                          Terapkan
+                        </button>
                       </div>
                     </div>
-                    <div className="flex tab-sort mt-8">
-                      {choseTab()}
-                    </div>
+                    <div className="flex tab-sort mt-8">{choseTab()}</div>
                     <hr className="border-grey my-5" />
-                    <p><b>Urutkan Berdasarkan</b></p>
-                    <div className="list-filter">
-                      {choseListFilter()}
-                    </div>
+                    <p>
+                      <b>Urutkan Berdasarkan</b>
+                    </p>
+                    <div className="list-filter">{choseListFilter()}</div>
                   </div>
                 </Menu>
               </div>
@@ -836,18 +1379,19 @@ const doConcat = () => {
                       </div>
                     </div>
                     <div className="mt-5">
-                    {/* <button onClick={() => cekFilter()}>cek</button> */}
-                    <Search
-                    onChange={(filed) => doSearch(filed.target.value)}>
-                      <SearchIconWrapper>
-                        <SearchIcon sx={{ color: 'tint.black.60' }} />
-                      </SearchIconWrapper>
-                      <StyledInputBaseFilter
-                        color="primary"
-                        placeholder="Cari . . ."
-                        inputProps={{ 'aria-label': 'search' }}
-                      />
-                    </Search>
+                      {/* <button onClick={() => cekFilter()}>cek</button> */}
+                      <Search
+                        onChange={(filed) => doSearch(filed.target.value)}
+                      >
+                        <SearchIconWrapper>
+                          <SearchIcon sx={{ color: "tint.black.60" }} />
+                        </SearchIconWrapper>
+                        <StyledInputBaseFilter
+                          color="primary"
+                          placeholder="Cari . . ."
+                          inputProps={{ "aria-label": "search" }}
+                        />
+                      </Search>
                     </div>
                     {/* <button onClick={() => cek()}>cek</button> */}
                     <div className="mt-5">
@@ -873,7 +1417,6 @@ const doConcat = () => {
                         <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div> : 
                         <span></span>
                       } */}
-
                     </div>
                   </div>
                 </Menu>
@@ -915,7 +1458,12 @@ const doConcat = () => {
               color="inherit"
             >
               {/* <Avatar src="./images/web/avatar-example.png" /> */}
-              {userInfo.profile_picture ? <Avatar src={userInfo.profile_picture} /> : <Avatar src="./images/web/avatar-example.png" />}
+              {userInfo.profile_picture ? (
+                <Avatar src={userInfo.profile_picture} />
+              ) : (
+                <Avatar src="./images/web/avatar-example.png" />
+              )}
+
               {/* <AccountCircle /> */}
             </IconButton>
           </Box>
@@ -953,3 +1501,4 @@ const doConcat = () => {
     </Box>
   );
 }
+

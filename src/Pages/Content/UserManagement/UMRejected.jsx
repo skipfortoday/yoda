@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box } from '@mui/system';
 import { DataGrid } from '@mui/x-data-grid';
 import AvatarNameEmail from '../../../Components/DataGridComponents/AvatarNameEmail';
@@ -7,7 +7,8 @@ import AcceptingAction from '../../../Components/DataGridComponents/AcceptingAct
 
 
 export default function UMRejected(props) {
-  const { data, reload } = props;
+  const { reload } = props;
+  const [data, setdata] = useState(props.data)
   // reload to refresh
 
   const DATAGRID_COLUMNS = [
@@ -18,6 +19,99 @@ export default function UMRejected(props) {
     { field: 'created_at', headerName: 'Tanggal registrasi', minWidth: 180, renderCell: StylingDateRegister },
     { field: 'action', headerName: '', flex: 1, minWidth: 300, renderCell: StylingAction },
   ]
+
+  function myFunctionDesc() {
+    const mydata = [...data].sort(function(a, b){
+      let x = a.name.toLowerCase();
+      let y = b.name.toLowerCase();
+      if (x < y) {return 1;}
+      if (x > y) {return -1;}
+      return 0;
+    });
+    setdata(mydata)
+    console.log('mydata', mydata)
+  }
+
+  function myFunctionAsc() {
+    const mydata = [...data].sort(function(a, b){
+      let x = a.name.toLowerCase();
+      let y = b.name.toLowerCase();
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    data.map((item) => {
+      console.log('item', item.name)
+    })
+    setdata(mydata)
+    console.log('mydata', mydata)
+  }
+
+  function sortHpDesc() {
+    const mydata = [...data].sort(function(a, b){
+      let x = a.phone_number;
+      let y = b.phone_number;
+      if (x < y) {return 1;}
+      if (x > y) {return -1;}
+      return 0;
+    });
+    setdata(mydata)
+    console.log('mydata', mydata)
+  }
+
+  function sortHpAsc() {
+    const mydata = [...data].sort(function(a, b){
+      let x = a.phone_number;
+      let y = b.phone_number;
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    data.map((item) => {
+      console.log('item', item.name)
+    })
+    setdata(mydata)
+    console.log('mydata', mydata)
+  }
+
+  function sortDateAsc() {
+    const mydata = [...data].sort((a, b) => (new Date(a.created_at)) - (new Date(b.created_at)))
+
+    setdata(mydata)
+  }
+
+  function sortDateDesc() {
+    const mydata = [...data].sort((a, b) => (new Date(b.created_at)) - new Date(a.created_at))
+
+    setdata(mydata)
+  }
+
+  // const [SelectedItems, setSelectedItems] = useState([])
+
+  // console.warn(SelectedItems)
+
+  useEffect(() => {
+    if(props.dataSort){
+      if(props.dataSort === "nameDesc"){
+        myFunctionDesc()
+      }
+      if(props.dataSort === "nameAsc"){
+        myFunctionAsc()
+      }
+      if(props.dataSort === "hpAsc"){
+        sortHpAsc()
+      }
+      if(props.dataSort === "hpDesc"){
+        sortHpDesc()
+      }
+      if(props.dataSort === "dateAsc"){
+        sortDateAsc()
+      }
+      if(props.dataSort === "dateDesc"){
+        sortDateDesc()
+      }
+    }
+  }, [props.dataSort])
   
   function StylingNameEmail(params) {
     return (

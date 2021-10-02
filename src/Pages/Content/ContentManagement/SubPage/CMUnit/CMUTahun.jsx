@@ -11,7 +11,7 @@ const INPUTS = [
 
 export default function CMUTahun(props) {
   const [Data, setData] = useState([])
-  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
   const thisToken = sessionStorage.getItem('token')
 
   useEffect(() => { LoadData() }, [])
@@ -42,6 +42,56 @@ export default function CMUTahun(props) {
   const { MenuanchorEl, setMenuAnchorEl } = props
 
   const [InputTahun, setInputTahun] = useState(INPUTS[0])
+
+  useEffect(() => {
+    if (props.dataSort) {
+      if (props.dataSort === "tahunDesc") {
+        sortTahunDesc();
+      }
+      if (props.dataSort === "tahunAsc") {
+        sortTahunAsc();
+      }
+    }else{
+      sortTahunDesc();
+    }
+  }, [props.dataSort]);
+
+  function sortTahunAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.tahun.toLowerCase();
+      let y = b.tahun.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortTahunDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.tahun.toLowerCase();
+      let y = b.tahun.toLowerCase();
+      if(y.includes("<")){
+        return -1;
+      }
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
   
   function handleSubmit() {
     var isPassed = true;

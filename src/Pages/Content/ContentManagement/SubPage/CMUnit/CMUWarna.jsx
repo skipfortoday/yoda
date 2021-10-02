@@ -11,17 +11,48 @@ const INPUTS = [
 
 export default function CMUWarna(props) {
   const [Data, setData] = useState([])
-  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
   const thisToken = sessionStorage.getItem('token')
-
-  useEffect(() => { LoadData() }, [])
-
-  useEffect(() => {
-    setMenuAnchorEl(null);
-    ResetInputs();
-    LoadData();
-  }, [props.val]);
-
+  const { dataSort } = props;
+  
+  function sortWarnaUnitAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = a.warna.toLowerCase();
+      let y = b.warna.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortWarnaUnitDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.warna.toLowerCase();
+      let y = b.warna.toLowerCase();
+      ;
+      ;
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
   async function LoadData() {
     await axios.get(`${baseURL}/cm/warna`, {
       headers: {
@@ -36,6 +67,27 @@ export default function CMUWarna(props) {
       setData(tempData)
      })
   }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "warnaUnitDesc") {
+        sortWarnaUnitDesc();
+      }
+      if (dataSort === "warnaUnitAsc") {
+        sortWarnaUnitAsc();
+      }
+    }else{
+      sortWarnaUnitDesc();
+    }
+  }, [dataSort]);
+
+  useEffect(() => { LoadData() }, [])
+
+  useEffect(() => {
+    setMenuAnchorEl(null);
+    ResetInputs();
+    LoadData();
+  }, [props.val]);
 
   const { indexPage, ActiveSubPage } = props
   const { isMenuOpen } = props

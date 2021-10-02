@@ -12,6 +12,64 @@ const INPUTS = [
 export default function CMCKesertaanAsuransi(props) {
   const [Data, setData] = useState([])
 
+  const { dataSort } = props;
+
+  const dataType = {
+    "kesertaanAsuransi": "kesertaan_asuransi",
+
+  }
+  
+  function sortAsc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortDesc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "kesertaanAsuransiDesc") {
+        sortDesc("kesertaanAsuransi");
+      }
+      if (dataSort === "kesertaanAsuransiAsc") {
+        sortAsc("kesertaanAsuransi");
+      }
+    }else{
+      sortDesc("kesertaanAsuransi");
+    }
+  }, [dataSort]);
+
   useEffect(() => { LoadData() }, [])
 
   async function LoadData() {

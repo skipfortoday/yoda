@@ -36,6 +36,105 @@ export default function CMLWilayah(props) {
   const [CabangArr, setCabangArr] = useState([]);
   const [Cabang, setCabang] = useState([]);
 
+  const { dataSort } = props;
+
+  const dataType = {
+    // "provinsiWilayahDesc": "nama_cabang",
+    // "kotaWilayahDesc": "kode_cabang",
+    // "kecamatanWilayahDesc": "no_telepon",
+    // "cabangPengelolaDesc": "alamat",
+    // "tanggalWilayahDesc": "tanggal_registrasi",
+
+  }
+  
+  function sortAsc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortDesc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "provinsiWilayahDesc") {
+        sortDesc("provinsiWilayah");
+      }
+      if (dataSort === "provinsiWilayahAsc") {
+        sortAsc("provinsiWilayah");
+      }
+      if (dataSort === "kotaWilayahDesc") {
+        sortDesc("kotaWilayah");
+      }
+      if (dataSort === "kotaWilayahAsc") {
+        sortAsc("kotaWilayah");
+      }
+      if (dataSort === "kecamatanWilayahDesc") {
+        sortDesc("kecamatanWilayah");
+      }
+      if (dataSort === "kecamatanWilayahAsc") {
+        sortAsc("kecamatanWilayah");
+      }
+      if (dataSort === "cabangPengelolaDesc") {
+        sortDesc("cabangPengelola");
+      }
+      if (dataSort === "cabangPengelolaAsc") {
+        sortAsc("cabangPengelola");
+      }
+      if (dataSort === "tanggalWilayahDesc") {
+        sortDesc("tanggalWilayah");
+      }
+      if (dataSort === "tanggalWilayahAsc") {
+        sortAsc("tanggalWilayah");
+      }
+    }else{
+      sortDesc("provinsiWilayah");
+    }
+  }, [dataSort]);
+
+  useEffect(() => { LoadData() }, [])
+
+  async function LoadData() {
+    await axiosBackend.get('/cm/kantor')
+    .then((response) => { 
+      var tempData = response.data
+      tempData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(tempData)
+     })
+  }
+
   useEffect(() => {
     LoadData();
     getWilayah();
