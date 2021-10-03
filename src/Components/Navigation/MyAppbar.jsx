@@ -909,11 +909,13 @@ export default function MyAppbar(props) {
   const [selectedAreaModel, setSelectedAreaModel] = useState([]);
   const [selectedAreaVarian, setSelectedAreaVarian] = useState([]);
   const [selectedAreaJarak, setSelectedAreaJarak] = useState([]);
+  const [selectedAreaTahun, setSelectedAreaTahun] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
   const [defaultAreaModel, setDefaultAreaModel] = useState([]);
   const [defaultAreaJarak, setDefaultAreaJarak] = useState([]);
+  const [defaultAreaTahun, setdefaultAreaTahun] = useState([]);
 
   const cek = () => {
     setDefaultArea(defaultArea)
@@ -990,6 +992,14 @@ export default function MyAppbar(props) {
     })
   }
 
+  const areasSelectedTahun = () => {
+    return selectedAreaTahun.map((tahun) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(tahun)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {tahun.tahun}
+            </Button>
+    })
+  }
+
   const [selectedMerek, setSelectedMerek] = useState();
 
   const pushMerekOri = (item) => {
@@ -1041,6 +1051,17 @@ export default function MyAppbar(props) {
     setSelectedAreaJarak(duplicated)
   }
 
+  // jarak tempuh
+  const pushTahun = (item) => {
+    const data = selectedAreaTahun.concat(item)
+    // cek duplicated
+    // console.log('data', data)
+    const ids = data.map(o => o.tahun)
+    const duplicated = data.filter(({tahun}, index) => !ids.includes(tahun, index + 1))
+    console.log('duplicated tahun', duplicated)
+    setSelectedAreaTahun(duplicated)
+  }
+
 
   const choseModel = () => {
     return defaultAreaModel.map((model) => {
@@ -1054,6 +1075,12 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseTahun = () => {
+    return defaultAreaTahun.map((tahun) => {
+      return <button onClick={() => pushTahun(tahun)} className="btn-list-sort">{tahun.tahun}</button>
+    })
+  }
+
   
   const doFilterData = async () => {
     // console.log('selectedArea', selectedArea)
@@ -1063,6 +1090,12 @@ export default function MyAppbar(props) {
       console.log('selectedAreaJarak', selectedAreaJarak)
       selectedAreaJarak.forEach((x) => {
         filterModel.push(x.jarak_tempuh)
+      })
+    }
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      console.log('selectedAreaTahun', selectedAreaTahun)
+      selectedAreaTahun.forEach((x) => {
+        filterModel.push(x.tahun)
       })
     }
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
@@ -1137,6 +1170,10 @@ export default function MyAppbar(props) {
           console.log('jarak_tempuhs', response.data.results)
           setDefaultAreaJarak(response.data.results)
         }
+        if(activeTabel === "tahun_pembuatans"){
+          console.log('tahun_pembuatans', response.data.results)
+          setdefaultAreaTahun(response.data.results)
+        }
         setDefaultArea(duplicated);
         console.log('duplicated', duplicated)
         const idsModel = response.data.results.map((o) => o.model);
@@ -1172,6 +1209,10 @@ export default function MyAppbar(props) {
         console.log('res getFilteredDataJarak', response.data.results)
         props.getFilteredDataJarak(response.data.results)
       }
+      if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+        console.log('res getFilteredDataTahun', response.data.results)
+        props.getFilteredDataTahun(response.data.results)
+      }
       if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
         console.log('res getFilteredDataMerekModel', response.data.results)
         props.getFilteredDataMerekModel(response.data.results)
@@ -1192,6 +1233,9 @@ export default function MyAppbar(props) {
     }
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       setActiveTabel('merek_model_varians')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      setActiveTabel('tahun_pembuatans')
     }
   }, [ActivePage, ActiveSubTab, ActiveTab])
 
@@ -1430,7 +1474,16 @@ export default function MyAppbar(props) {
                       {choseJarak()}
                       <button onClick={() => console.log('defaultAreaJarak', defaultAreaJarak)}>defaultAreaJarak</button>
                     </div>
-                    : 
+                    : (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab === 0) 
+                    ? 
+                    <div>
+                      <p>Tahun selected</p>
+                      {areasSelectedTahun()}
+                      <hr/>
+                      {choseTahun()}
+                      <button onClick={() => console.log('defaultAreaTahun', defaultAreaTahun)}>defaultAreaTahun</button>
+                    </div>
+                    :
                     <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
                     {/* <button onClick={() => cek()}>cek</button> */}
                   </div>

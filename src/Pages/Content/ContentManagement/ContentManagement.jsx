@@ -15,6 +15,7 @@ export default function ContentManagementPage() {
   const [dataFilter, setDataFilter] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filteredDataJarak, setFilteredDataJarak] = useState([]);
+  const [filteredDataTahun, setFilteredDataTahun] = useState([]);
   const [dataFilterMulti, setDataFilterMulti] = useState([]);
   const [isFilter, setIsFilter] = useState(false);
   const getDataFilter = (val) => {
@@ -59,6 +60,11 @@ export default function ContentManagementPage() {
     setFilteredDataJarak(val)
   }
 
+  const getFilteredDataTahun = (val) => {
+    console.log('getFilteredDataTahun', val)
+    setFilteredDataTahun(val)
+  }
+
   const doFilter = (val) => {
     setIsFilter(val)
   }
@@ -77,6 +83,7 @@ export default function ContentManagementPage() {
             currentSubTab={(val) => {currentSubTab(val)}}
             filteredData={filteredData}
             filteredDataJarak={filteredDataJarak}
+            filteredDataTahun={filteredDataTahun}
             isFilter={isFilter}
           />
         ),
@@ -102,6 +109,7 @@ export default function ContentManagementPage() {
         getDataFilterMulti={getDataFilterMulti}
         getFilteredDataMerekModel={getFilteredDataMerekModel}
         getFilteredDataJarak={getFilteredDataJarak}
+        getFilteredDataTahun={getFilteredDataTahun}
         doFilter={doFilter}
       />
 

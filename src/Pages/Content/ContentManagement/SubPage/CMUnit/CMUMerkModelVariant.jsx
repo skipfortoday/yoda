@@ -18,7 +18,7 @@ const INPUTS = [
 ];
 
 export default function CMUMerkModelVariant(props) {
-  console.log('props CMUMerkModelVariant', props)
+  // console.log('props CMUMerkModelVariant', props)
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
