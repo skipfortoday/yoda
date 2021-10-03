@@ -87,6 +87,21 @@ export default function LoginPage() {
       console.warn(err.response)
     })
   }
+  const [isRemember, setIsRemember] = useState(false)
+
+  const cekCookie = () => {
+    console.log('isRemember', isRemember)
+  }
+
+  const doRemember = (item) => {
+    setIsRemember(!isRemember)
+    console.log('isRemember', item)
+      if(item){
+        document.cookie = "isRemember=true";
+      } else {
+        document.cookie = "isRemember=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      }
+  }
   
   return (
     <Box component="section" 
@@ -176,10 +191,11 @@ export default function LoginPage() {
                 />
               </FormControl>
               <FormControl fullWidth>
+                {isRemember ? <p>true</p> : <p>false</p>}
                 <Stack direction="row" alignItems="center" alignContent="space-between" sx={{ width: '100%' }}>
                   <FormGroup sx={{ flexGrow: 1 }}>
                     <FormControlLabel control={
-                      <Checkbox color="primary" icon={<RadioButtonUncheckedIcon />}
+                      <Checkbox onClick={(e) => doRemember(!isRemember)} color="primary" icon={<RadioButtonUncheckedIcon />}
                       checkedIcon={<RadioButtonCheckedIcon />} />
                     } label={TEXTS.form.remember} />
                   </FormGroup>
