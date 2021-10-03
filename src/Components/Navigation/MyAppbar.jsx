@@ -921,6 +921,7 @@ export default function MyAppbar(props) {
   const [selectedAreaUsers, setSelectedAreaUsers] = useState([]);
   const [selectedAreaProvinsi, setSelectedAreaProvinsi] = useState([]);
   const [selectedAreaKota, setSelectedAreaKota] = useState([]);
+  const [selectedAreaKecamatan, setSelectedAreaKecamatan] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -930,6 +931,7 @@ export default function MyAppbar(props) {
   const [defaultAreaTahun, setdefaultAreaTahun] = useState([]);
   const [defaultAreaProvinsi, setdefaultAreaProvinsi] = useState([]);
   const [defaultAreaKota, setdefaultAreaKota] = useState([]);
+  const [defaultAreaKecamatan, setdefaultAreaKecamatan] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -969,6 +971,9 @@ export default function MyAppbar(props) {
     const arrayKota = selectedAreaKota.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayKecamatan = selectedAreaKecamatan.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     const arrayTahun = selectedAreaTahun.filter(function(element, i) {
       return element.id !== item.id;
     });
@@ -982,6 +987,7 @@ export default function MyAppbar(props) {
     setSelectedAreaVarian(arrayVarian)
     setSelectedAreaProvinsi(arrayProvinsi)
     setSelectedAreaKota(arrayKota)
+    setSelectedAreaKecamatan(arrayKecamatan)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaTahun(arrayUsers)
   }
@@ -1037,6 +1043,14 @@ export default function MyAppbar(props) {
     return selectedAreaKota.map((kota) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(kota)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {kota.kota}
+            </Button>
+    })
+  }
+
+  const areasSelectedKecamatan = () => {
+    return selectedAreaKecamatan.map((kecamatan) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(kecamatan)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {kecamatan.kecamatan}
             </Button>
     })
   }
@@ -1130,6 +1144,14 @@ export default function MyAppbar(props) {
     setSelectedAreaKota(duplicated)
   }
 
+  const pushKecamatan = (item) => {
+    const data = selectedAreaKecamatan.concat(item)
+    const ids = data.map(o => o.kecamatan)
+    const duplicated = data.filter(({kecamatan}, index) => !ids.includes(kecamatan, index + 1))
+    console.log('duplicated setSelectedAreaKecamatan', duplicated)
+    setSelectedAreaKecamatan(duplicated)
+  }
+
 
   // jarak tempuh
   const pushJarak = (item) => {
@@ -1201,6 +1223,12 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseKecamatan = () => {
+    return defaultAreaKecamatan.map((kecamatan) => {
+      return <button onClick={() => pushKecamatan(kecamatan)} className="btn-list-sort">{kecamatan.kecamatan}</button>
+    })
+  }
+
   const choseUsers = () => {
     return defaultAreaUsers.map((user) => {
       return <button onClick={() => pushUser(user)} className="btn-list-sort">{user.user_status}</button>
@@ -1217,6 +1245,7 @@ export default function MyAppbar(props) {
     const filterdataVarian = []
     const filterdataProvinsi = []
     const filterdataKota = []
+    const filterdataKecamatan = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1239,8 +1268,11 @@ export default function MyAppbar(props) {
       selectedAreaKota.forEach((x) => {
         filterdataKota.push(x.kota)
       })
+      selectedAreaKecamatan.forEach((x) => {
+        filterdataKecamatan.push(x.kecamatan)
+      })
       console.log('filterdataProvinsi', filterdataProvinsi)
-      getDataWilayah(filterdataProvinsi.toString(), filterdataKota.toString())
+      getDataWilayah(filterdataProvinsi.toString(), filterdataKota.toString(), filterdataKecamatan.toString())
     }
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       console.log('selectedAreaModel', selectedAreaModel)
@@ -1271,10 +1303,11 @@ export default function MyAppbar(props) {
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
   }
 
-  const getDataWilayah= async (provinsi, kota) => {
+  const getDataWilayah= async (provinsi, kota, kecamatan) => {
     await axios.post('https://yodacentral.herokuapp.com/api/filterWilayah',{
       provinsi: provinsi,
-      kota: kota
+      kota: kota,
+      kecamatan: kecamatan
     })
     .then((response) =>{ 
       console.log('response provinsi', response)
@@ -1442,9 +1475,14 @@ export default function MyAppbar(props) {
           const duplicatedKota = response.data.results.filter(
             ({ kota }, index) => !idsKota.includes(kota, index + 1)
           );
+          const idsKecamatan = response.data.results.map((o) => o.kecamatan);
+          const duplicatedKecamatan = response.data.results.filter(
+            ({ kecamatan }, index) => !idsKecamatan.includes(kecamatan, index + 1)
+          );
           console.log('duplicatedProvinsi', duplicatedProvinsi)
           setdefaultAreaProvinsi(duplicatedProvinsi)
           setdefaultAreaKota(duplicatedKota)
+          setdefaultAreaKecamatan(duplicatedKecamatan)
         }
         
         const idsModel = response.data.results.map((o) => o.model);
@@ -1685,7 +1723,7 @@ export default function MyAppbar(props) {
                     </Button> */}
                   </label>
                 : <span></span>}
-                <span><button onClick={() => console.log('props', props)}>cek props</button></span>}
+                {/* <span><button onClick={() => console.log('props', props)}>cek props</button></span>} */}
                 
                 <Button
                   disableRipple
@@ -1870,12 +1908,29 @@ export default function MyAppbar(props) {
                     <div>
                       {areasSelectedProvinsi()}
                       {areasSelectedKota()}
-                      wilayah
+                      {areasSelectedKecamatan()}
                       <hr/>
-                      <p>provinsi</p>
+                      {defaultAreaProvinsi.length > 0
+                        ?
+                        <p>provinsi</p>
+                        :
+                        <span></span>
+                      }
                       {choseProvinsi()}
-                      <p>kota</p>
+                      {defaultAreaKota.length > 0
+                        ?
+                        <p>kota</p>
+                        :
+                        <span></span>
+                      }
                       {chosekota()}
+                      {defaultAreaKecamatan.length > 0
+                        ?
+                        <p>Kecamatan</p>
+                        :
+                        <span></span>
+                      }
+                      {choseKecamatan()}
                     </div>
                     :
                     <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
