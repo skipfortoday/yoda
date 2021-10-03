@@ -920,6 +920,7 @@ export default function MyAppbar(props) {
   const [selectedAreaTahun, setSelectedAreaTahun] = useState([]);
   const [selectedAreaUsers, setSelectedAreaUsers] = useState([]);
   const [selectedAreaProvinsi, setSelectedAreaProvinsi] = useState([]);
+  const [selectedAreaKota, setSelectedAreaKota] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -927,7 +928,8 @@ export default function MyAppbar(props) {
   const [defaultAreaVarian, setDefaultAreaVarian] = useState([]);
   const [defaultAreaJarak, setDefaultAreaJarak] = useState([]);
   const [defaultAreaTahun, setdefaultAreaTahun] = useState([]);
-  const [defaultAreaWilayah, setdefaultAreaProvinsi] = useState([]);
+  const [defaultAreaProvinsi, setdefaultAreaProvinsi] = useState([]);
+  const [defaultAreaKota, setdefaultAreaKota] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -1108,6 +1110,14 @@ export default function MyAppbar(props) {
     setSelectedAreaProvinsi(duplicated)
   }
 
+  const pushKota = (item) => {
+    const data = selectedAreaKota.concat(item)
+    const ids = data.map(o => o.kota)
+    const duplicated = data.filter(({kota}, index) => !ids.includes(kota, index + 1))
+    console.log('duplicated setSelectedAreaKota', duplicated)
+    setSelectedAreaKota(duplicated)
+  }
+
 
   // jarak tempuh
   const pushJarak = (item) => {
@@ -1168,8 +1178,14 @@ export default function MyAppbar(props) {
   }
 
   const choseProvinsi = () => {
-    return defaultAreaWilayah.map((wilayah) => {
+    return defaultAreaProvinsi.map((wilayah) => {
       return <button onClick={() => pushProvinsi(wilayah)} className="btn-list-sort">{wilayah.provinsi}</button>
+    })
+  }
+
+  const chosekota = () => {
+    return defaultAreaKota.map((kota) => {
+      return <button onClick={() => pushKota(kota)} className="btn-list-sort">{kota.kota}</button>
     })
   }
 
@@ -1399,14 +1415,19 @@ export default function MyAppbar(props) {
           setdefaultAreaUsers(duplicatedUser)
         }
         if(activeTabel === "wilayahs"){
-          console.log('wilayahs', response.data.results)
+          // console.log('wilayahs', response.data.results)
           // setDefaultAreaJarak(response.data.results)
           const idsProvinsi = response.data.results.map((o) => o.provinsi);
           const duplicatedProvinsi = response.data.results.filter(
             ({ provinsi }, index) => !idsProvinsi.includes(provinsi, index + 1)
           );
+          const idsKota = response.data.results.map((o) => o.kota);
+          const duplicatedKota = response.data.results.filter(
+            ({ kota }, index) => !idsKota.includes(kota, index + 1)
+          );
           console.log('duplicatedProvinsi', duplicatedProvinsi)
           setdefaultAreaProvinsi(duplicatedProvinsi)
+          setdefaultAreaKota(duplicatedKota)
         }
         
         const idsModel = response.data.results.map((o) => o.model);
@@ -1833,7 +1854,10 @@ export default function MyAppbar(props) {
                       {areasSelectedProvinsi()}
                       wilayah
                       <hr/>
+                      <p>provinsi</p>
                       {choseProvinsi()}
+                      <p>kota</p>
+                      {chosekota()}
                     </div>
                     :
                     <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
