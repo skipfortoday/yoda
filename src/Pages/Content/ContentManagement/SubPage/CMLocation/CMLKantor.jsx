@@ -211,11 +211,11 @@ export default function CMLKantor(props) {
         >
           <DynamicContentMenu
             header={"Tambah baru"}
-            // actionButtons={
-            //   <>
-            //     <Button size="large" fullWidth variant="contained" onClick={handleSubmit} >Tambah</Button>
-            //   </>
-            // }
+            actionButtons={
+              <>
+                <Button size="large" fullWidth variant="contained" onClick={handleSubmit} >Tambah</Button>
+              </>
+            }
           >
             <FormControl variant="outlined" color="primary" fullWidth error={InputName.error}>
               <InputLabel htmlFor="input-1">{InputName.label}</InputLabel>

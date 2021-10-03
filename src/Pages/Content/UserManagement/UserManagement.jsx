@@ -141,7 +141,7 @@ export default function UserManagementPage() {
   const DATA = {
     header: 'Manajemen pengguna',
     tabsMenu: [
-      { value: 0, label: 'Menunggu konfirmasi', content: <UMWaiting data={WaitingData} dataSort={dataSort} reload={() => {LoadWaitingData(); /*console.log('LoadWaitingData')*/}} /> },
+      { value: 0, label: 'menunggu konfirmasi', content: <UMWaiting data={WaitingData} dataSort={dataSort} reload={() => {LoadWaitingData(); /*console.log('LoadWaitingData')*/}} /> },
       { 
         value: 1, 
         label: 'Disetujui', 

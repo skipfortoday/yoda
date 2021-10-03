@@ -167,8 +167,8 @@ export default function CMLWilayah(props) {
     }
     
     async function getCabang() {
-      await axios
-      .get("https://yodamobi.sagaramedia.id/api/dropdown/nama-cabang")
+      await axiosBackend
+      .get("/dropdown/nama-cabang")
       .then((response) => {
         var tempData = response.data.nama_cabang;
         console.log(tempData, "CABANG");
