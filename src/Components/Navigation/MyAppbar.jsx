@@ -1150,9 +1150,9 @@ export default function MyAppbar(props) {
       // })
     }
     
-    // console.log('filterModel.toString()',filterModel.toString())
-    // console.log('activeTabel', activeTabel)
-    // getDataKu(filterModel.toString())
+    console.log('filterModel.toString()',filterModel.toString())
+    console.log('activeTabel', activeTabel)
+    getDataKu(filterModel.toString())
     // handleCloseFilter()
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')

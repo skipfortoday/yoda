@@ -45,7 +45,7 @@ export default function CMUMerkModelVariant(props) {
     if(isFilter){
       console.log('props filteredDataTahun', props.filteredData)
       // setData(filteredDataTahun)
-      doSort(props.filteredData)
+      setFilteredData(props.filteredData)
     }
   }, [props.filteredData, isFilter]);
 
@@ -55,19 +55,24 @@ export default function CMUMerkModelVariant(props) {
     if (props.dataFiltered) {
       setData(props.dataFiltered);
       if (props.dataFiltered.length === 0) {
+        if(!isFilter){
+          console.log('props dataFiltered === 0')
+          LoadData();
+        }
         // console.log('props dataFiltered === 0')
 
-        LoadData();
+        // LoadData();
       }
     }
     if (props.dataFiltered === "resetFilter") {
       // console.log('props.dataFiltered reset')
 
-      LoadData();
+      // LoadData();
     }
   }, [props.val, props.dataFiltered]);
 
   async function LoadData() {
+    console.log('load data LoadData')
     // console.log('loadData')
     await axios
       .get(`${baseURL}/cm/merek-model-varian`, {
@@ -80,7 +85,9 @@ export default function CMUMerkModelVariant(props) {
         tempData.forEach((dat, idx) => {
           dat.index = idx + 1;
         });
-        setData(tempData);
+        // setData(tempData);
+        setFilteredData(tempData)
+        console.log('setFilteredData')
       });
   }
 
@@ -389,7 +396,7 @@ export default function CMUMerkModelVariant(props) {
 
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={Data}
+          rows={filteredData}
           checkboxSelection
           onSelectionModelChange={(newId) => {
             props.changeIcons(newId, "merek-model-varian");
