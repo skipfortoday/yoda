@@ -16,7 +16,9 @@ const INPUTS = [
 ];
 
 export default function CMUJarakTempuh(props) {
+  console.log('props CMUJarakTempuh', props)
   const [Data, setData] = useState([]);
+  const [filteredDataJarak, setFilteredDataJarak] = useState([]);
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
@@ -68,8 +70,11 @@ export default function CMUJarakTempuh(props) {
     }else{
       sortJarakTempuhUnitDesc();
     }
+    if(props.filteredDataJarak){
+      setFilteredDataJarak(props.filteredDataJarak)
+    }
     LoadData();
-  }, []);
+  }, [props.filteredDataJarak]);
   
   useEffect(() => {
     setMenuAnchorEl(null);
@@ -209,7 +214,7 @@ export default function CMUJarakTempuh(props) {
       <Box fullWidth sx={{ maxHeight: "70vh", height: "70vh" }}>
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={Data}
+          rows={filteredDataJarak}
           checkboxSelection
           onSelectionModelChange={(newId) => {
             props.changeIcons(newId, "jarak-tempuh");

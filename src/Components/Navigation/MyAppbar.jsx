@@ -908,6 +908,7 @@ export default function MyAppbar(props) {
   const [selectedArea, setSelectedArea] = useState([]);
   const [selectedAreaModel, setSelectedAreaModel] = useState([]);
   const [selectedAreaVarian, setSelectedAreaVarian] = useState([]);
+  const [selectedAreaJarak, setSelectedAreaJarak] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -981,6 +982,14 @@ export default function MyAppbar(props) {
     })
   }
 
+  const areasSelectedJarak = () => {
+    return selectedAreaJarak.map((area) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {area.jarak_tempuh}
+            </Button>
+    })
+  }
+
   const [selectedMerek, setSelectedMerek] = useState();
 
   const pushMerekOri = (item) => {
@@ -1021,6 +1030,17 @@ export default function MyAppbar(props) {
     })
   }
 
+  // jarak tempuh
+  const pushJarak = (item) => {
+    const data = selectedAreaJarak.concat(item)
+    // cek duplicated
+    // console.log('data', data)
+    const ids = data.map(o => o.jarak_tempuh)
+    const duplicated = data.filter(({jarak_tempuh}, index) => !ids.includes(jarak_tempuh, index + 1))
+    console.log('duplicated jarak_tempuh', duplicated)
+    setSelectedAreaJarak(duplicated)
+  }
+
 
   const choseModel = () => {
     return defaultAreaModel.map((model) => {
@@ -1030,23 +1050,33 @@ export default function MyAppbar(props) {
 
   const choseJarak = () => {
     return defaultAreaJarak.map((jarak) => {
-      return <button onClick={() => pushMerek(jarak)} className="btn-list-sort">{jarak.jarak_tempuh}</button>
+      return <button onClick={() => pushJarak(jarak)} className="btn-list-sort">{jarak.jarak_tempuh}</button>
     })
   }
 
   
   const doFilterData = async () => {
-    console.log('selectedArea', selectedArea)
-    setAreaBeforeSearch([])
+    // console.log('selectedArea', selectedArea)
+    // setAreaBeforeSearch([])
     const filterModel = []
-    selectedArea.forEach((y) => {
-      filterModel.push(y.merek)
-    })
-    selectedAreaModel.forEach((x) => {
-      filterModel.push(x.model)
-    })
+    if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+      console.log('selectedAreaJarak', selectedAreaJarak)
+      selectedAreaJarak.forEach((x) => {
+        filterModel.push(x.jarak_tempuh)
+      })
+    }
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      console.log('selectedAreaModel', selectedAreaModel)
+      selectedArea.forEach((y) => {
+        filterModel.push(y.merek)
+      })
+      selectedAreaModel.forEach((x) => {
+        filterModel.push(x.model)
+      })
+    }
     
-    console.log('filterModel.toString(',filterModel.toString())
+    console.log('filterModel.toString()',filterModel.toString())
+    console.log('activeTabel', activeTabel)
     getDataKu(filterModel.toString())
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
@@ -1138,8 +1168,13 @@ export default function MyAppbar(props) {
     })
     .then((response) =>{ 
       console.log('res hasil filter', response.data.results)
-      setFilteredData(response.data.results)
-      props.getFilteredData(response.data.results)
+      // setFilteredData(response.data.results)
+      if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+        props.getFilteredDataJarak(response.data.results)
+      }
+      if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+        props.getFilteredDataMerekModel(response.data.results)
+      }
     })
     .catch((err) => { 
       console.warn(err.response)
@@ -1351,6 +1386,7 @@ export default function MyAppbar(props) {
                         />
                       </Search>
                     </div>
+                    <button onClick={() => console.log('cek props', props)}>cek props</button>
                     { (props.ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0) ?
                     <div>
                       <div className="mt-5">
@@ -1383,6 +1419,9 @@ export default function MyAppbar(props) {
                     : (props.ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0) 
                     ? 
                     <div>
+                      <p>Areas selected</p>
+                      {areasSelectedJarak()}
+                      <hr/>
                       {choseJarak()}
                       <button onClick={() => console.log('defaultAreaJarak', defaultAreaJarak)}>defaultAreaJarak</button>
                     </div>

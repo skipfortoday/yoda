@@ -25,6 +25,7 @@ export default function CMUnit(props) {
   const [Deleted, setDeleted] = useState(false);
   const { currentSubTab, dataSort } = props;
   const [filteredData, setFilteredData] = useState([]);
+  const [filteredDataJarak, setFilteredDataJarak] = useState([]);
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
@@ -627,6 +628,7 @@ export default function CMUnit(props) {
           changeIcons={changeIcons}
           val={Deleted}
           dataSort={dataSort}
+          filteredDataJarak={filteredDataJarak}
         />
       ),
     },
@@ -723,8 +725,11 @@ export default function CMUnit(props) {
     if(props.filteredData){
       setFilteredData(props.filteredData)
     }
+    if(props.filteredDataJarak){
+      setFilteredDataJarak(props.filteredDataJarak)
+    }
     
-  }, [props.dataFilter, props.dataFilterMulti, props.filteredData]);
+  }, [props.dataFilter, props.dataFilterMulti, props.filteredData, props.filteredDataJarak]);
 
   return (
     <>
