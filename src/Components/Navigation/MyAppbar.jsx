@@ -1245,23 +1245,13 @@ export default function MyAppbar(props) {
     })
     .then((response) =>{ 
       console.log('response provinsi', response)
-      // setFilteredData(response.data.results)
-      // if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
-      //   console.log('res getFilteredDataJarak', response.data.results)
-      //   props.getFilteredDataJarak(response.data.results)
-      // }
-      // if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
-      //   console.log('res getFilteredDataTahun', response.data.results)
-      //   props.getFilteredDataTahun(response.data.results)
-      // }
-      // if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
-      //   console.log('res getFilteredDataMerekModel', response.data.results)
-      //   props.getFilteredDataMerekModel(response.data.results)
-      // }
-      // props.doFilter(true)
-      // setTimeout(() => {
-      //   props.doFilter(false)
-      // }, 300)
+      setFilteredData(response.data.results)
+      console.log('res getFilteredDataWilayah', response.data.results)
+      props.getFilteredDataWilayah(response.data.results)
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
     })
     .catch((err) => { 
       console.warn(err.response)

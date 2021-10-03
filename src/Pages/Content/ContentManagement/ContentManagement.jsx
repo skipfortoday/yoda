@@ -14,6 +14,7 @@ export default function ContentManagementPage() {
 
   const [dataFilter, setDataFilter] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [filteredDataWilayah, setFilteredDataWilayah] = useState([]);
   const [filteredDataJarak, setFilteredDataJarak] = useState([]);
   const [filteredDataTahun, setFilteredDataTahun] = useState([]);
   const [dataFilterMulti, setDataFilterMulti] = useState([]);
@@ -55,6 +56,11 @@ export default function ContentManagementPage() {
     setFilteredData(val)
   }
 
+  const getFilteredDataWilayah = (val) => {
+    console.log('getFilteredDataWilayah', val)
+    setFilteredDataWilayah(val)
+  }
+
   const getFilteredDataJarak = (val) => {
     console.log('getFilteredDataJarak', val)
     setFilteredDataJarak(val)
@@ -89,7 +95,15 @@ export default function ContentManagementPage() {
         ),
       },
 
-      { value: 1, label: "Lokasi", content: <CMLocation dataSort={dataSort} currentSubTab={(val) => {currentSubTab(val)}}/> },
+      {
+        value: 1, 
+        label: "Lokasi", 
+        content: 
+          <CMLocation
+            dataSort={dataSort}
+            isFilter={isFilter}
+            filteredDataWilayah={filteredDataWilayah} 
+            currentSubTab={(val) => {currentSubTab(val)}}/> },
       { value: 2, label: "Kredit", content: <CMCredit dataSort={dataSort} currentSubTab={(val) => {currentSubTab(val)}} /> },
       { value: 3, label: "Penjual", content: <CMSeller dataSort={dataSort} currentSubTab={(val) => {currentSubTab(val)}} /> },
     ],
@@ -108,6 +122,7 @@ export default function ContentManagementPage() {
         getDataFilter={getDataFilter}
         getDataFilterMulti={getDataFilterMulti}
         getFilteredDataMerekModel={getFilteredDataMerekModel}
+        getFilteredDataWilayah={getFilteredDataWilayah}
         getFilteredDataJarak={getFilteredDataJarak}
         getFilteredDataTahun={getFilteredDataTahun}
         doFilter={doFilter}

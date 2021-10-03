@@ -6,8 +6,9 @@ import CMLKantor from "./SubPage/CMLocation/CMLKantor";
 import CMLWilayah from "./SubPage/CMLocation/CMLWilayah";
 
 export default function CMLocation(props) {
+  console.log("props CMLocation", props)
   const [ActiveSubPage, setActiveSubPage] = useState(0);
-  const { currentSubTab, dataSort } = props;
+  const { currentSubTab, dataSort, filteredDataWilayah, isFilter } = props;
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
@@ -42,6 +43,8 @@ export default function CMLocation(props) {
           isMenuOpen={isMenuOpen}
           ActiveSubPage={ActiveSubPage}
           dataSort={dataSort}
+          filteredDataWilayah={filteredDataWilayah}
+          isFilter={isFilter}
         />
       ),
     },

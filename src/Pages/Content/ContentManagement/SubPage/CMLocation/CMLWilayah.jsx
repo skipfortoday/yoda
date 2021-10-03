@@ -25,6 +25,7 @@ const INPUTS = [
 ];
 
 export default function CMLWilayah(props) {
+  console.log('props CMLWilayah', props)
   const [Data, setData] = useState([]);
   const [Wilayah, setWilayah] = useState([]);
   const [ProvinsiArr, setProvinsiArr] = useState([]);
@@ -35,8 +36,9 @@ export default function CMLWilayah(props) {
   const [Kecamatan, setKecamatan] = useState([]);
   const [CabangArr, setCabangArr] = useState([]);
   const [Cabang, setCabang] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
-  const { dataSort } = props;
+  const { dataSort, isFilter } = props;
 
   const dataType = {
     // "provinsiWilayahDesc": "nama_cabang",
@@ -122,7 +124,7 @@ export default function CMLWilayah(props) {
     }
   }, [dataSort]);
 
-  useEffect(() => { LoadData() }, [])
+  // useEffect(() => { LoadData() }, [])
 
   async function LoadData() {
     await axiosBackend.get('/cm/kantor')
@@ -136,18 +138,30 @@ export default function CMLWilayah(props) {
   }
 
   useEffect(() => {
-    LoadData();
+    // LoadData();
     getWilayah();
     getCabang();
   }, []);
 
+  useEffect(() => {
+    if(isFilter && props.filteredDataWilayah.length > 0){
+      console.log('props filteredDataWilayah', props.filteredData)
+      setFilteredData(props.filteredDataWilayah)
+    }
+    if(!isFilter && props.filteredDataWilayah.length === 0){
+      console.log('data kosong', props)
+      LoadData()
+    }
+  }, [props.filteredDataWilayah, isFilter]);
+
   async function LoadData() {
+    console.log('LoadData setFilteredData')
     await axiosBackend.get("/cm/wilayah").then((response) => {
       var tempData = response.data;
       tempData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setData(tempData);
+      setFilteredData(tempData);
     });
   }
 
@@ -447,7 +461,7 @@ export default function CMLWilayah(props) {
       <Box fullWidth sx={{ maxHeight: "70vh", height: "70vh" }}>
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={Data}
+          rows={filteredData}
           checkboxSelection
           disableColumnResize={false}
           disableSelectionOnClick
