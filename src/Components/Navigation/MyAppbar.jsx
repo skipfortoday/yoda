@@ -1321,6 +1321,36 @@ export default function MyAppbar(props) {
     })
   }
 
+  const getDataUser = async (item) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/ilterUser',{
+      role: 'External',
+      cabang: 'Test',
+      Status: ''
+    })
+    .then((response) =>{ 
+      setFilteredData(response.data.results)
+      // if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+      //   console.log('res getFilteredDataJarak', response.data.results)
+      //   props.getFilteredDataJarak(response.data.results)
+      // }
+      // if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      //   console.log('res getFilteredDataTahun', response.data.results)
+      //   props.getFilteredDataTahun(response.data.results)
+      // }
+      // if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      //   console.log('res getFilteredDataMerekModel', response.data.results)
+      //   props.getFilteredDataMerekModel(response.data.results)
+      // }
+      // props.doFilter(true)
+      // setTimeout(() => {
+      //   props.doFilter(false)
+      // }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
   useEffect(() => {
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       setShowFilter(true)
@@ -1450,6 +1480,7 @@ export default function MyAppbar(props) {
                     uploadExcel(e);
                   }}
                 />
+                <button onClick={() => getDataUser()}>getDataUser</button>
                 {showUpload ? 
                   <label htmlFor="raised-button-file">
                     <Button
