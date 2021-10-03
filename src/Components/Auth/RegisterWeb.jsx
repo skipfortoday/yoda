@@ -101,7 +101,7 @@ export default function RegisterWeb(props) {
     if (FullName.value==='' || FullName.value.length <= 0) {
       setFullName({...FullName, error: true})
     } else setFullName({...FullName,error: false})
-    if (PhoneNumber.value==='' || PhoneNumber.value.length <= 0 || !CheckNumber(PhoneNumber.value)) {
+    if (PhoneNumber.value==='' || PhoneNumber.value.length <= 0 || PhoneNumber.value.length >= 15 || !CheckNumber(PhoneNumber.value)) {
       setPhoneNumber({...PhoneNumber, error: true})
     } else setPhoneNumber({...PhoneNumber,error: false})
 
@@ -374,7 +374,7 @@ export default function RegisterWeb(props) {
                   <InputLabel htmlFor="login-form-number">{TEXTS.form2.phoneNumber}</InputLabel>
                   <OutlinedInput
                     id="login-form-number"
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 15 }}
                     type="text"
                     value={PhoneNumber.value}
                     onChange={(e) => setPhoneNumber({...PhoneNumber, value: e.target.value})}
