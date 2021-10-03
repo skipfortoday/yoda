@@ -39,6 +39,14 @@ export default function CMUTahun(props) {
      })
   }
 
+  function doSort() {
+    var tempData = filteredDataTahun
+    tempData.forEach((dat, idx) => {
+      dat.index = idx + 1;
+    });
+    setData(tempData)
+  }
+
   const { indexPage, ActiveSubPage } = props
   const { isMenuOpen } = props
   const { MenuanchorEl, setMenuAnchorEl } = props
@@ -58,7 +66,8 @@ export default function CMUTahun(props) {
     }
     if(isFilter){
       console.log('props filteredDataTahun', filteredDataTahun)
-      setData(filteredDataTahun)
+      // setData(filteredDataTahun)
+      doSort()
     }
   }, [props.dataSort, isFilter]);
 
