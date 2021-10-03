@@ -69,6 +69,12 @@ export default function CMUMerkModelVariant(props) {
 
       // LoadData();
     }
+    if(props.ActiveSubPage){
+      console.log('props.ActiveSubPage', props.ActiveSubPage)
+      if(props.dataFiltered.length === 0){
+        LoadData()
+      }
+    }
   }, [props.val, props.dataFiltered]);
 
   async function LoadData() {
@@ -87,7 +93,7 @@ export default function CMUMerkModelVariant(props) {
         });
         // setData(tempData);
         setFilteredData(tempData)
-        console.log('setFilteredData')
+        console.log('LoadData setFilteredData', tempData)
       });
   }
 

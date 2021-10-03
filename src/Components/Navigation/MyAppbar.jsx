@@ -950,11 +950,15 @@ export default function MyAppbar(props) {
     const arrayVarian = selectedAreaVarian.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayTahun = selectedAreaTahun.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
     setSelectedAreaModel(arrayModel)
     setSelectedAreaVarian(arrayVarian)
+    setSelectedAreaTahun(arrayTahun)
   }
 
   const choseAreas = () => {
@@ -1574,7 +1578,7 @@ export default function MyAppbar(props) {
                     : (props.ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0) 
                     ? 
                     <div>
-                      <p>Areas selected</p>
+                      {/* <p>Areas selected</p> */}
                       {areasSelectedJarak()}
                       <hr/>
                       {choseJarak()}
@@ -1583,7 +1587,7 @@ export default function MyAppbar(props) {
                     : (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab === 0) 
                     ? 
                     <div>
-                      <p>Tahun selected</p>
+                      {/* <p>Tahun selected</p> */}
                       {areasSelectedTahun()}
                       <hr/>
                       {choseTahun()}
