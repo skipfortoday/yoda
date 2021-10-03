@@ -925,6 +925,7 @@ export default function MyAppbar(props) {
   const [selectedAreaCabang, setSelectedAreaCabang] = useState([]);
   const [selectedAreaRole, setSelectedAreaRole] = useState([]);
   const [selectedAreaStatus, setSelectedAreaStatus] = useState([]);
+  const [selectedAreaCabangUser, setSelectedAreaCabangUser] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -938,6 +939,7 @@ export default function MyAppbar(props) {
   const [defaultAreaCabang, setdefaultAreaCabang] = useState([]);
   const [defaultAreaRole, setdefaultAreaRole] = useState([]);
   const [defaultAreaStatus, setdefaultAreaStatus] = useState([]);
+  const [defaultAreaCabangUser, setdefaultAreaCabangUser] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -995,6 +997,9 @@ export default function MyAppbar(props) {
     const arrayStatus = selectedAreaStatus.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayCabangUser = selectedAreaCabangUser.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
@@ -1006,6 +1011,7 @@ export default function MyAppbar(props) {
     setSelectedAreaCabang(arrayCabang)
     setSelectedAreaRole(arrayRole)
     setSelectedAreaStatus(arrayStatus)
+    setSelectedAreaCabangUser(arrayCabangUser)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaUsers(arrayUsers)
   }
@@ -1096,6 +1102,15 @@ export default function MyAppbar(props) {
             </Button>
     })
   }
+
+  const areasSelectedCabangUser = () => {
+    return selectedAreaCabangUser.map((user) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {user.location}
+            </Button>
+    })
+  }
+
 
   const areasSelectedJarak = () => {
     return selectedAreaJarak.map((area) => {
@@ -1214,6 +1229,14 @@ export default function MyAppbar(props) {
     setSelectedAreaStatus(duplicated)
   }
 
+  const pushCabangUser = (item) => {
+    const data = selectedAreaCabangUser.concat(item)
+    const ids = data.map(o => o.location)
+    const duplicated = data.filter(({location}, index) => !ids.includes(location, index + 1))
+    console.log('duplicated setSelectedAreaCabangUser', duplicated)
+    setSelectedAreaCabangUser(duplicated)
+  }
+
 
   // jarak tempuh
   const pushJarak = (item) => {
@@ -1309,6 +1332,12 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseCabangUser = () => {
+    return defaultAreaCabangUser.map((user) => {
+      return <button onClick={() => pushCabangUser(user)} className="btn-list-sort">{user.location}</button>
+    })
+  }
+
   const choseUsers = () => {
     return defaultAreaUsers.map((user) => {
       return <button onClick={() => pushUser(user)} className="btn-list-sort">{user.user_status}</button>
@@ -1329,6 +1358,7 @@ export default function MyAppbar(props) {
     const filterdataCabang = []
     const filterdataRole = []
     const filterdataStatus = []
+    const filterdataCabangUser = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1381,7 +1411,10 @@ export default function MyAppbar(props) {
       selectedAreaStatus.forEach((x) => {
         filterdataStatus.push(x.user_status)
       })
-      getDataUsers(filterdataRole.toString(), filterdataStatus.toString())
+      selectedAreaCabangUser.forEach((x) => {
+        filterdataCabangUser.push(x.location)
+      })
+      getDataUsers(filterdataRole.toString(), filterdataStatus.toString(), filterdataCabangUser.toString())
     }
     
     // console.log('filterdataMerek.toString()',filterdataMerek.toString())
@@ -1415,10 +1448,11 @@ export default function MyAppbar(props) {
     })
   }
 
-  const getDataUsers= async (role, Status) => {
+  const getDataUsers= async (role, Status, cabang) => {
     await axios.post('https://yodacentral.herokuapp.com/api/filterUser',{
       role: role,
-      Status: Status
+      Status: Status,
+      cabang: cabang
     })
     .then((response) =>{ 
       console.log('response', response.data.results)
@@ -1559,8 +1593,13 @@ export default function MyAppbar(props) {
           const duplicatedStatus = response.data.results.filter(
             ({ user_status }, index) => !idsStatus.includes(user_status, index + 1)
           );
+          const idsCabangUser = response.data.results.map((o) => o.user_status);
+          const duplicatedCabangUser = response.data.results.filter(
+            ({ user_status }, index) => !idsCabangUser.includes(user_status, index + 1)
+          );
           setdefaultAreaRole(duplicatedRole);
           setdefaultAreaStatus(duplicatedStatus);
+          setdefaultAreaCabangUser(duplicatedCabangUser);
           if(response.data.results.length === 0){
             setdefaultAreaRole([])
           }
@@ -2050,12 +2089,15 @@ export default function MyAppbar(props) {
                       {/* {areasSelectedUsers()} */}
                       {areasSelectedRole()}
                       {areasSelectedStatus()}
+                      {areasSelectedCabangUser()}
                       <hr/>
                       {/* {choseUsers()} */}
                       <p>Role</p>
                       {choseRole()}
                       <p>Status</p>
                       {choseStatus()}
+                      <p>Cabang</p>
+                      {choseCabangUser()}
                     </div>
                     :
                     (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)
