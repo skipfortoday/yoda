@@ -421,7 +421,7 @@ export default function CMLWilayah(props) {
                 value={Cabang}
               >
                 {CabangArr?.map((data, idx) => {
-                  console.log(data, "CABANG INPUT");
+                  // console.log(data, "CABANG INPUT");
                   return (
                   <MenuItem value={data.nama_cabang} key={idx} onClick={() => {
                     setCabang(data.nama_cabang)

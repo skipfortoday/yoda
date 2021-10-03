@@ -919,6 +919,7 @@ export default function MyAppbar(props) {
   const [selectedAreaJarak, setSelectedAreaJarak] = useState([]);
   const [selectedAreaTahun, setSelectedAreaTahun] = useState([]);
   const [selectedAreaUsers, setSelectedAreaUsers] = useState([]);
+  const [selectedAreaProvinsi, setSelectedAreaProvinsi] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -926,6 +927,7 @@ export default function MyAppbar(props) {
   const [defaultAreaVarian, setDefaultAreaVarian] = useState([]);
   const [defaultAreaJarak, setDefaultAreaJarak] = useState([]);
   const [defaultAreaTahun, setdefaultAreaTahun] = useState([]);
+  const [defaultAreaWilayah, setdefaultAreaProvinsi] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -1086,6 +1088,15 @@ export default function MyAppbar(props) {
     setSelectedAreaVarian(duplicated)
   }
 
+  const pushProvinsi = (item) => {
+    const data = selectedAreaProvinsi.concat(item)
+    const ids = data.map(o => o.provinsi)
+    const duplicated = data.filter(({provinsi}, index) => !ids.includes(provinsi, index + 1))
+    console.log('duplicated setSelectedAreaProvinsi', duplicated)
+    setSelectedAreaProvinsi(duplicated)
+  }
+
+
   // jarak tempuh
   const pushJarak = (item) => {
     const data = selectedAreaJarak.concat(item)
@@ -1141,6 +1152,12 @@ export default function MyAppbar(props) {
   const choseTahun = () => {
     return defaultAreaTahun.map((tahun) => {
       return <button onClick={() => pushTahun(tahun)} className="btn-list-sort">{tahun.tahun}</button>
+    })
+  }
+
+  const choseProvinsi = () => {
+    return defaultAreaWilayah.map((wilayah) => {
+      return <button onClick={() => pushProvinsi(wilayah)} className="btn-list-sort">{wilayah.provinsi}</button>
     })
   }
 
@@ -1303,6 +1320,9 @@ export default function MyAppbar(props) {
         const duplicated = response.data.results.filter(
           ({ merek }, index) => !ids.includes(merek, index + 1)
         );
+        setDefaultArea(duplicated);
+        console.log('duplicated', duplicated)
+
         if(activeTabel === "jarak_tempuhs"){
           console.log('jarak_tempuhs', response.data.results)
           setDefaultAreaJarak(response.data.results)
@@ -1320,8 +1340,17 @@ export default function MyAppbar(props) {
           console.log('duplicatedUser users', duplicatedUser)
           setdefaultAreaUsers(duplicatedUser)
         }
-        setDefaultArea(duplicated);
-        console.log('duplicated', duplicated)
+        if(activeTabel === "wilayahs"){
+          console.log('wilayahs', response.data.results)
+          // setDefaultAreaJarak(response.data.results)
+          const idsProvinsi = response.data.results.map((o) => o.provinsi);
+          const duplicatedProvinsi = response.data.results.filter(
+            ({ provinsi }, index) => !idsProvinsi.includes(provinsi, index + 1)
+          );
+          console.log('duplicatedProvinsi', duplicatedProvinsi)
+          setdefaultAreaProvinsi(duplicatedProvinsi)
+        }
+        
         const idsModel = response.data.results.map((o) => o.model);
         const duplicatedModel = response.data.results.filter(
           ({ model }, index) => !idsModel.includes(model, index + 1)
@@ -1414,6 +1443,9 @@ export default function MyAppbar(props) {
     else if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
       setShowFilter(true)
     }
+    else if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1){
+      setShowFilter(true)
+    }
     else if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
       setShowFilter(true)
     }
@@ -1433,7 +1465,10 @@ export default function MyAppbar(props) {
     if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
       setActiveTabel('tahun_pembuatans')
     }
-    else if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1){
+      setActiveTabel('wilayahs')
+    }
+    if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
       setActiveTabel('users')
     }
   }, [ActivePage, ActiveSubTab, ActiveTab])
@@ -1552,6 +1587,7 @@ export default function MyAppbar(props) {
                     </Button> */}
                   </label>
                 : <span></span>}
+                <span><button onClick={() => console.log('activeTabel', activeTabel)}>cek props</button></span>}
                 
                 <Button
                   disableRipple
@@ -1729,6 +1765,15 @@ export default function MyAppbar(props) {
                       {areasSelectedUsers()}
                       <hr/>
                       {choseUsers()}
+                    </div>
+                    :
+                    (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)
+                    ?
+                    <div>
+                      {/* {areasSelectedUsers()} */}
+                      wilayah
+                      <hr/>
+                      {choseProvinsi()}
                     </div>
                     :
                     <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
