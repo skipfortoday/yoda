@@ -1152,6 +1152,7 @@ export default function MyAppbar(props) {
   const [allDataMerek, setAllDataMerek] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [activeTabel, setActiveTabel] = useState('');
+  const [showFilter, setShowFilter] = useState(false);
 
   const doSearch = async (item) => {
     await axiosBackend
@@ -1226,6 +1227,18 @@ export default function MyAppbar(props) {
       console.warn(err.response)
     })
   }
+
+  useEffect(() => {
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      setShowFilter(true)
+    }
+    else if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      setShowFilter(true)
+    }
+    else {
+      setShowFilter(false)
+    }
+  }, [ActivePage, ActiveSubTab, ActiveTab])
 
   useEffect(() => {
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
@@ -1388,6 +1401,8 @@ export default function MyAppbar(props) {
                   </div>
                 </Menu>
               </div>
+              {showFilter
+              ?
               <div>
                 <Button
                   disableRipple
@@ -1489,6 +1504,8 @@ export default function MyAppbar(props) {
                   </div>
                 </Menu>
               </div>
+              :
+              <span></span>}
               {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ color: "tint.black.60" }} />
