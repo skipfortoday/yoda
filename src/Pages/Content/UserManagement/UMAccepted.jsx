@@ -149,7 +149,7 @@ export default function UMAccepted(props) {
     { field: "id", headerName: "ID", hide: true },
     {
       field: "name",
-      headerName: "Name & email",
+      headerName: "Nama & email",
       minWidth: 300,
       flex: 1,
       renderCell: StylingNameEmail,

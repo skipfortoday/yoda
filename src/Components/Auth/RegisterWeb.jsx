@@ -371,28 +371,32 @@ export default function RegisterWeb(props) {
                 <FormControl variant="outlined" color="primary" fullWidth
                   error={PhoneNumber.error}
                 >
-                  <InputLabel htmlFor="login-form-number">{TEXTS.form2.phoneNumber}</InputLabel>
                   <OutlinedInput
                     id="login-form-number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                     type="text"
                     value={PhoneNumber.value}
                     onChange={(e) => setPhoneNumber({...PhoneNumber, value: e.target.value})}
+                    // InputProps={{
+                    //   startAdornment: <InputAdornment position="start">kg</InputAdornment>,
+                    // }}
                     endAdornment={
-                      <InputAdornment position="end">
-                        { PhoneNumber.disabled? ( <BlockIcon /> )
-                          : PhoneNumber.value===''? ( <PhoneIcon /> )
-                          : PhoneNumber.value!==''? ( <PhoneIcon color="primary" /> )
-                          // : PhoneNumber.value!==''? (
-                          //   <IconButton edge="end"
-                          //     onClick={() => setPhoneNumber({...PhoneNumber, value: ''})}
-                          //   >
-                          //     <CancelIcon />
-                          //   </IconButton>
-                          // )
-                          : null
-                        }
-                      </InputAdornment>
+                      <span>
+                        <InputAdornment position="end">
+                          { PhoneNumber.disabled? ( <BlockIcon /> )
+                            : PhoneNumber.value===''? ( <PhoneIcon /> )
+                            : PhoneNumber.value!==''? ( <PhoneIcon color="primary" /> )
+                            // : PhoneNumber.value!==''? (
+                            //   <IconButton edge="end"
+                            //     onClick={() => setPhoneNumber({...PhoneNumber, value: ''})}
+                            //   >
+                            //     <CancelIcon />
+                            //   </IconButton>
+                            // )
+                            : null
+                          }
+                        </InputAdornment>
+                      </span>
                     }
                     label={TEXTS.form2.phoneNumber}
                   />

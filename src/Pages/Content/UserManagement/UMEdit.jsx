@@ -319,13 +319,13 @@ export default function UMEdit(props) {
                       Aktif
                     </MenuItem>
                     <MenuItem
-                      value="Non Aktif"
+                      value="Tidak Aktif"
                       key="1"
                       onClick={() => {
-                        setInputStatus("Non Aktif");
+                        setInputStatus("Tidak Aktif");
                       }}
                     >
-                      Non Aktif
+                      Tidak Aktif
                     </MenuItem>
                   </Select>
                 </>

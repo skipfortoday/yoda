@@ -141,7 +141,7 @@ export default function CMUTahun(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'tahun', headerName: 'Merek', minWidth: 180, flex: 1 },
+    { field: 'tahun', headerName: 'Tahun pembuatan unit', minWidth: 180, flex: 1 },
   ]
 
   return (

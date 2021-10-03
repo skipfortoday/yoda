@@ -14,7 +14,7 @@ export default function UMRejected(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'name', headerName: 'Name & email', minWidth: 300, renderCell: StylingNameEmail },
+    { field: 'name', headerName: 'Nama & email', minWidth: 300, renderCell: StylingNameEmail },
     { field: 'phone_number', headerName: 'No. Handphone', minWidth: 180 },
     { field: 'created_at', headerName: 'Tanggal registrasi', minWidth: 180, renderCell: StylingDateRegister },
     { field: 'action', headerName: '', flex: 1, minWidth: 300, renderCell: StylingAction },

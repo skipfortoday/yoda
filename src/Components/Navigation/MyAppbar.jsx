@@ -1223,6 +1223,7 @@ export default function MyAppbar(props) {
   const [filteredData, setFilteredData] = useState([]);
   const [activeTabel, setActiveTabel] = useState('');
   const [showFilter, setShowFilter] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
   const doSearch = async (item) => {
@@ -1315,6 +1316,7 @@ export default function MyAppbar(props) {
   useEffect(() => {
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       setShowFilter(true)
+      setShowUpload(true)
     }
     else if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
       setShowFilter(true)
@@ -1418,7 +1420,7 @@ export default function MyAppbar(props) {
           </Box>
           {upMd ? (
             <>
-              <div>
+              <div className="navbar">
                 {/* <Button
                   id="basic-button"
                   aria-controls="basic-menu"
@@ -1439,15 +1441,18 @@ export default function MyAppbar(props) {
                     uploadExcel(e);
                   }}
                 />
-                <label htmlFor="raised-button-file">
-                  <Button
-                    variant="raised"
-                    component="span"
-                    // className={classes.button}
-                  >
-                    Upload
-                  </Button>
-                </label>
+                {showUpload ? 
+                  <label htmlFor="raised-button-file">
+                    <Button
+                      variant="raised"
+                      component="span"
+                      // className={classes.button}
+                    >
+                      <button onClick={() => console.log('props', props)}>cek</button>
+                      Unggah data
+                    </Button>
+                  </label>
+                : <span></span>}
                 <Button
                   disableRipple
                   id="basic-button"
@@ -1455,7 +1460,6 @@ export default function MyAppbar(props) {
                   aria-haspopup="true"
                   aria-expanded={openSort ? "true" : undefined}
                   onClick={handleClick}
-                  color="primary"
                   startIcon={<ImportExportIcon />}
                 >
                   {"Sortir"}
@@ -1495,7 +1499,7 @@ export default function MyAppbar(props) {
               </div>
               {showFilter
               ?
-              <div>
+              <div className="navbar">
                 <Button
                   disableRipple
                   id="basic-button"
@@ -1503,7 +1507,6 @@ export default function MyAppbar(props) {
                   aria-haspopup="true"
                   aria-expanded={openFilter ? "true" : undefined}
                   onClick={handleClickFilter}
-                  color="primary"
                   startIcon={<FilterListIcon />}
                 >
                   {"Filter"}

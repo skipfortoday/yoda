@@ -26,7 +26,7 @@ export default function AcceptingAction(props) {
       await axiosBackend.post('/user-management', { 
         target_email: row.email,
         user_status: 'Rejected',
-        role: 'Non Aktif',
+        role: 'Tidak Aktif',
         location: 'Not set',
       })
       .then((response) => {
