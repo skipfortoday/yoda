@@ -122,7 +122,7 @@ export default function RegisterWeb(props) {
       email: InputEmail.value,
       password: InputPassword.value,
       password_confirmation: InputCPassword.value,
-      phone_number: PhoneNumber.value,
+      phone_number: `+62`+PhoneNumber.value,
       // profile_picture: null,
     })
     .then((response) => {
