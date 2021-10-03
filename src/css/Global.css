@@ -111,9 +111,7 @@ a {
 .color-primary-grey {
   color: #A0A4A8 !important;
 }
-.navbar .css-1xofjgy-MuiButtonBase-root-MuiButton-root{
-  color: #A0A4A8 !important;
-}
+
 .bg-gray-main {
   background:#E8E8E8 !important;
 }
@@ -254,3 +252,19 @@ a {
   width: 70px !important;
   margin: 0px !important;
 } */
+
+.navbar .filteroff{
+  color: #A0A4A8 !important;
+}
+
+.filteron {
+  color: #78C2B4 !important;
+}
+
+.navbar .sortingoff{
+  color: #A0A4A8 !important;
+}
+
+.navbar .sorting {
+  color: #78C2B4 !important;
+}

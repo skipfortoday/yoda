@@ -125,6 +125,9 @@ export default function MyAppbar(props) {
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [isActiveClassFilter, setIsActiveClassFilter] = useState(false);
+  const [isActiveClasssorting, setIsActiveClasssorting] = useState(false);
+  
 
   const isMainMenuOpen = Boolean(MenuanchorEl);
   const isMenuOpen = Boolean(anchorEl);
@@ -224,10 +227,12 @@ export default function MyAppbar(props) {
   const [anchorElSort, setAnchorElSort] = React.useState(null);
   const openSort = Boolean(anchorElSort);
   const handleClick = (event) => {
+    setIsActiveClasssorting(true)
     setAnchorElSort(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorElSort(null);
+    setIsActiveClasssorting(false)
   };
 
   // menu filter
@@ -235,9 +240,11 @@ export default function MyAppbar(props) {
   const openFilter = Boolean(anchorElFilter);
   const handleClickFilter = (event) => {
     setAnchorElFilter(event.currentTarget);
+    setIsActiveClassFilter(true)
   };
   const handleCloseFilter = () => {
     setAnchorElFilter(null);
+    setIsActiveClassFilter(false)
   };
 
   // sort data
@@ -1467,7 +1474,7 @@ export default function MyAppbar(props) {
                   aria-haspopup="true"
                   aria-expanded={openSort ? "true" : undefined}
                   onClick={handleClick}
-                  className={`btn-list-tab`}
+                  className={`${isActiveClasssorting ? "sortingon" : "sortingoff"}`}
                   startIcon={<ImportExportIcon />}
                 >
                   {"Sortir"}
@@ -1514,6 +1521,7 @@ export default function MyAppbar(props) {
                   aria-controls="basic-menu"
                   aria-haspopup="true"
                   aria-expanded={openFilter ? "true" : undefined}
+                  className={`box ${isActiveClassFilter ? "filteron" : "filteroff"}`}
                   onClick={handleClickFilter}
                   startIcon={<FilterListIcon />}
                 >
