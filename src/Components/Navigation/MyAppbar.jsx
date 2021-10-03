@@ -1578,7 +1578,7 @@ export default function MyAppbar(props) {
                       {areasSelectedJarak()}
                       <hr/>
                       {choseJarak()}
-                      <button onClick={() => console.log('defaultAreaJarak', defaultAreaJarak)}>defaultAreaJarak</button>
+                      {/* <button onClick={() => console.log('defaultAreaJarak', defaultAreaJarak)}>defaultAreaJarak</button> */}
                     </div>
                     : (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab === 0) 
                     ? 
@@ -1587,7 +1587,7 @@ export default function MyAppbar(props) {
                       {areasSelectedTahun()}
                       <hr/>
                       {choseTahun()}
-                      <button onClick={() => console.log('defaultAreaTahun', defaultAreaTahun)}>defaultAreaTahun</button>
+                      {/* <button onClick={() => console.log('defaultAreaTahun', defaultAreaTahun)}>defaultAreaTahun</button> */}
                     </div>
                     :
                     (props.ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1)

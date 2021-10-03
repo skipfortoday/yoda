@@ -66,7 +66,7 @@ export default function UMAcceptMenu(props) {
       location: Switch?'Not set':InputKantor.value,
     })
     .then((response) => {
-      console.log(response.data)
+      console.log('SendData', response.data)
       acceptBtnClick()
       setMenuAnchorEl(null)
     })
@@ -92,6 +92,7 @@ export default function UMAcceptMenu(props) {
             <Button sx={{ color: Switch?'primary.main':'tint.black.60', backgroundColor: Switch?'tint.grey.20':'plainwhite.main' }} onClick={() => setSwitch(true)} >External</Button>
           </ButtonGroup>
         </CardContent>
+        {/* <button onClick={() => console.log(}>cek</button> */}
         <Collapse in={!Switch} timeout="auto" unmountOnExit >
           <CardContent>
             <Stack spacing={1}>
