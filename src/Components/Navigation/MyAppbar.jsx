@@ -976,6 +976,9 @@ export default function MyAppbar(props) {
     const arrayKecamatan = selectedAreaKecamatan.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayCabang = selectedAreaCabang.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     const arrayTahun = selectedAreaTahun.filter(function(element, i) {
       return element.id !== item.id;
     });
@@ -990,6 +993,7 @@ export default function MyAppbar(props) {
     setSelectedAreaProvinsi(arrayProvinsi)
     setSelectedAreaKota(arrayKota)
     setSelectedAreaKecamatan(arrayKecamatan)
+    setSelectedAreaCabang(arrayCabang)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaTahun(arrayUsers)
   }
@@ -1053,6 +1057,14 @@ export default function MyAppbar(props) {
     return selectedAreaKecamatan.map((kecamatan) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(kecamatan)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {kecamatan.kecamatan}
+            </Button>
+    })
+  }
+
+  const areasSelectedCabang = () => {
+    return selectedAreaCabang.map((cabang_pengelola) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(cabang_pengelola)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {cabang_pengelola.cabang_pengelola}
             </Button>
     })
   }
@@ -1262,6 +1274,7 @@ export default function MyAppbar(props) {
     const filterdataProvinsi = []
     const filterdataKota = []
     const filterdataKecamatan = []
+    const filterdataCabang = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1287,8 +1300,11 @@ export default function MyAppbar(props) {
       selectedAreaKecamatan.forEach((x) => {
         filterdataKecamatan.push(x.kecamatan)
       })
+      selectedAreaCabang.forEach((x) => {
+        filterdataCabang.push(x.cabang_pengelola)
+      })
       console.log('filterdataProvinsi', filterdataProvinsi)
-      getDataWilayah(filterdataProvinsi.toString(), filterdataKota.toString(), filterdataKecamatan.toString())
+      getDataWilayah(filterdataProvinsi.toString(), filterdataKota.toString(), filterdataKecamatan.toString(), filterdataCabang.toString())
     }
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       console.log('selectedAreaModel', selectedAreaModel)
@@ -1319,11 +1335,12 @@ export default function MyAppbar(props) {
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
   }
 
-  const getDataWilayah= async (provinsi, kota, kecamatan) => {
+  const getDataWilayah= async (provinsi, kota, kecamatan, cabang) => {
     await axios.post('https://yodacentral.herokuapp.com/api/filterWilayah',{
       provinsi: provinsi,
       kota: kota,
-      kecamatan: kecamatan
+      kecamatan: kecamatan,
+      cabang_pengelola: cabang
     })
     .then((response) =>{ 
       console.log('response provinsi', response)
@@ -1930,6 +1947,7 @@ export default function MyAppbar(props) {
                       {areasSelectedProvinsi()}
                       {areasSelectedKota()}
                       {areasSelectedKecamatan()}
+                      {areasSelectedCabang()}
                       <hr/>
                       {defaultAreaProvinsi.length > 0
                         ?
