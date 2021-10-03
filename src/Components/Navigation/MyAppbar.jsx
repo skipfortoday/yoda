@@ -910,6 +910,7 @@ export default function MyAppbar(props) {
   const [selectedAreaVarian, setSelectedAreaVarian] = useState([]);
   const [selectedAreaJarak, setSelectedAreaJarak] = useState([]);
   const [selectedAreaTahun, setSelectedAreaTahun] = useState([]);
+  const [selectedAreaUsers, setSelectedAreaUsers] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -953,12 +954,16 @@ export default function MyAppbar(props) {
     const arrayTahun = selectedAreaTahun.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayUsers = selectedAreaUsers.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
     setSelectedAreaModel(arrayModel)
     setSelectedAreaVarian(arrayVarian)
     setSelectedAreaTahun(arrayTahun)
+    setSelectedAreaTahun(arrayUsers)
   }
 
   const choseAreas = () => {
@@ -1015,6 +1020,14 @@ export default function MyAppbar(props) {
             </Button>
     })
   }
+  const areasSelectedUsers = () => {
+    return selectedAreaUsers.map((user) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {user.user_status}
+            </Button>
+    })
+  }
+  
 
   const [selectedMerek, setSelectedMerek] = useState();
 
@@ -1087,6 +1100,17 @@ export default function MyAppbar(props) {
     setSelectedAreaTahun(duplicated)
   }
 
+  // jarak tempuh
+  const pushUser = (item) => {
+    const data = selectedAreaUsers.concat(item)
+    // cek duplicated
+    // console.log('data', data)
+    const ids = data.map(o => o.user_status)
+    const duplicated = data.filter(({user_status}, index) => !ids.includes(user_status, index + 1))
+    console.log('duplicated user_status', duplicated)
+    setSelectedAreaUsers(duplicated)
+  }
+
 
   const choseModel = () => {
     return defaultAreaModel.map((model) => {
@@ -1114,7 +1138,7 @@ export default function MyAppbar(props) {
 
   const choseUsers = () => {
     return defaultAreaUsers.map((user) => {
-      return <button onClick={() => pushTahun(user)} className="btn-list-sort">{user.user_status}</button>
+      return <button onClick={() => pushUser(user)} className="btn-list-sort">{user.user_status}</button>
     })
   }
 
@@ -1597,8 +1621,9 @@ export default function MyAppbar(props) {
                     (props.ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1)
                     ?
                     <div>
-                      {/* choseUsers
-                      {choseUsers} */}
+                      {areasSelectedUsers()}
+                      <hr/>
+                      {choseUsers()}
                     </div>
                     :
                     <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
