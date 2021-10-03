@@ -1155,6 +1155,9 @@ export default function MyAppbar(props) {
     // console.log('selectedArea', selectedArea)
     // setAreaBeforeSearch([])
     const filterModel = []
+    const filterdataMerek = []
+    const filterdataModel = []
+    const filterdataVarian = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
       selectedAreaJarak.forEach((x) => {
@@ -1170,13 +1173,13 @@ export default function MyAppbar(props) {
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       console.log('selectedAreaModel', selectedAreaModel)
       selectedArea.forEach((y) => {
-        filterModel.push(y.merek)
+        filterdataMerek.push(y.merek)
       })
       selectedAreaModel.forEach((x) => {
-        filterModel.push(x.model)
+        filterdataModel.push(x.model)
       })
       selectedAreaVarian.forEach((x) => {
-        filterModel.push(x.varian)
+        filterdataVarian.push(x.varian)
       })
     }
     if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab === 1){
@@ -1186,13 +1189,45 @@ export default function MyAppbar(props) {
       // })
     }
     
-    console.log('filterModel.toString()',filterModel.toString())
-    console.log('activeTabel', activeTabel)
-    getDataKu(filterModel.toString())
+    console.log('filterdataMerek.toString()',filterdataMerek.toString())
+    console.log('filterdataModel.toString()',filterdataModel.toString())
+    console.log('filterdataVarian', filterdataVarian.toString())
+    getDataKuNew(filterdataMerek.toString(), filterdataModel.toString(), filterdataVarian.toString())
     // handleCloseFilter()
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
+  }
+
+  const getDataKuNew = async (merek, model, varian) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/filterMMV',{
+      merek: merek,
+      model: model,
+      varian: varian
+    })
+    .then((response) =>{ 
+      console.log('response', response)
+      setFilteredData(response.data.results)
+      if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+        console.log('res getFilteredDataJarak', response.data.results)
+        props.getFilteredDataJarak(response.data.results)
+      }
+      if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+        console.log('res getFilteredDataTahun', response.data.results)
+        props.getFilteredDataTahun(response.data.results)
+      }
+      if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+        console.log('res getFilteredDataMerekModel', response.data.results)
+        props.getFilteredDataMerekModel(response.data.results)
+      }
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
   }
 
   async function uploadExcel(e) {
@@ -1480,7 +1515,7 @@ export default function MyAppbar(props) {
                     uploadExcel(e);
                   }}
                 />
-                <button onClick={() => getDataUser()}>getDataUser</button>
+                {/* <button onClick={() => getDataUser()}>getDataUser</button> */}
                 {showUpload ? 
                   <label htmlFor="raised-button-file">
                     <Button
