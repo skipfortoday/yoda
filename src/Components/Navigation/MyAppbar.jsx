@@ -27,6 +27,7 @@ import ProfileCard from "../Auth/ProfileCard";
 import UploadIcon from "@mui/icons-material/Upload";
 import FilterListIcon from "@mui/icons-material/FilterList";
 // import NestedMenuItem from "material-ui-nested-menu-item";
+import DownloadIcon from '@mui/icons-material/Download';
 import axios from "axios";
 
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -1420,7 +1421,7 @@ export default function MyAppbar(props) {
           </Box>
           {upMd ? (
             <>
-              <div className="navbar">
+              <div className="navbar color-primary-grey">
                 {/* <Button
                   id="basic-button"
                   aria-controls="basic-menu"
@@ -1446,13 +1447,18 @@ export default function MyAppbar(props) {
                     <Button
                       variant="raised"
                       component="span"
-                      // className={classes.button}
-                    >
-                      <button onClick={() => console.log('props', props)}>cek</button>
-                      Unggah data
+                      startIcon={<DownloadIcon />}
+                    >Unggah data
                     </Button>
+                    {/* <Button
+                      id="basic-button"
+                      startIcon={<DownloadIcon />}
+                    >
+                      {"Unggah data"}
+                    </Button> */}
                   </label>
                 : <span></span>}
+                
                 <Button
                   disableRipple
                   id="basic-button"
