@@ -1390,6 +1390,7 @@ export default function MyAppbar(props) {
     .then((response) =>{ 
       console.log('response', response.data.results)
       setFilteredData(response.data.results)
+      props.getFilteredDataUsersInternal(response.data.results)
       props.doFilter(true)
       setTimeout(() => {
         props.doFilter(false)
@@ -1652,7 +1653,7 @@ export default function MyAppbar(props) {
   }
 
   const getDataUser = async (item) => {
-    await axios.post('https://yodacentral.herokuapp.com/api/ilterUser',{
+    await axios.post('https://yodacentral.herokuapp.com/api/filterUser',{
       role: 'External',
       cabang: 'Test',
       Status: ''

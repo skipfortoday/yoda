@@ -16,7 +16,7 @@ import UMEdit from "./UMEdit";
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
   const [ActiveSubPage, setActiveSubPage] = useState(0);
-  const { reload, currentSubTab } = props;
+  const { reload, currentSubTab, isFilter } = props;
   const [ActiveRole, setActiveRole] = useState(0);
   const [EditData, setEditData] = useState(null);
   const [data, setdata] = useState(props.data)
@@ -241,14 +241,19 @@ export default function UMAccepted(props) {
   };
 
   useEffect(() => {
-    if (props.dataFilter) {
+    if (props.dataFilter && props.filteredData.length === 0) {
       filterData();
       // if(props.dataFilter !== ''){
       //   filterData()
       // }
     }
 
-  }, [props.dataFilter]);
+    if (props.filteredData.length > 0 && isFilter) {
+      console.log('props.filteredData', props.filteredData)
+      setCurentDataFiltered(props.filteredData)
+    }
+
+  }, [props.dataFilter, props.filteredData, isFilter]);
 
   return (
     <>

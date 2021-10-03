@@ -44,13 +44,6 @@ export default function ContentManagementPage() {
     setActiveSubTab(val)
   }
 
-  // const [dataFilter, setDataFilter] = useState([])
-  // const getDataFilter = (val) => {
-  //   // do not forget to bind getData in constructor
-  //   console.log(val);
-  //   setDataFilter(val)
-  // }
-
   const getFilteredDataMerekModel = (val) => {
     console.log('getFilteredDataMerekModel', val)
     setFilteredData(val)

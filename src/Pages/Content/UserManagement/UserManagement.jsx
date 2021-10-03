@@ -123,12 +123,18 @@ export default function UserManagementPage() {
   }
 
   const [isFilter, setIsFilter] = useState(false);
-  const [filteredDataInternal, setFilteredData] = useState([]);
+  const [filteredDataInternal, setFilteredDataInternal] = useState([]);
   const doFilter = (val) => {
     setIsFilter(val)
   }
   const getFilteredDataInternal = (val) => {
     console.log('getFilteredDataInternal', val)
+    setFilteredDataInternal(val)
+  }
+
+  const [filteredData, setFilteredData] = useState([]);
+  const getFilteredDataUsersInternal = (val) => {
+    console.log('getFilteredDataUsersInternal', val)
     setFilteredData(val)
   }
 
@@ -152,6 +158,7 @@ export default function UserManagementPage() {
             dataFilter={dataFilter}
             currentSubTab={(val) => {currentSubTab(val)}}
             isFilter={isFilter}
+            filteredData={filteredData}
             reload={() => {LoadAcceptedData(); /*console.log('LoadAcceptedData')*/}} /> },
       { value: 2, label: 'Ditolak', content: <UMRejected data={RejectedData} dataSort={dataSort} reload={() => {LoadRejectedData(); /*console.log('LoadRejectedData')*/}} /> },
     ]
@@ -170,6 +177,7 @@ export default function UserManagementPage() {
         doFilter={doFilter}
         getFilteredDataInternal={getFilteredDataInternal}
         filteredDataInternal={filteredDataInternal}
+        getFilteredDataUsersInternal={getFilteredDataUsersInternal}
       />
 
       <Container maxWidth="xl">
