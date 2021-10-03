@@ -37,6 +37,7 @@ export default function ContentManagementPage() {
   }
 
   const currentSubTab = (val) => {
+    console.log('currentSubTab 1 => ', val)
     setActiveSubTab(val)
   }
 

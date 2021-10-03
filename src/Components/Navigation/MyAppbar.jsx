@@ -1081,7 +1081,6 @@ export default function MyAppbar(props) {
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
-    // getDataKu("Audi")
   }
 
   async function uploadExcel(e) {
@@ -1167,12 +1166,13 @@ export default function MyAppbar(props) {
       keyword: item
     })
     .then((response) =>{ 
-      console.log('res hasil filter', response.data.results)
       // setFilteredData(response.data.results)
       if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+        console.log('res getFilteredDataJarak', response.data.results)
         props.getFilteredDataJarak(response.data.results)
       }
       if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+        console.log('res getFilteredDataMerekModel', response.data.results)
         props.getFilteredDataMerekModel(response.data.results)
       }
     })

@@ -721,7 +721,7 @@ export default function CMUnit(props) {
     if (props.dataFilterMulti) {
       doFilterData();
     }
-    currentSubTab(0);
+    // currentSubTab(0);
     if(props.filteredData){
       setFilteredData(props.filteredData)
     }
