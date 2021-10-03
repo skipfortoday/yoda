@@ -923,6 +923,7 @@ export default function MyAppbar(props) {
   const [selectedAreaKota, setSelectedAreaKota] = useState([]);
   const [selectedAreaKecamatan, setSelectedAreaKecamatan] = useState([]);
   const [selectedAreaCabang, setSelectedAreaCabang] = useState([]);
+  const [selectedAreaRole, setSelectedAreaRole] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -934,6 +935,7 @@ export default function MyAppbar(props) {
   const [defaultAreaKota, setdefaultAreaKota] = useState([]);
   const [defaultAreaKecamatan, setdefaultAreaKecamatan] = useState([]);
   const [defaultAreaCabang, setdefaultAreaCabang] = useState([]);
+  const [defaultAreaRole, setdefaultAreaRole] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -985,6 +987,9 @@ export default function MyAppbar(props) {
     const arrayUsers = selectedAreaUsers.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayRole = selectedAreaRole.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
@@ -994,8 +999,9 @@ export default function MyAppbar(props) {
     setSelectedAreaKota(arrayKota)
     setSelectedAreaKecamatan(arrayKecamatan)
     setSelectedAreaCabang(arrayCabang)
+    setSelectedAreaRole(arrayRole)
     setSelectedAreaTahun(arrayTahun)
-    setSelectedAreaTahun(arrayUsers)
+    setSelectedAreaUsers(arrayUsers)
   }
 
   const choseAreas = () => {
@@ -1065,6 +1071,14 @@ export default function MyAppbar(props) {
     return selectedAreaCabang.map((cabang_pengelola) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(cabang_pengelola)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {cabang_pengelola.cabang_pengelola}
+            </Button>
+    })
+  }
+
+  const areasSelectedRole = () => {
+    return selectedAreaRole.map((user) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {user.role}
             </Button>
     })
   }
@@ -1146,7 +1160,6 @@ export default function MyAppbar(props) {
     const data = selectedAreaProvinsi.concat(item)
     const ids = data.map(o => o.provinsi)
     const duplicated = data.filter(({provinsi}, index) => !ids.includes(provinsi, index + 1))
-    console.log('duplicated setSelectedAreaProvinsi', duplicated)
     setSelectedAreaProvinsi(duplicated)
   }
 
@@ -1154,7 +1167,6 @@ export default function MyAppbar(props) {
     const data = selectedAreaKota.concat(item)
     const ids = data.map(o => o.kota)
     const duplicated = data.filter(({kota}, index) => !ids.includes(kota, index + 1))
-    console.log('duplicated setSelectedAreaKota', duplicated)
     setSelectedAreaKota(duplicated)
   }
 
@@ -1162,7 +1174,6 @@ export default function MyAppbar(props) {
     const data = selectedAreaKecamatan.concat(item)
     const ids = data.map(o => o.kecamatan)
     const duplicated = data.filter(({kecamatan}, index) => !ids.includes(kecamatan, index + 1))
-    console.log('duplicated setSelectedAreaKecamatan', duplicated)
     setSelectedAreaKecamatan(duplicated)
   }
 
@@ -1170,8 +1181,15 @@ export default function MyAppbar(props) {
     const data = selectedAreaCabang.concat(item)
     const ids = data.map(o => o.cabang_pengelola)
     const duplicated = data.filter(({cabang_pengelola}, index) => !ids.includes(cabang_pengelola, index + 1))
-    console.log('duplicated setSelectedAreaCabang', duplicated)
     setSelectedAreaCabang(duplicated)
+  }
+
+  const pushRole = (item) => {
+    const data = selectedAreaRole.concat(item)
+    const ids = data.map(o => o.role)
+    const duplicated = data.filter(({role}, index) => !ids.includes(role, index + 1))
+    console.log('duplicated setSelectedAreaRole', duplicated)
+    setSelectedAreaRole(duplicated)
   }
 
 
@@ -1257,6 +1275,12 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseRole = () => {
+    return defaultAreaRole.map((user) => {
+      return <button onClick={() => pushRole(user)} className="btn-list-sort">{user.role}</button>
+    })
+  }
+
   const choseUsers = () => {
     return defaultAreaUsers.map((user) => {
       return <button onClick={() => pushUser(user)} className="btn-list-sort">{user.user_status}</button>
@@ -1275,6 +1299,7 @@ export default function MyAppbar(props) {
     const filterdataKota = []
     const filterdataKecamatan = []
     const filterdataCabang = []
+    const filterdataRole = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1321,9 +1346,10 @@ export default function MyAppbar(props) {
     }
     if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab === 1){
       console.log('filterUser')
-      // selectedAreaTahun.forEach((x) => {
-      //   filterModel.push(x.tahun)
-      // })
+      selectedAreaRole.forEach((x) => {
+        filterdataRole.push(x.role)
+      })
+      getDataUsers(filterdataRole.toString())
     }
     
     // console.log('filterdataMerek.toString()',filterdataMerek.toString())
@@ -1347,6 +1373,23 @@ export default function MyAppbar(props) {
       setFilteredData(response.data.results)
       console.log('res getFilteredDataWilayah', response.data.results)
       props.getFilteredDataWilayah(response.data.results)
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  const getDataUsers= async (role) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/filterUser',{
+      role: role
+    })
+    .then((response) =>{ 
+      console.log('response', response.data.results)
+      setFilteredData(response.data.results)
       props.doFilter(true)
       setTimeout(() => {
         props.doFilter(false)
@@ -1464,90 +1507,119 @@ export default function MyAppbar(props) {
   const [searchValue, setSearchValue] = useState('');
 
   const doSearch = async (item) => {
+    console.log('activeTabel', activeTabel)
     setSearchValue(item)
-    await axiosBackend
-      .post("/filter2", {
-        table: activeTabel,
-        keyword: item,
-      })
-      .then((response) => {
-        setAllDataMerek(response.data.results);
-        console.log('res get filter', response.data.results)
-        const ids = response.data.results.map((o) => o.merek);
-        const duplicated = response.data.results.filter(
-          ({ merek }, index) => !ids.includes(merek, index + 1)
-        );
-        setDefaultArea(duplicated);
-        console.log('duplicated', duplicated)
-
-        if(activeTabel === "jarak_tempuhs"){
-          console.log('jarak_tempuhs', response.data.results)
-          setDefaultAreaJarak(response.data.results)
-        }
-        if(activeTabel === "tahun_pembuatans"){
-          console.log('tahun_pembuatans', response.data.results)
-          setdefaultAreaTahun(response.data.results)
-        }
-        if(activeTabel === "users"){
-          console.log('users', response.data.results)
-          const idsUsers = response.data.results.map((o) => o.model);
-          const duplicatedUser = response.data.results.filter(
-            ({ model }, index) => !idsUsers.includes(model, index + 1)
+    if(activeTabel === "users") {
+      console.log('tab users')
+      await axiosBackend
+        .post("/buttonUser", {
+          keyword: item,
+        })
+        .then((response) => {
+          console.log('res get filter', response.data.results)
+          const idsRole = response.data.results.map((o) => o.role);
+          const duplicatedRole = response.data.results.filter(
+            ({ role }, index) => !idsRole.includes(role, index + 1)
           );
-          console.log('duplicatedUser users', duplicatedUser)
-          setdefaultAreaUsers(duplicatedUser)
-        }
-        if(activeTabel === "wilayahs"){
-          // console.log('wilayahs', response.data.results)
-          // setDefaultAreaJarak(response.data.results)
-          const idsProvinsi = response.data.results.map((o) => o.provinsi);
-          const duplicatedProvinsi = response.data.results.filter(
-            ({ provinsi }, index) => !idsProvinsi.includes(provinsi, index + 1)
+          setdefaultAreaRole(duplicatedRole);
+          if(response.data.results.length === 0){
+            setdefaultAreaRole([])
+          }
+          if(response.data.results.length === 0 && item !== ""){
+            setsearchEmpty(true)
+          } else {
+            setsearchEmpty(false)
+          }
+        })
+        .catch((err) => {
+          console.warn(err.response);
+        });
+    }
+    else {
+      await axiosBackend
+        .post("/filter2", {
+          table: activeTabel,
+          keyword: item,
+        })
+        .then((response) => {
+          setAllDataMerek(response.data.results);
+          console.log('res get filter', response.data.results)
+          const ids = response.data.results.map((o) => o.merek);
+          const duplicated = response.data.results.filter(
+            ({ merek }, index) => !ids.includes(merek, index + 1)
           );
-          const idsKota = response.data.results.map((o) => o.kota);
-          const duplicatedKota = response.data.results.filter(
-            ({ kota }, index) => !idsKota.includes(kota, index + 1)
+          setDefaultArea(duplicated);
+          console.log('duplicated', duplicated)
+  
+          if(activeTabel === "jarak_tempuhs"){
+            console.log('jarak_tempuhs', response.data.results)
+            setDefaultAreaJarak(response.data.results)
+          }
+          if(activeTabel === "tahun_pembuatans"){
+            console.log('tahun_pembuatans', response.data.results)
+            setdefaultAreaTahun(response.data.results)
+          }
+          if(activeTabel === "users"){
+            console.log('users', response.data.results)
+            const idsUsers = response.data.results.map((o) => o.model);
+            const duplicatedUser = response.data.results.filter(
+              ({ model }, index) => !idsUsers.includes(model, index + 1)
+            );
+            console.log('duplicatedUser users', duplicatedUser)
+            setdefaultAreaUsers(duplicatedUser)
+          }
+          if(activeTabel === "wilayahs"){
+            // console.log('wilayahs', response.data.results)
+            // setDefaultAreaJarak(response.data.results)
+            const idsProvinsi = response.data.results.map((o) => o.provinsi);
+            const duplicatedProvinsi = response.data.results.filter(
+              ({ provinsi }, index) => !idsProvinsi.includes(provinsi, index + 1)
+            );
+            const idsKota = response.data.results.map((o) => o.kota);
+            const duplicatedKota = response.data.results.filter(
+              ({ kota }, index) => !idsKota.includes(kota, index + 1)
+            );
+            const idsKecamatan = response.data.results.map((o) => o.kecamatan);
+            const duplicatedKecamatan = response.data.results.filter(
+              ({ kecamatan }, index) => !idsKecamatan.includes(kecamatan, index + 1)
+            );
+            const idsCabang = response.data.results.map((o) => o.cabang_pengelola);
+            const duplicatedCabang = response.data.results.filter(
+              ({ cabang_pengelola }, index) => !idsCabang.includes(cabang_pengelola, index + 1)
+            );
+            console.log('duplicatedProvinsi', duplicatedProvinsi)
+            setdefaultAreaProvinsi(duplicatedProvinsi)
+            setdefaultAreaKota(duplicatedKota)
+            setdefaultAreaKecamatan(duplicatedKecamatan)
+            setdefaultAreaCabang(duplicatedCabang)
+          }
+          
+          const idsModel = response.data.results.map((o) => o.model);
+          const duplicatedModel = response.data.results.filter(
+            ({ model }, index) => !idsModel.includes(model, index + 1)
           );
-          const idsKecamatan = response.data.results.map((o) => o.kecamatan);
-          const duplicatedKecamatan = response.data.results.filter(
-            ({ kecamatan }, index) => !idsKecamatan.includes(kecamatan, index + 1)
-          );
-          const idsCabang = response.data.results.map((o) => o.cabang_pengelola);
-          const duplicatedCabang = response.data.results.filter(
-            ({ cabang_pengelola }, index) => !idsCabang.includes(cabang_pengelola, index + 1)
-          );
-          console.log('duplicatedProvinsi', duplicatedProvinsi)
-          setdefaultAreaProvinsi(duplicatedProvinsi)
-          setdefaultAreaKota(duplicatedKota)
-          setdefaultAreaKecamatan(duplicatedKecamatan)
-          setdefaultAreaCabang(duplicatedCabang)
-        }
-        
-        const idsModel = response.data.results.map((o) => o.model);
-        const duplicatedModel = response.data.results.filter(
-          ({ model }, index) => !idsModel.includes(model, index + 1)
-        );
-        const idsVarian = response.data.results.map(o => o.varian)
-        const duplicatedVarian = response.data.results.filter(({varian}, index) => !idsVarian.includes(varian, index + 1))
-
-        setDefaultAreaModel(duplicatedModel);
-        setDefaultAreaVarian(duplicatedVarian)
-        console.log('duplicatedModel', duplicatedModel)
-        console.log('duplicatedVarian', duplicatedVarian)
-        if(response.data.results.length === 0){
-          setDefaultArea([])
-          setDefaultAreaModel([])
-          setDefaultAreaVarian([])
-        }
-        if(response.data.results.length === 0 && item !== ""){
-          setsearchEmpty(true)
-        } else {
-          setsearchEmpty(false)
-        }
-      })
-      .catch((err) => {
-        console.warn(err.response);
-      });
+          const idsVarian = response.data.results.map(o => o.varian)
+          const duplicatedVarian = response.data.results.filter(({varian}, index) => !idsVarian.includes(varian, index + 1))
+  
+          setDefaultAreaModel(duplicatedModel);
+          setDefaultAreaVarian(duplicatedVarian)
+          console.log('duplicatedModel', duplicatedModel)
+          console.log('duplicatedVarian', duplicatedVarian)
+          if(response.data.results.length === 0){
+            setDefaultArea([])
+            setDefaultAreaModel([])
+            setDefaultAreaVarian([])
+          }
+          if(response.data.results.length === 0 && item !== ""){
+            setsearchEmpty(true)
+          } else {
+            setsearchEmpty(false)
+          }
+        })
+        .catch((err) => {
+          console.warn(err.response);
+        });
+    }
   };
 
   const getDataKu = async (item) => {
@@ -1761,7 +1833,7 @@ export default function MyAppbar(props) {
                     </Button> */}
                   </label>
                 : <span></span>}
-                {/* <span><button onClick={() => console.log('props', props)}>cek props</button></span>} */}
+                <span><button onClick={() => console.log('props', props)}>cek props</button></span>}
                 
                 <Button
                   disableRipple
@@ -1936,9 +2008,12 @@ export default function MyAppbar(props) {
                     (props.ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1)
                     ?
                     <div>
-                      {areasSelectedUsers()}
+                      {/* {areasSelectedUsers()} */}
+                      {areasSelectedRole()}
                       <hr/>
-                      {choseUsers()}
+                      {/* {choseUsers()} */}
+                      <p>Role</p>
+                      {choseRole()}
                     </div>
                     :
                     (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)
