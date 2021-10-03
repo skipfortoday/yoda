@@ -34,7 +34,7 @@ export default function CMUMerkModelVariant(props) {
       dat.index = idx + 1;
     });
     console.log('filteredData doSort', tempData)
-    setData(tempData)
+    setFilteredData(tempData)
   }
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function CMUMerkModelVariant(props) {
   const [InputVarian, setInputVarian] = useState(INPUTS[2]);
 
   function sortMerekDesc() {
-    const mydata = [...Data].sort(function (a, b) {
+    const mydata = [...filteredData].sort(function (a, b) {
       let x = a.merek.toLowerCase();
       let y = b.merek.toLowerCase();
       if (x < y) {
@@ -117,7 +117,7 @@ export default function CMUMerkModelVariant(props) {
   }
   
   function sortMerekAsc() {
-    const mydata = [...Data].sort(function (a, b) {
+    const mydata = [...filteredData].sort(function (a, b) {
       let x = a.merek.toLowerCase();
       let y = b.merek.toLowerCase();
       if (x < y) {
@@ -134,7 +134,7 @@ export default function CMUMerkModelVariant(props) {
   }
   
   function sortModelDesc() {
-    const mydata = [...Data].sort(function (a, b) {
+    const mydata = [...filteredData].sort(function (a, b) {
       let x = a.model.toLowerCase();
       let y = b.model.toLowerCase();
       if (x < y) {
@@ -151,7 +151,7 @@ export default function CMUMerkModelVariant(props) {
   }
   
   function sortModelAsc() {
-    const mydata = [...Data].sort(function (a, b) {
+    const mydata = [...filteredData].sort(function (a, b) {
       let x = a.model.toLowerCase();
       let y = b.model.toLowerCase();
       if (x < y) {
@@ -168,7 +168,7 @@ export default function CMUMerkModelVariant(props) {
   }
   
   function sortVarianAsc() {
-    const mydata = [...Data].sort((a, b) => {
+    const mydata = [...filteredData].sort((a, b) => {
       let x = a.varian.toLowerCase();
       let y = b.varian.toLowerCase();
       if (x < y) {
@@ -186,7 +186,7 @@ export default function CMUMerkModelVariant(props) {
   }
   
   function sortVarianDesc() {
-    const mydata = [...Data].sort((a, b) => {
+    const mydata = [...filteredData].sort((a, b) => {
       let x = a.varian.toLowerCase();
       let y = b.varian.toLowerCase();
       if (x < y) {
