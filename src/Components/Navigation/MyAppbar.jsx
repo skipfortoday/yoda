@@ -1088,25 +1088,25 @@ export default function MyAppbar(props) {
   }
 
   const areasSelectedRole = () => {
-    return selectedAreaRole.map((user) => {
-      return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
-              {user.role}
+    return selectedAreaRole.map((role) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(role)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {role.role}
             </Button>
     })
   }
 
   const areasSelectedStatus = () => {
-    return selectedAreaStatus.map((user) => {
-      return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
-              {user.user_status}
+    return selectedAreaStatus.map((user_status) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(user_status)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {user_status.user_status}
             </Button>
     })
   }
 
   const areasSelectedCabangUser = () => {
-    return selectedAreaCabangUser.map((user) => {
-      return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
-              {user.location}
+    return selectedAreaCabangUser.map((location) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(location)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {location.location}
             </Button>
     })
   }
@@ -1773,6 +1773,9 @@ export default function MyAppbar(props) {
     else if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
       setShowFilter(true)
     }
+    else if(ActivePage === 1 && ActiveSubTab === 1 && ActiveTab ===1){
+      setShowFilter(true)
+    }
     else {
       setShowFilter(false)
       setShowUpload(false)
@@ -1794,6 +1797,9 @@ export default function MyAppbar(props) {
     }
     if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
       setActiveTabel('users')
+    }
+    if(ActivePage === 1 && ActiveSubTab === 1 && ActiveTab ===1){
+      setActiveTabel('users_external')
     }
   }, [ActivePage, ActiveSubTab, ActiveTab])
 
@@ -1911,6 +1917,7 @@ export default function MyAppbar(props) {
                     </Button> */}
                   </label>
                 : <span></span>}
+                {/* <button onClick={() => console.log(props)}>lah</button> */}
                 <Button
                   disableRipple
                   id="basic-button"
