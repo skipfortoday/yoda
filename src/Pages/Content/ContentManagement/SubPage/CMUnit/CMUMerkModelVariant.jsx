@@ -104,7 +104,8 @@ export default function CMUMerkModelVariant(props) {
       }
       return 0;
     });
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
@@ -120,7 +121,8 @@ export default function CMUMerkModelVariant(props) {
       }
       return 0;
     });
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
@@ -136,7 +138,8 @@ export default function CMUMerkModelVariant(props) {
       }
       return 0;
     });
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
@@ -152,7 +155,8 @@ export default function CMUMerkModelVariant(props) {
       }
       return 0;
     });
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
@@ -169,7 +173,8 @@ export default function CMUMerkModelVariant(props) {
       return 0;
     });
     
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
@@ -186,7 +191,8 @@ export default function CMUMerkModelVariant(props) {
       return 0;
     });
     
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   

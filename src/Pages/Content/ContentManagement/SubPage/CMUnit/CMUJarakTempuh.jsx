@@ -85,7 +85,7 @@ export default function CMUJarakTempuh(props) {
   useEffect(() => {
     setMenuAnchorEl(null);
     ResetInputs();
-    // LoadData();
+    LoadData();
   }, [props.val]);
 
   async function LoadData() {
