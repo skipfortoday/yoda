@@ -39,8 +39,8 @@ export default function CMUTahun(props) {
      })
   }
 
-  function doSort() {
-    var tempData = filteredDataTahun
+  function doSort(items) {
+    var tempData = items
     tempData.forEach((dat, idx) => {
       dat.index = idx + 1;
     });
@@ -67,7 +67,7 @@ export default function CMUTahun(props) {
     if(isFilter){
       console.log('props filteredDataTahun', filteredDataTahun)
       // setData(filteredDataTahun)
-      doSort()
+      doSort(filteredDataTahun)
     }
   }, [props.dataSort, isFilter]);
 
@@ -84,7 +84,8 @@ export default function CMUTahun(props) {
       return 0;
     });
     
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
@@ -104,7 +105,8 @@ export default function CMUTahun(props) {
       return 0;
     });
     
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
