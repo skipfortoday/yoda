@@ -34,16 +34,12 @@ export default function UserManagementPage() {
     const thisToken = sessionStorage.getItem('token')
     console.log('thisToken', thisToken)
     // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
-    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+    const baseURL= "https://yodacentral.herokuapp.com/api"
 
     // console.log('GetAllUsers')
     var AllUsers = [];
     try {
-      const data = await axios.get(`${baseURL}/users`, {
-        headers: {
-          Authorization: `Bearer ${thisToken}`,
-        },
-      })
+      const data = await axiosBackend.get(`/users`)
       console.log('data', data)
       if(data.status === 200){
         AllUsers = data.data.users

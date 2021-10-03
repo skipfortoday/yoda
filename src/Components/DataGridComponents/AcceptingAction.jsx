@@ -55,7 +55,7 @@ export default function AcceptingAction(props) {
   }
 
   return (
-    <Box sx={{ width: '100%', minHeight: Hide?40:0 }} onMouseEnter={() => setHide(false)} onMouseLeave={() => setHide(true)} >
+    <Box sx={{ width: '100%', minHeight: Hide?80:0 }} onMouseEnter={() => setHide(false)} onMouseLeave={() => setHide(true)} >
       <Stack sx={{ width: '100%' }} direction="row" spacing={2} justifyContent="flex-end" >
         <Box sx={{ display: Hide?'none' : 'block' }}>
           <Button variant="text" color="red20" size="small" onClick={handleRejectorDeleteUser}>{TEXTS?.redButton||'Ditolak'}</Button>
@@ -82,7 +82,7 @@ export default function AcceptingAction(props) {
             />
           </Popover>
         </Box>
-      </Stack>
-    </Box>
+       </Stack>
+     </Box>
   )
 }

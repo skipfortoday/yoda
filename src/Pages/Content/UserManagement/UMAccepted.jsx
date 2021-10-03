@@ -12,13 +12,14 @@ import {
   Popover,
 } from "@mui/material";
 import UMEdit from "./UMEdit";
+import PopupEdit from "../../../Components/DataGridComponents/PopupEdit.jsx"
 
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
   const { reload } = props;
   const [ActiveRole, setActiveRole] = useState(0);
   const [EditData, setEditData] = useState(null);
-  const [data, setdata] = useState(props.data)
+  const [data, setdata] = useState(props.data);
 
   const [CurentData, setCurentData] = useState([]);
   const [CurentDataFiltered, setCurentDataFiltered] = useState([]);
@@ -31,69 +32,89 @@ export default function UMAccepted(props) {
   }, []);
 
   function myFunctionDesc() {
-    const mydata = [...CurentDataFiltered].sort(function(a, b){
+    const mydata = [...CurentDataFiltered].sort(function (a, b) {
       let x = a.name.toLowerCase();
       let y = b.name.toLowerCase();
-      if (x < y) {return 1;}
-      if (x > y) {return -1;}
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
       return 0;
     });
-    setCurentDataFiltered(mydata)
-    console.log('mydata', mydata)
+    setCurentDataFiltered(mydata);
+    console.log("mydata", mydata);
   }
 
   function myFunctionAsc() {
-    const mydata = [...CurentDataFiltered].sort(function(a, b){
+    const mydata = [...CurentDataFiltered].sort(function (a, b) {
       let x = a.name.toLowerCase();
       let y = b.name.toLowerCase();
-      if (x < y) {return -1;}
-      if (x > y) {return 1;}
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
       return 0;
     });
     data.map((item) => {
-      console.log('item', item.name)
-    })
-    setCurentDataFiltered(mydata)
-    console.log('mydata', mydata)
+      console.log("item", item.name);
+    });
+    setCurentDataFiltered(mydata);
+    console.log("mydata", mydata);
   }
 
   function sortHpDesc() {
-    const mydata = [...CurentDataFiltered].sort(function(a, b){
+    const mydata = [...CurentDataFiltered].sort(function (a, b) {
       let x = a.phone_number;
       let y = b.phone_number;
-      if (x < y) {return 1;}
-      if (x > y) {return -1;}
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
       return 0;
     });
-    setCurentDataFiltered(mydata)
-    console.log('mydata', mydata)
+    setCurentDataFiltered(mydata);
+    console.log("mydata", mydata);
   }
 
   function sortHpAsc() {
-    const mydata = [...CurentDataFiltered].sort(function(a, b){
+    const mydata = [...CurentDataFiltered].sort(function (a, b) {
       let x = a.phone_number;
       let y = b.phone_number;
-      if (x < y) {return -1;}
-      if (x > y) {return 1;}
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
       return 0;
     });
     data.map((item) => {
-      console.log('item', item.name)
-    })
-    setCurentDataFiltered(mydata)
-    console.log('mydata', mydata)
+      console.log("item", item.name);
+    });
+    setCurentDataFiltered(mydata);
+    console.log("mydata", mydata);
   }
 
   function sortDateAsc() {
-    const mydata = [...CurentDataFiltered].sort((a, b) => (new Date(a.created_at)) - (new Date(b.created_at)))
+    const mydata = [...CurentDataFiltered].sort(
+      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+    );
 
-    setCurentDataFiltered(mydata)
+    setCurentDataFiltered(mydata);
   }
 
   function sortDateDesc() {
-    const mydata = [...CurentDataFiltered].sort((a, b) => (new Date(b.created_at)) - new Date(a.created_at))
+    const mydata = [...CurentDataFiltered].sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
 
-    setCurentDataFiltered(mydata)
+    setCurentDataFiltered(mydata);
   }
 
   // const [SelectedItems, setSelectedItems] = useState([])
@@ -101,27 +122,27 @@ export default function UMAccepted(props) {
   // console.warn(SelectedItems)
 
   useEffect(() => {
-    if(props.dataSort){
-      if(props.dataSort === "nameDesc"){
-        myFunctionDesc()
+    if (props.dataSort) {
+      if (props.dataSort === "nameDesc") {
+        myFunctionDesc();
       }
-      if(props.dataSort === "nameAsc"){
-        myFunctionAsc()
+      if (props.dataSort === "nameAsc") {
+        myFunctionAsc();
       }
-      if(props.dataSort === "hpAsc"){
-        sortHpAsc()
+      if (props.dataSort === "hpAsc") {
+        sortHpAsc();
       }
-      if(props.dataSort === "hpDesc"){
-        sortHpDesc()
+      if (props.dataSort === "hpDesc") {
+        sortHpDesc();
       }
-      if(props.dataSort === "dateAsc"){
-        sortDateAsc()
+      if (props.dataSort === "dateAsc") {
+        sortDateAsc();
       }
-      if(props.dataSort === "dateDesc"){
-        sortDateDesc()
+      if (props.dataSort === "dateDesc") {
+        sortDateDesc();
       }
     }
-  }, [props.dataSort])
+  }, [props.dataSort]);
 
   const handleChangeTab = (newTabIndex) => {
     setActiveRole(newTabIndex);
@@ -153,14 +174,14 @@ export default function UMAccepted(props) {
       flex: 1,
       renderCell: StylingNameEmail,
     },
-    { field: "phone_number", headerName: "No. Handphone", minWidth: 160 },
+    { field: "phone_number", headerName: "No. Handphone", minWidth: 160, renderCell: StylingPhoneNumber },
     {
       field: "role",
       headerName: "Role",
       minWidth: 150,
       renderCell: StylingRole,
     },
-    { field: "location", headerName: "Kantor", minWidth: 160 },
+    { field: "location", headerName: "Kantor", minWidth: 160, renderCell: StylingLocation },
     {
       field: "created_at",
       headerName: "Tanggal registrasi",
@@ -178,10 +199,30 @@ export default function UMAccepted(props) {
 
   function StylingNameEmail(params) {
     return (
-      <AvatarNameEmail
-        name={params.row.name}
-        email={params.row.email}
-        profile_picture={params.row.profile_picture}
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={"name"}
+      />
+    );
+  }
+
+  function StylingPhoneNumber(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={"phone_number"}
+      />
+    );
+  }
+
+  function StylingLocation(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={"location"}
       />
     );
   }
@@ -191,29 +232,24 @@ export default function UMAccepted(props) {
   }
 
   function StylingRole(params) {
-    return <Typography fontSize={14}>{params.value}</Typography>;
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={"role"}
+        value={params.value}
+      />
+    );
   }
 
   function StylingStatus(params) {
     return (
-      <Typography
-        fontSize={14}
-        color={
-          params.value.toLowerCase() === "active"
-            ? "success.main"
-            : params.value.toLowerCase() === "aktif"
-            ? "success.main"
-            : params.value.toLowerCase() === "not active"
-            ? "tint.yellow"
-            : params.value.toLowerCase() === "tidak aktif"
-            ? "tint.yellow"
-            : params.value.toLowerCase() === "non aktif"
-            ? "tint.yellow"
-            : "text.primary"
-        }
-      >
-        {params.value}
-      </Typography>
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={"user_status"}
+        value={params.value}
+      />
     );
   }
 
@@ -246,7 +282,6 @@ export default function UMAccepted(props) {
       //   filterData()
       // }
     }
-
   }, [props.dataFilter]);
 
   return (
@@ -268,27 +303,27 @@ export default function UMAccepted(props) {
         ))}
       </Stack>
       <Box fullWidth sx={{ maxHeight: "70vh", height: "70vh" }}>
-        <Popover
-          open={isMainMenuOpen}
-          onClose={() => setMenuAnchorEl(null)}
-          anchorEl={MenuanchorEl}
-          anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-        >
-          <UMEdit
-            data={EditData}
-            // acceptBtnClick={() => {}}
-            setMenuAnchorEl={setMenuAnchorEl}
-            reload={reload}
-            // fromPage={fromPage}
-          />
-        </Popover>
+          {/* <Popover
+            open={isMainMenuOpen}
+            onClose={() => setMenuAnchorEl(null)}
+            anchorEl={MenuanchorEl}
+            anchorOrigin={{
+              vertical: "center",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "center",
+              horizontal: "right",
+            }}
+          >
+            <UMEdit
+              data={EditData}
+              // acceptBtnClick={() => {}}
+              setMenuAnchorEl={setMenuAnchorEl}
+              reload={reload}
+              // fromPage={fromPage}
+            />
+          </Popover> */}
         <DataGrid
           columns={DATAGRID_COLUMNS}
           rows={CurentDataFiltered}

@@ -16,6 +16,8 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import axiosBackend from "../../../Helper/axiosBackend";
+import axios from 'axios'
+
 let obj = {
   data: {
     // cellMode: "view"
@@ -37,18 +39,18 @@ let obj = {
 
 export default function UMEdit(props) {
   console.log(props.data, "EDIT USER");
-  const { data, reload } = props;
+  const { data, reload, field } = props;
   const { setMenuAnchorEl } = props;
   const [Switch, setSwitch] = useState(false);
   const [ListKantor, setListKantor] = useState([]);
   const [ListRoles, setListRoles] = useState([]);
 
-  const [InputName, setInputName] = useState(data.row.name);
-  const [InputEmail, setInputEmail] = useState(data.row.email);
+  const [InputName, setInputName] = useState(data.name);
+  const [InputEmail, setInputEmail] = useState(data.email);
   const [InputPhoneNumber, setInputPhoneNumber] = useState("");
-  const [InputRole, setInputRole] = useState(data.row.role);
-  const [InputLocation, setInputLocation] = useState(data.row.location);
-  const [InputStatus, setInputStatus] = useState(data.row.user_status);
+  const [InputRole, setInputRole] = useState(data.role);
+  const [InputLocation, setInputLocation] = useState(data.location);
+  const [InputStatus, setInputStatus] = useState(data.user_status);
   // console.log(InputRole)
 
   useEffect(() => {
@@ -57,8 +59,13 @@ export default function UMEdit(props) {
   }, []);
 
   const loadKantor = async () => {
-    await axiosBackend
-      .get("/dropdown-kantor")
+    await axios
+      .get("https://yodacentral.herokuapp.com/api/dropdown-kantor",{
+        headers: {
+          // Authorization: auth.token == null ? null : `Bearer ${auth.token}`
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`
+        }
+      })
       .then((res) => {
         console.log(res, "RES LIST KANTOR");
         setListKantor(res.data.kantor);
@@ -69,8 +76,13 @@ export default function UMEdit(props) {
   };
 
   const loadRoles = async () => {
-    await axiosBackend
-      .get("/dropdown-roles")
+    await axios
+      .get("https://yodacentral.herokuapp.com/api/dropdown-roles",{
+        headers: {
+          // Authorization: auth.token == null ? null : `Bearer ${auth.token}`
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`
+        }
+      })
       .then((res) => {
         console.log(res.data.roles, "RES LIST ROLES");
         setListRoles(res.data.roles);
@@ -81,74 +93,79 @@ export default function UMEdit(props) {
   };
 
   const handleEditUser = async () => {
-    if (data.field === "name") {
+    if (field === "name") {
       console.log(InputName, "IN");
       console.log(InputEmail, "IE");
       await axiosBackend
         .post("/um/updateNamaEmail", {
-          id: data.row.id,
+          id: data.id,
           name: InputName,
           email: InputEmail,
         })
         .then((res) => {
           console.log(res);
           setMenuAnchorEl(null);
+          reload()
         })
         .catch((err) => {
           console.log(err.response);
           setMenuAnchorEl(null);
         });
-    } else if (data.field === "phone_number") {
-      await axiosBackend
+      } else if (field === "phone_number") {
+        await axiosBackend
         .post("/um/updateNoHP", {
-          id: data.row.id,
+          id: data.id,
           phone_number: InputPhoneNumber,
         })
         .then((res) => {
           console.log(res);
           setMenuAnchorEl(null);
+          reload()
         })
         .catch((err) => {
           console.log(err.response);
           setMenuAnchorEl(null);
         });
-    } else if (data.field === "role") {
+    } else if (field === "role") {
       await axiosBackend
-        .post("/um/updateRole", {
-          id: data.row.id,
-          role_name: InputRole,
-        })
+      .post("/um/updateRole", {
+        id: data.id,
+        role_name: InputRole,
+      })
+      .then((res) => {
+        console.log(res);
+        setMenuAnchorEl(null);
+        reload()
+      })
+      .catch((err) => {
+        console.log(err.response);
+        setMenuAnchorEl(null);
+      });
+    } else if (field === "location") {
+      await axiosBackend
+      .post("/um/updateKantor", {
+        id: data.id,
+        location: InputLocation,
+      })
         .then((res) => {
           console.log(res);
           setMenuAnchorEl(null);
+          reload()
         })
         .catch((err) => {
           console.log(err.response);
           setMenuAnchorEl(null);
         });
-    } else if (data.field === "location") {
-      await axiosBackend
-        .post("/um/updateKantor", {
-          id: data.row.id,
-          location: InputLocation,
-        })
-        .then((res) => {
-          console.log(res);
-          setMenuAnchorEl(null);
-        })
-        .catch((err) => {
-          console.log(err.response);
-          setMenuAnchorEl(null);
-        });
-    } else if (data.field === "user_status") {
-      await axiosBackend
+      } else if (field === "user_status") {
+        await axiosBackend
         .post("/um/updateStatus", {
-          id: data.row.id,
+          id: data.id,
           user_status: InputStatus,
         })
         .then((res) => {
           console.log(res);
           setMenuAnchorEl(null);
+          reload()
         })
         .catch((err) => {
           console.log(err.response);
@@ -180,7 +197,9 @@ export default function UMEdit(props) {
     //     SendData();
     //   }
     // }
+    console.log("Before Reload")
     reload()
+    console.log("After Reload")
   };
 
   return (
@@ -210,7 +229,7 @@ export default function UMEdit(props) {
         <Collapse in={!Switch} timeout="auto" unmountOnExit>
           <CardContent>
             <Stack spacing={1}>
-              {props.data.field === "name" ? (
+              {field === "name" ? (
                 <>
                   <InputLabel htmlFor="input-1">Name</InputLabel>
                   <Input
@@ -221,7 +240,7 @@ export default function UMEdit(props) {
                       console.log(e.target.value);
                       setInputName(e.target.value);
                     }}
-                    defaultValue={data.row.name}
+                    defaultValue={data.name}
                   ></Input>
 
                   <InputLabel htmlFor="input-1">Email</InputLabel>
@@ -233,13 +252,13 @@ export default function UMEdit(props) {
                       console.log(e.target.value);
                       setInputEmail(e.target.value);
                     }}
-                    defaultValue={data.row.email}
+                    defaultValue={data.email}
                   ></Input>
                 </>
               ) : (
                 <></>
               )}
-              {props.data.field === "phone_number" ? (
+              {field === "phone_number" ? (
                 <>
                   <InputLabel htmlFor="input-1">Phone Number</InputLabel>
                   <Input
@@ -250,17 +269,17 @@ export default function UMEdit(props) {
                       console.log(e.target.value);
                       setInputPhoneNumber(e.target.value);
                     }}
-                    defaultValue={data.row.phone_number}
+                    defaultValue={data.phone_number}
                   ></Input>
                 </>
               ) : (
                 <></>
               )}
-              {props.data.field === "role" ? (
+              {field === "role" ? (
                 <>
                   <InputLabel htmlFor="input-1">Role</InputLabel>
 
-                  <Select labelId="roles" id="roles" value={InputRole}>
+                  <Select labelId="roles" id="roles" defaultValue={InputRole}>
                     {ListRoles?.map((data, idx) => {
                       return (
                         <MenuItem
@@ -279,7 +298,7 @@ export default function UMEdit(props) {
               ) : (
                 <></>
               )}
-              {props.data.field === "location" ? (
+              {field === "location" ? (
                 <>
                   <InputLabel htmlFor="input-1">Kantor</InputLabel>
                   <Select
@@ -305,10 +324,10 @@ export default function UMEdit(props) {
               ) : (
                 <></>
               )}
-              {props.data.field === "user_status" ? (
+              {field === "user_status" ? (
                 <>
                   <InputLabel htmlFor="input-1">Status</InputLabel>
-                  <Select labelId="roles" id="roles" value={InputStatus.toString()}>
+                  <Select labelId="roles" id="roles" defaultValue={InputStatus}>
                     <MenuItem
                       value="Aktif"
                       key="0"
@@ -319,13 +338,13 @@ export default function UMEdit(props) {
                       Aktif
                     </MenuItem>
                     <MenuItem
-                      value="Non Aktif"
+                      value="Tidak Aktif"
                       key="1"
                       onClick={() => {
-                        setInputStatus("Non Aktif");
+                        setInputStatus("Tidak Aktif");
                       }}
                     >
-                      Non Aktif
+                      Tidak Aktif
                     </MenuItem>
                   </Select>
                 </>
