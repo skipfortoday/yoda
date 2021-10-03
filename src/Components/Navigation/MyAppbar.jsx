@@ -922,6 +922,7 @@ export default function MyAppbar(props) {
   const [selectedAreaProvinsi, setSelectedAreaProvinsi] = useState([]);
   const [selectedAreaKota, setSelectedAreaKota] = useState([]);
   const [selectedAreaKecamatan, setSelectedAreaKecamatan] = useState([]);
+  const [selectedAreaCabang, setSelectedAreaCabang] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -932,6 +933,7 @@ export default function MyAppbar(props) {
   const [defaultAreaProvinsi, setdefaultAreaProvinsi] = useState([]);
   const [defaultAreaKota, setdefaultAreaKota] = useState([]);
   const [defaultAreaKecamatan, setdefaultAreaKecamatan] = useState([]);
+  const [defaultAreaCabang, setdefaultAreaCabang] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -1152,6 +1154,14 @@ export default function MyAppbar(props) {
     setSelectedAreaKecamatan(duplicated)
   }
 
+  const pushCabang = (item) => {
+    const data = selectedAreaCabang.concat(item)
+    const ids = data.map(o => o.cabang_pengelola)
+    const duplicated = data.filter(({cabang_pengelola}, index) => !ids.includes(cabang_pengelola, index + 1))
+    console.log('duplicated setSelectedAreaCabang', duplicated)
+    setSelectedAreaCabang(duplicated)
+  }
+
 
   // jarak tempuh
   const pushJarak = (item) => {
@@ -1226,6 +1236,12 @@ export default function MyAppbar(props) {
   const choseKecamatan = () => {
     return defaultAreaKecamatan.map((kecamatan) => {
       return <button onClick={() => pushKecamatan(kecamatan)} className="btn-list-sort">{kecamatan.kecamatan}</button>
+    })
+  }
+
+  const choseCabang = () => {
+    return defaultAreaCabang.map((cabang_pengelola) => {
+      return <button onClick={() => pushCabang(cabang_pengelola)} className="btn-list-sort">{cabang_pengelola.cabang_pengelola}</button>
     })
   }
 
@@ -1479,10 +1495,15 @@ export default function MyAppbar(props) {
           const duplicatedKecamatan = response.data.results.filter(
             ({ kecamatan }, index) => !idsKecamatan.includes(kecamatan, index + 1)
           );
+          const idsCabang = response.data.results.map((o) => o.cabang_pengelola);
+          const duplicatedCabang = response.data.results.filter(
+            ({ cabang_pengelola }, index) => !idsCabang.includes(cabang_pengelola, index + 1)
+          );
           console.log('duplicatedProvinsi', duplicatedProvinsi)
           setdefaultAreaProvinsi(duplicatedProvinsi)
           setdefaultAreaKota(duplicatedKota)
           setdefaultAreaKecamatan(duplicatedKecamatan)
+          setdefaultAreaCabang(duplicatedCabang)
         }
         
         const idsModel = response.data.results.map((o) => o.model);
@@ -1931,6 +1952,13 @@ export default function MyAppbar(props) {
                         <span></span>
                       }
                       {choseKecamatan()}
+                      {defaultAreaCabang.length > 0
+                        ?
+                        <p>Cabang pengelola</p>
+                        :
+                        <span></span>
+                      }
+                      {choseCabang()}
                     </div>
                     :
                     <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
