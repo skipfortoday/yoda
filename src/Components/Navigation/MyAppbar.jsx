@@ -992,6 +992,9 @@ export default function MyAppbar(props) {
     const arrayRole = selectedAreaRole.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayStatus = selectedAreaStatus.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
@@ -1002,6 +1005,7 @@ export default function MyAppbar(props) {
     setSelectedAreaKecamatan(arrayKecamatan)
     setSelectedAreaCabang(arrayCabang)
     setSelectedAreaRole(arrayRole)
+    setSelectedAreaStatus(arrayStatus)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaUsers(arrayUsers)
   }
@@ -1081,6 +1085,14 @@ export default function MyAppbar(props) {
     return selectedAreaRole.map((user) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {user.role}
+            </Button>
+    })
+  }
+
+  const areasSelectedStatus = () => {
+    return selectedAreaStatus.map((user) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {user.user_status}
             </Button>
     })
   }
@@ -1316,6 +1328,7 @@ export default function MyAppbar(props) {
     const filterdataKecamatan = []
     const filterdataCabang = []
     const filterdataRole = []
+    const filterdataStatus = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1365,7 +1378,10 @@ export default function MyAppbar(props) {
       selectedAreaRole.forEach((x) => {
         filterdataRole.push(x.role)
       })
-      getDataUsers(filterdataRole.toString())
+      selectedAreaStatus.forEach((x) => {
+        filterdataStatus.push(x.user_status)
+      })
+      getDataUsers(filterdataRole.toString(), filterdataStatus.toString())
     }
     
     // console.log('filterdataMerek.toString()',filterdataMerek.toString())
@@ -1399,9 +1415,10 @@ export default function MyAppbar(props) {
     })
   }
 
-  const getDataUsers= async (role) => {
+  const getDataUsers= async (role, Status) => {
     await axios.post('https://yodacentral.herokuapp.com/api/filterUser',{
-      role: role
+      role: role,
+      Status: Status
     })
     .then((response) =>{ 
       console.log('response', response.data.results)
@@ -2032,6 +2049,7 @@ export default function MyAppbar(props) {
                     <div>
                       {/* {areasSelectedUsers()} */}
                       {areasSelectedRole()}
+                      {areasSelectedStatus()}
                       <hr/>
                       {/* {choseUsers()} */}
                       <p>Role</p>
