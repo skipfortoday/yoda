@@ -1467,6 +1467,7 @@ export default function MyAppbar(props) {
                   aria-haspopup="true"
                   aria-expanded={openSort ? "true" : undefined}
                   onClick={handleClick}
+                  className={`btn-list-tab`}
                   startIcon={<ImportExportIcon />}
                 >
                   {"Sortir"}
@@ -1655,6 +1656,16 @@ export default function MyAppbar(props) {
               </Search> */}
             </>
           ) : null}
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon sx={{ color: "tint.black.60" }} />
+            </SearchIconWrapper>
+            <StyledInputBaseFilter
+              color="primary"
+              placeholder="Cari . . ."
+              inputProps={{ "aria-label": "search" }}
+            />
+          </Search>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={1} color="red20">
