@@ -1458,7 +1458,7 @@ export default function MyAppbar(props) {
                     <div className="flex tab-sort mt-8">{choseTab()}</div>
                     <hr className="border-grey my-5" />
                     <p>
-                    <button onClick={() => console.log(props)}>cek</button>
+                    {/* <button onClick={() => console.log(props)}>cek</button> */}
                       <b>Urutkan Berdasarkan</b>
                     </p>
                     <div className="list-filter">{choseListFilter()}</div>

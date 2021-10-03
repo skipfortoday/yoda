@@ -53,7 +53,7 @@ export default function CMUMerkModelVariant(props) {
     setMenuAnchorEl(null);
     ResetInputs();
     if (props.dataFiltered) {
-      setData(props.dataFiltered);
+      // setData(props.dataFiltered);
       if (props.dataFiltered.length === 0) {
         if(!isFilter){
           console.log('props dataFiltered === 0')
