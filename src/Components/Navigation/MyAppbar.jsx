@@ -1158,6 +1158,7 @@ export default function MyAppbar(props) {
     const filterdataMerek = []
     const filterdataModel = []
     const filterdataVarian = []
+    const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
       selectedAreaJarak.forEach((x) => {
@@ -1167,8 +1168,9 @@ export default function MyAppbar(props) {
     if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
       console.log('selectedAreaTahun', selectedAreaTahun)
       selectedAreaTahun.forEach((x) => {
-        filterModel.push(x.tahun)
+        filterdataTahun.push(x.tahun)
       })
+      getDataTahun(filterdataTahun.toString())
     }
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       console.log('selectedAreaModel', selectedAreaModel)
@@ -1181,6 +1183,7 @@ export default function MyAppbar(props) {
       selectedAreaVarian.forEach((x) => {
         filterdataVarian.push(x.varian)
       })
+      getDataKuNew(filterdataMerek.toString(), filterdataModel.toString(), filterdataVarian.toString())
     }
     if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab === 1){
       console.log('filterUser')
@@ -1192,7 +1195,6 @@ export default function MyAppbar(props) {
     console.log('filterdataMerek.toString()',filterdataMerek.toString())
     console.log('filterdataModel.toString()',filterdataModel.toString())
     console.log('filterdataVarian', filterdataVarian.toString())
-    getDataKuNew(filterdataMerek.toString(), filterdataModel.toString(), filterdataVarian.toString())
     // handleCloseFilter()
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
@@ -1220,6 +1222,24 @@ export default function MyAppbar(props) {
         console.log('res getFilteredDataMerekModel', response.data.results)
         props.getFilteredDataMerekModel(response.data.results)
       }
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  const getDataTahun = async (tahun) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/filterTahun',{
+      tahun: tahun
+    })
+    .then((response) =>{
+      setFilteredData(response.data.results)
+      console.log('res getFilteredDataTahun', response.data.results)
+      props.getFilteredDataTahun(response.data.results)
       props.doFilter(true)
       setTimeout(() => {
         props.doFilter(false)
