@@ -18,22 +18,36 @@ const INPUTS = [
 ];
 
 export default function CMUMerkModelVariant(props) {
-  // console.log('props CMUMerkModelVariant', props)
+  console.log('props CMUMerkModelVariant', props)
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
 
   const [Data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const { dataSort } = props;
+  const { dataSort, isFilter } = props;
   // const [DataMerek, setDataMerek] = useState(props.dataFiltered);
 
+  function doSort(items) {
+    var tempData = items
+    tempData.forEach((dat, idx) => {
+      dat.index = idx + 1;
+    });
+    console.log('filteredData doSort', tempData)
+    setData(tempData)
+  }
+
   useEffect(() => {
-    LoadData();
-    if(props.filteredData){
-      setFilteredData(props.filteredData)
+    // LoadData();
+    // if(props.filteredData){
+    //   setFilteredData(props.filteredData)
+    // }
+    if(isFilter){
+      console.log('props filteredDataTahun', props.filteredData)
+      // setData(filteredDataTahun)
+      doSort(props.filteredData)
     }
-  }, [props.filteredData]);
+  }, [props.filteredData, isFilter]);
 
   useEffect(() => {
     setMenuAnchorEl(null);
@@ -106,9 +120,6 @@ export default function CMUMerkModelVariant(props) {
       }
       return 0;
     });
-    mydata.map((item) => {
-      console.log("item", item.name);
-    });
     setData(mydata);
     console.log("mydata", mydata);
   }
@@ -141,9 +152,6 @@ export default function CMUMerkModelVariant(props) {
       }
       return 0;
     });
-    mydata.map((item) => {
-      console.log("item", item.name);
-    });
     setData(mydata);
     console.log("mydata", mydata);
   }
@@ -151,7 +159,7 @@ export default function CMUMerkModelVariant(props) {
   function sortVarianAsc() {
     const mydata = [...Data].sort((a, b) => {
       let x = a.varian.toLowerCase();
-      let y = b.carian.toLowerCase();
+      let y = b.varian.toLowerCase();
       if (x < y) {
         return -1;
       }
@@ -168,7 +176,7 @@ export default function CMUMerkModelVariant(props) {
   function sortVarianDesc() {
     const mydata = [...Data].sort((a, b) => {
       let x = a.varian.toLowerCase();
-      let y = b.carian.toLowerCase();
+      let y = b.varian.toLowerCase();
       if (x < y) {
         return 1;
       }
@@ -375,7 +383,7 @@ export default function CMUMerkModelVariant(props) {
 
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={filteredData}
+          rows={Data}
           checkboxSelection
           onSelectionModelChange={(newId) => {
             props.changeIcons(newId, "merek-model-varian");

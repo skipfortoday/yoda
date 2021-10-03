@@ -914,6 +914,7 @@ export default function MyAppbar(props) {
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
   const [defaultAreaModel, setDefaultAreaModel] = useState([]);
+  const [defaultAreaVarian, setDefaultAreaVarian] = useState([]);
   const [defaultAreaJarak, setDefaultAreaJarak] = useState([]);
   const [defaultAreaTahun, setdefaultAreaTahun] = useState([]);
 
@@ -945,12 +946,14 @@ export default function MyAppbar(props) {
     const arrayModel = selectedAreaModel.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayVarian = selectedAreaVarian.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
-    console.log('data arrayModel', arrayModel)
     setSelectedAreaModel(arrayModel)
-
+    setSelectedAreaVarian(arrayVarian)
   }
 
   const choseAreas = () => {
@@ -980,6 +983,14 @@ export default function MyAppbar(props) {
     return selectedAreaModel.map((area) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {area.model}
+            </Button>
+    })
+  }
+
+  const areasSelectedVarian = () => {
+    return selectedAreaVarian.map((area) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {area.varian}
             </Button>
     })
   }
@@ -1040,6 +1051,15 @@ export default function MyAppbar(props) {
     })
   }
 
+  const pushVarian = (item) => {
+    setSelectedMerek(item.varian)
+    const data = selectedAreaVarian.concat(item)
+    const ids = data.map(o => o.varian)
+    const duplicated = data.filter(({varian}, index) => !ids.includes(varian, index + 1))
+    console.log('duplicated setSelectedAreaVarian', duplicated)
+    setSelectedAreaVarian(duplicated)
+  }
+
   // jarak tempuh
   const pushJarak = (item) => {
     const data = selectedAreaJarak.concat(item)
@@ -1066,6 +1086,12 @@ export default function MyAppbar(props) {
   const choseModel = () => {
     return defaultAreaModel.map((model) => {
       return <button onClick={() => pushModel(model)} className="btn-list-sort">{model.model}</button>
+    })
+  }
+
+  const choseVarian = () => {
+    return defaultAreaVarian.map((varian) => {
+      return <button onClick={() => pushVarian(varian)} className="btn-list-sort">{varian.varian}</button>
     })
   }
 
@@ -1105,6 +1131,9 @@ export default function MyAppbar(props) {
       })
       selectedAreaModel.forEach((x) => {
         filterModel.push(x.model)
+      })
+      selectedAreaVarian.forEach((x) => {
+        filterModel.push(x.varian)
       })
     }
     
@@ -1181,18 +1210,21 @@ export default function MyAppbar(props) {
         const duplicatedModel = response.data.results.filter(
           ({ model }, index) => !idsModel.includes(model, index + 1)
         );
-        // console.log('res get filter', response.data.results)
+        const idsVarian = response.data.results.map(o => o.varian)
+        const duplicatedVarian = response.data.results.filter(({varian}, index) => !idsVarian.includes(varian, index + 1))
 
         setDefaultAreaModel(duplicatedModel);
-        // if (duplicated.length === 0) {
-        //   setsearchEmpty(true);
-        //   if (defaultArea > 0) {
-        //     setnoArea(false);
-        //   }
-        // } else {
-        //   setnoArea(false);
-        //   setsearchEmpty(false);
-        // }
+        setDefaultAreaVarian(duplicatedVarian)
+        if(response.data.results.length === 0){
+          setDefaultArea([])
+          setDefaultAreaModel([])
+          setDefaultAreaVarian([])
+        }
+        if(response.data.results.length === 0 && item !== ""){
+          setsearchEmpty(true)
+        } else {
+          setsearchEmpty(false)
+        }
       })
       .catch((err) => {
         console.warn(err.response);
@@ -1458,6 +1490,7 @@ export default function MyAppbar(props) {
                         {/* {areasSelected()} */}
                         {areasSelected()}
                         {areasSelectedModel()}
+                        {areasSelectedVarian()}
                       </div>
                       <hr/>
                       {/* <div>
@@ -1466,10 +1499,12 @@ export default function MyAppbar(props) {
                       </div> */}
                       <div>
                       <button onClick={() => console.log('defaultAreaModel', defaultAreaModel)}>defaultAreaModel</button>
-                        <p>Merek</p>
+                        {/* <p>Merek</p>
                         {choseMerek()}
                         <p>Model</p>
-                        {choseModel()}
+                        {choseModel()} */}
+                        <p>Varian</p>
+                        {choseVarian()}
                         {/* {noArea ? 
                           <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
                           <span></span>

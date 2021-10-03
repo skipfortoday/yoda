@@ -596,6 +596,7 @@ export default function CMUnit(props) {
           val={Deleted}
           dataSort={dataSort}
           filteredData={filteredData}
+          isFilter={isFilter}
         />
       ),
     },
