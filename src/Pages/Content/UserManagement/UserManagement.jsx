@@ -122,6 +122,16 @@ export default function UserManagementPage() {
     setActiveSubTab(val)
   }
 
+  const [isFilter, setIsFilter] = useState(false);
+  const [filteredDataInternal, setFilteredData] = useState([]);
+  const doFilter = (val) => {
+    setIsFilter(val)
+  }
+  const getFilteredDataInternal = (val) => {
+    console.log('getFilteredDataInternal', val)
+    setFilteredData(val)
+  }
+
   useEffect(() => {
     LoadWaitingData()
     LoadAcceptedData()
@@ -141,6 +151,7 @@ export default function UserManagementPage() {
             dataSort={dataSort}
             dataFilter={dataFilter}
             currentSubTab={(val) => {currentSubTab(val)}}
+            isFilter={isFilter}
             reload={() => {LoadAcceptedData(); /*console.log('LoadAcceptedData')*/}} /> },
       { value: 2, label: 'Ditolak', content: <UMRejected data={RejectedData} dataSort={dataSort} reload={() => {LoadRejectedData(); /*console.log('LoadRejectedData')*/}} /> },
     ]
@@ -156,6 +167,9 @@ export default function UserManagementPage() {
         ActivePage={ActivePage}
         sendData={getData}
         getDataFilter={getDataFilter}
+        doFilter={doFilter}
+        getFilteredDataInternal={getFilteredDataInternal}
+        filteredDataInternal={filteredDataInternal}
       />
 
       <Container maxWidth="xl">

@@ -917,6 +917,7 @@ export default function MyAppbar(props) {
   const [defaultAreaVarian, setDefaultAreaVarian] = useState([]);
   const [defaultAreaJarak, setDefaultAreaJarak] = useState([]);
   const [defaultAreaTahun, setdefaultAreaTahun] = useState([]);
+  const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
     setDefaultArea(defaultArea)
@@ -1107,6 +1108,12 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseUsers = () => {
+    return defaultAreaUsers.map((user) => {
+      return <button onClick={() => pushTahun(user)} className="btn-list-sort">{user.user_status}</button>
+    })
+  }
+
   
   const doFilterData = async () => {
     // console.log('selectedArea', selectedArea)
@@ -1136,11 +1143,17 @@ export default function MyAppbar(props) {
         filterModel.push(x.varian)
       })
     }
+    if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab === 1){
+      console.log('filterUser')
+      // selectedAreaTahun.forEach((x) => {
+      //   filterModel.push(x.tahun)
+      // })
+    }
     
-    console.log('filterModel.toString()',filterModel.toString())
-    console.log('activeTabel', activeTabel)
-    getDataKu(filterModel.toString())
-    handleCloseFilter()
+    // console.log('filterModel.toString()',filterModel.toString())
+    // console.log('activeTabel', activeTabel)
+    // getDataKu(filterModel.toString())
+    // handleCloseFilter()
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
@@ -1206,6 +1219,15 @@ export default function MyAppbar(props) {
           console.log('tahun_pembuatans', response.data.results)
           setdefaultAreaTahun(response.data.results)
         }
+        if(activeTabel === "users"){
+          console.log('users', response.data.results)
+          const idsUsers = response.data.results.map((o) => o.model);
+          const duplicatedUser = response.data.results.filter(
+            ({ model }, index) => !idsUsers.includes(model, index + 1)
+          );
+          console.log('duplicatedUser users', duplicatedUser)
+          setdefaultAreaUsers(duplicatedUser)
+        }
         setDefaultArea(duplicated);
         console.log('duplicated', duplicated)
         const idsModel = response.data.results.map((o) => o.model);
@@ -1269,6 +1291,9 @@ export default function MyAppbar(props) {
     else if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
       setShowFilter(true)
     }
+    else if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
+      setShowFilter(true)
+    }
     else {
       setShowFilter(false)
     }
@@ -1283,6 +1308,9 @@ export default function MyAppbar(props) {
     }
     if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
       setActiveTabel('tahun_pembuatans')
+    }
+    else if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
+      setActiveTabel('users')
     }
   }, [ActivePage, ActiveSubTab, ActiveTab])
 
@@ -1560,6 +1588,13 @@ export default function MyAppbar(props) {
                       <hr/>
                       {choseTahun()}
                       <button onClick={() => console.log('defaultAreaTahun', defaultAreaTahun)}>defaultAreaTahun</button>
+                    </div>
+                    :
+                    (props.ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1)
+                    ?
+                    <div>
+                      {/* choseUsers
+                      {choseUsers} */}
                     </div>
                     :
                     <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
