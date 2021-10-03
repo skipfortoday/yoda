@@ -961,6 +961,9 @@ export default function MyAppbar(props) {
     const arrayVarian = selectedAreaVarian.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayProvinsi = selectedAreaProvinsi.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     const arrayTahun = selectedAreaTahun.filter(function(element, i) {
       return element.id !== item.id;
     });
@@ -972,6 +975,7 @@ export default function MyAppbar(props) {
     setSelectedMerek(item.name)
     setSelectedAreaModel(arrayModel)
     setSelectedAreaVarian(arrayVarian)
+    setSelectedAreaProvinsi(arrayProvinsi)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaTahun(arrayUsers)
   }
@@ -1011,6 +1015,14 @@ export default function MyAppbar(props) {
     return selectedAreaVarian.map((area) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {area.varian}
+            </Button>
+    })
+  }
+
+  const areasSelectedProvinsi = () => {
+    return selectedAreaProvinsi.map((provinsi) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(provinsi)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {provinsi.provinsi}
             </Button>
     })
   }
@@ -1770,7 +1782,7 @@ export default function MyAppbar(props) {
                     (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)
                     ?
                     <div>
-                      {/* {areasSelectedUsers()} */}
+                      {areasSelectedProvinsi()}
                       wilayah
                       <hr/>
                       {choseProvinsi()}
