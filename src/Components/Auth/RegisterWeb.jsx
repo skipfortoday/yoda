@@ -23,7 +23,7 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-
+import DownloadIcon from '@mui/icons-material/Download';
 
 export default function RegisterWeb(props) {
   const theme = useTheme();
@@ -371,32 +371,29 @@ export default function RegisterWeb(props) {
                 <FormControl variant="outlined" color="primary" fullWidth
                   error={PhoneNumber.error}
                 >
+                  <InputLabel htmlFor="login-form-number">{TEXTS.form2.phoneNumber}</InputLabel>
                   <OutlinedInput
                     id="login-form-number"
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                     type="text"
                     value={PhoneNumber.value}
                     onChange={(e) => setPhoneNumber({...PhoneNumber, value: e.target.value})}
-                    // InputProps={{
-                    //   startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-                    // }}
+                    startAdornment={<InputAdornment position="start">+62</InputAdornment>}
                     endAdornment={
-                      <span>
-                        <InputAdornment position="end">
-                          { PhoneNumber.disabled? ( <BlockIcon /> )
-                            : PhoneNumber.value===''? ( <PhoneIcon /> )
-                            : PhoneNumber.value!==''? ( <PhoneIcon color="primary" /> )
-                            // : PhoneNumber.value!==''? (
-                            //   <IconButton edge="end"
-                            //     onClick={() => setPhoneNumber({...PhoneNumber, value: ''})}
-                            //   >
-                            //     <CancelIcon />
-                            //   </IconButton>
-                            // )
-                            : null
-                          }
-                        </InputAdornment>
-                      </span>
+                      <InputAdornment position="start">
+                        { PhoneNumber.disabled? ( <BlockIcon /> )
+                          : PhoneNumber.value===''? ( <PhoneIcon /> )
+                          : PhoneNumber.value!==''? ( <PhoneIcon color="primary" /> )
+                          // : PhoneNumber.value!==''? (
+                          //   <IconButton edge="end"
+                          //     onClick={() => setPhoneNumber({...PhoneNumber, value: ''})}
+                          //   >
+                          //     <CancelIcon />
+                          //   </IconButton>
+                          // )
+                          : null
+                        }
+                      </InputAdornment>
                     }
                     label={TEXTS.form2.phoneNumber}
                   />
