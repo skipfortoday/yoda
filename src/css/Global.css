@@ -29,6 +29,11 @@ a {
   display: flex;
 }
 
+.hr-filter{
+  margin-top: 20px;
+  border: 1px solid #E8E8E8;
+}
+
 /* margin */
 .m-1 {
   margin: 0.25rem !important;
@@ -100,6 +105,9 @@ a {
 }
 
 /* color */
+.color-primary {
+  color: #25282B; 
+}
 .bg-gray-main {
   background:#E8E8E8 !important;
 }

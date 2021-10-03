@@ -15,7 +15,8 @@ import UMEdit from "./UMEdit";
 
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
-  const { reload } = props;
+  const [ActiveSubPage, setActiveSubPage] = useState(0);
+  const { reload, currentSubTab } = props;
   const [ActiveRole, setActiveRole] = useState(0);
   const [EditData, setEditData] = useState(null);
   const [data, setdata] = useState(props.data)
@@ -260,6 +261,8 @@ export default function UMAccepted(props) {
             size="large"
             color={ActiveRole === index ? "mint20" : "grey20"}
             onClick={() => {
+              setActiveSubPage(index);
+              currentSubTab(index);
               handleChangeTab(index);
             }}
           >

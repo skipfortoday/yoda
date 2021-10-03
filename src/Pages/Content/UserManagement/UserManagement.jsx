@@ -11,6 +11,7 @@ import axios from 'axios'
 export default function UserManagementPage() {
   const ActivePage = 1; // Staticly Setup for Active Menu
   const [ActiveTab, setActiveTab] = useState(0)
+  const [ActiveSubTab, setActiveSubTab] = useState(0);
 
   const [WaitingData, setWaitingData] = useState([])
   const [AcceptedData, setAcceptedData] = useState([])
@@ -116,6 +117,11 @@ export default function UserManagementPage() {
     setDataFilter(val)
   }
 
+  const currentSubTab = (val) => {
+    console.log('currentSubTab 1 => ', val)
+    setActiveSubTab(val)
+  }
+
   useEffect(() => {
     LoadWaitingData()
     LoadAcceptedData()
@@ -126,7 +132,16 @@ export default function UserManagementPage() {
     header: 'Manajemen pengguna',
     tabsMenu: [
       { value: 0, label: 'Menunggu konfirmasi', content: <UMWaiting data={WaitingData} dataSort={dataSort} reload={() => {LoadWaitingData(); /*console.log('LoadWaitingData')*/}} /> },
-      { value: 1, label: 'Disetujui', content: <UMAccepted data={AcceptedData} dataSort={dataSort} dataFilter={dataFilter} reload={() => {LoadAcceptedData(); /*console.log('LoadAcceptedData')*/}} /> },
+      { 
+        value: 1, 
+        label: 'Disetujui', 
+        content: 
+          <UMAccepted
+            data={AcceptedData}
+            dataSort={dataSort}
+            dataFilter={dataFilter}
+            currentSubTab={(val) => {currentSubTab(val)}}
+            reload={() => {LoadAcceptedData(); /*console.log('LoadAcceptedData')*/}} /> },
       { value: 2, label: 'Ditolak', content: <UMRejected data={RejectedData} dataSort={dataSort} reload={() => {LoadRejectedData(); /*console.log('LoadRejectedData')*/}} /> },
     ]
   }
@@ -137,6 +152,7 @@ export default function UserManagementPage() {
         header={DATA.header}
         tabsMenu={DATA.tabsMenu}
         ActiveTab={ActiveTab} setActiveTab={setActiveTab}
+        ActiveSubTab={ActiveSubTab}
         ActivePage={ActivePage}
         sendData={getData}
         getDataFilter={getDataFilter}

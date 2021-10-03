@@ -1182,8 +1182,10 @@ export default function MyAppbar(props) {
   const [filteredData, setFilteredData] = useState([]);
   const [activeTabel, setActiveTabel] = useState('');
   const [showFilter, setShowFilter] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   const doSearch = async (item) => {
+    setSearchValue(item)
     await axiosBackend
       .post("/filter2", {
         table: activeTabel,
@@ -1293,15 +1295,16 @@ export default function MyAppbar(props) {
   }, [ActiveTab]);
 
   useEffect(() => {
-    if (defaultArea.length === 0) {
-      if (selectedArea.length === 0) {
-        setnoArea(true);
+    if (defaultArea.length === 0 && searchValue === ""){
+      // console.log('default area length', defaultArea.length)
+      if(selectedArea.length === 0){
+        setnoArea(true)
       }
     } else {
-      setnoArea(false);
+      setnoArea(false)
     }
     setNameSort(texts[0].name);
-  }, [defaultArea]);
+  }, [defaultArea, searchValue]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -1427,6 +1430,7 @@ export default function MyAppbar(props) {
                     <div className="flex tab-sort mt-8">{choseTab()}</div>
                     <hr className="border-grey my-5" />
                     <p>
+                    <button onClick={() => console.log(props)}>cek</button>
                       <b>Urutkan Berdasarkan</b>
                     </p>
                     <div className="list-filter">{choseListFilter()}</div>
@@ -1482,7 +1486,7 @@ export default function MyAppbar(props) {
                         />
                       </Search>
                     </div>
-                    <button onClick={() => console.log('cek props', props)}>cek props</button>
+                    {/* <button onClick={() => console.log('cek props', props)}>cek props</button> */}
                     { (props.ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0) ?
                     <div>
                       <div className="mt-5">
@@ -1492,24 +1496,48 @@ export default function MyAppbar(props) {
                         {areasSelectedModel()}
                         {areasSelectedVarian()}
                       </div>
-                      <hr/>
+                      {selectedArea.length > 0 || selectedAreaModel.length > 0 || selectedAreaVarian.length > 0
+                        ? <hr className="hr-filter"/>
+                        : <span></span>
+                      }
                       {/* <div>
                         <p>Chose</p>
                         {choseAreas()}
                       </div> */}
                       <div>
-                      <button onClick={() => console.log('defaultAreaModel', defaultAreaModel)}>defaultAreaModel</button>
+                      {/* <button onClick={() => console.log('defaultAreaModel', defaultAreaModel)}>defaultAreaModel</button> */}
                         {/* <p>Merek</p>
                         {choseMerek()}
                         <p>Model</p>
                         {choseModel()} */}
-                        <p>Varian</p>
+                        {defaultArea.length > 0
+                         ? <p className="color-primary">Merek</p>
+                         : <span></span>
+                        }
+                        {choseMerek()}
+                        {defaultAreaModel.length > 0
+                         ? <p className="color-primary">Model</p>
+                         : <span></span>
+                        }
+                        {choseModel()}
+                        {defaultAreaVarian.length > 0
+                         ? <p className="color-primary">Varian</p>
+                         : <span></span>
+                        }
                         {choseVarian()}
                         {/* {noArea ? 
                           <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
                           <span></span>
+                        } */}
+                        {defaultArea.length === 0 && defaultAreaModel.length === 0 && defaultAreaVarian.length === 0 && searchValue === ""
+                          ? <div className="empty-search">Isi keyword untuk melakukan pencarian.</div>
+                          : <span></span>
                         }
-                        {searchEmpty ? 
+                        {defaultArea.length === 0 && defaultAreaModel.length === 0 && defaultAreaVarian.length === 0 && searchValue !== ""
+                          ? <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div>
+                          : <span></span>
+                        }
+                        {/* {searchEmpty ? 
                           <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div> : 
                           <span></span>
                         } */}
