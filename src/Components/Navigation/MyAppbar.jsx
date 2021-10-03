@@ -1187,6 +1187,7 @@ export default function MyAppbar(props) {
     const filterdataMerek = []
     const filterdataModel = []
     const filterdataVarian = []
+    const filterdataProvinsi = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1200,6 +1201,14 @@ export default function MyAppbar(props) {
         filterdataTahun.push(x.tahun)
       })
       getDataTahun(filterdataTahun.toString())
+    }
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1){
+      console.log('selectedAreaProvinsi', selectedAreaProvinsi)
+      selectedAreaProvinsi.forEach((x) => {
+        filterdataProvinsi.push(x.provinsi)
+      })
+      console.log('filterdataProvinsi', filterdataProvinsi)
+      getDataWilayah(filterdataProvinsi.toString())
     }
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       console.log('selectedAreaModel', selectedAreaModel)
@@ -1221,13 +1230,42 @@ export default function MyAppbar(props) {
       // })
     }
     
-    console.log('filterdataMerek.toString()',filterdataMerek.toString())
-    console.log('filterdataModel.toString()',filterdataModel.toString())
-    console.log('filterdataVarian', filterdataVarian.toString())
+    // console.log('filterdataMerek.toString()',filterdataMerek.toString())
+    // console.log('filterdataModel.toString()',filterdataModel.toString())
+    // console.log('filterdataVarian', filterdataVarian.toString())
     // handleCloseFilter()
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
+  }
+
+  const getDataWilayah= async (provinsi) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/filterWilayah',{
+      provinsi: provinsi
+    })
+    .then((response) =>{ 
+      console.log('response provinsi', response)
+      // setFilteredData(response.data.results)
+      // if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+      //   console.log('res getFilteredDataJarak', response.data.results)
+      //   props.getFilteredDataJarak(response.data.results)
+      // }
+      // if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      //   console.log('res getFilteredDataTahun', response.data.results)
+      //   props.getFilteredDataTahun(response.data.results)
+      // }
+      // if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      //   console.log('res getFilteredDataMerekModel', response.data.results)
+      //   props.getFilteredDataMerekModel(response.data.results)
+      // }
+      // props.doFilter(true)
+      // setTimeout(() => {
+      //   props.doFilter(false)
+      // }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
   }
 
   const getDataKuNew = async (merek, model, varian) => {
@@ -1251,6 +1289,24 @@ export default function MyAppbar(props) {
         console.log('res getFilteredDataMerekModel', response.data.results)
         props.getFilteredDataMerekModel(response.data.results)
       }
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  const getDataProvinsi = async (tahun) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/filterTahun',{
+      tahun: tahun
+    })
+    .then((response) =>{
+      setFilteredData(response.data.results)
+      console.log('res getFilteredDataTahun', response.data.results)
+      props.getFilteredDataTahun(response.data.results)
       props.doFilter(true)
       setTimeout(() => {
         props.doFilter(false)
@@ -1372,6 +1428,8 @@ export default function MyAppbar(props) {
 
         setDefaultAreaModel(duplicatedModel);
         setDefaultAreaVarian(duplicatedVarian)
+        console.log('duplicatedModel', duplicatedModel)
+        console.log('duplicatedVarian', duplicatedVarian)
         if(response.data.results.length === 0){
           setDefaultArea([])
           setDefaultAreaModel([])
@@ -1599,7 +1657,7 @@ export default function MyAppbar(props) {
                     </Button> */}
                   </label>
                 : <span></span>}
-                <span><button onClick={() => console.log('activeTabel', activeTabel)}>cek props</button></span>}
+                <span><button onClick={() => console.log('props', props)}>cek props</button></span>}
                 
                 <Button
                   disableRipple
