@@ -966,6 +966,9 @@ export default function MyAppbar(props) {
     const arrayProvinsi = selectedAreaProvinsi.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayKota = selectedAreaKota.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     const arrayTahun = selectedAreaTahun.filter(function(element, i) {
       return element.id !== item.id;
     });
@@ -978,6 +981,7 @@ export default function MyAppbar(props) {
     setSelectedAreaModel(arrayModel)
     setSelectedAreaVarian(arrayVarian)
     setSelectedAreaProvinsi(arrayProvinsi)
+    setSelectedAreaKota(arrayKota)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaTahun(arrayUsers)
   }
@@ -1025,6 +1029,14 @@ export default function MyAppbar(props) {
     return selectedAreaProvinsi.map((provinsi) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(provinsi)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {provinsi.provinsi}
+            </Button>
+    })
+  }
+
+  const areasSelectedKota= () => {
+    return selectedAreaKota.map((kota) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(kota)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {kota.kota}
             </Button>
     })
   }
@@ -1204,6 +1216,7 @@ export default function MyAppbar(props) {
     const filterdataModel = []
     const filterdataVarian = []
     const filterdataProvinsi = []
+    const filterdataKota = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1223,8 +1236,11 @@ export default function MyAppbar(props) {
       selectedAreaProvinsi.forEach((x) => {
         filterdataProvinsi.push(x.provinsi)
       })
+      selectedAreaKota.forEach((x) => {
+        filterdataKota.push(x.kota)
+      })
       console.log('filterdataProvinsi', filterdataProvinsi)
-      getDataWilayah(filterdataProvinsi.toString())
+      getDataWilayah(filterdataProvinsi.toString(), filterdataKota.toString())
     }
     if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
       console.log('selectedAreaModel', selectedAreaModel)
@@ -1255,9 +1271,10 @@ export default function MyAppbar(props) {
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
   }
 
-  const getDataWilayah= async (provinsi) => {
+  const getDataWilayah= async (provinsi, kota) => {
     await axios.post('https://yodacentral.herokuapp.com/api/filterWilayah',{
-      provinsi: provinsi
+      provinsi: provinsi,
+      kota: kota
     })
     .then((response) =>{ 
       console.log('response provinsi', response)
@@ -1852,6 +1869,7 @@ export default function MyAppbar(props) {
                     ?
                     <div>
                       {areasSelectedProvinsi()}
+                      {areasSelectedKota()}
                       wilayah
                       <hr/>
                       <p>provinsi</p>
