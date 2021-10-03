@@ -1327,6 +1327,7 @@ export default function MyAppbar(props) {
     }
     else {
       setShowFilter(false)
+      setShowUpload(false)
     }
   }, [ActivePage, ActiveSubTab, ActiveTab])
 
