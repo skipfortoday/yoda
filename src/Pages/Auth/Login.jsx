@@ -191,7 +191,7 @@ export default function LoginPage() {
                 />
               </FormControl>
               <FormControl fullWidth>
-                {isRemember ? <p>true</p> : <p>false</p>}
+                {/* {isRemember ? <p>true</p> : <p>false</p>} */}
                 <Stack direction="row" alignItems="center" alignContent="space-between" sx={{ width: '100%' }}>
                   <FormGroup sx={{ flexGrow: 1 }}>
                     <FormControlLabel control={
