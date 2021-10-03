@@ -924,6 +924,7 @@ export default function MyAppbar(props) {
   const [selectedAreaKecamatan, setSelectedAreaKecamatan] = useState([]);
   const [selectedAreaCabang, setSelectedAreaCabang] = useState([]);
   const [selectedAreaRole, setSelectedAreaRole] = useState([]);
+  const [selectedAreaStatus, setSelectedAreaStatus] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -936,6 +937,7 @@ export default function MyAppbar(props) {
   const [defaultAreaKecamatan, setdefaultAreaKecamatan] = useState([]);
   const [defaultAreaCabang, setdefaultAreaCabang] = useState([]);
   const [defaultAreaRole, setdefaultAreaRole] = useState([]);
+  const [defaultAreaStatus, setdefaultAreaStatus] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -1192,6 +1194,14 @@ export default function MyAppbar(props) {
     setSelectedAreaRole(duplicated)
   }
 
+  const pushStatus = (item) => {
+    const data = selectedAreaStatus.concat(item)
+    const ids = data.map(o => o.user_status)
+    const duplicated = data.filter(({user_status}, index) => !ids.includes(user_status, index + 1))
+    console.log('duplicated setSelectedAreaStatus', duplicated)
+    setSelectedAreaStatus(duplicated)
+  }
+
 
   // jarak tempuh
   const pushJarak = (item) => {
@@ -1278,6 +1288,12 @@ export default function MyAppbar(props) {
   const choseRole = () => {
     return defaultAreaRole.map((user) => {
       return <button onClick={() => pushRole(user)} className="btn-list-sort">{user.role}</button>
+    })
+  }
+
+  const choseStatus = () => {
+    return defaultAreaStatus.map((user) => {
+      return <button onClick={() => pushStatus(user)} className="btn-list-sort">{user.user_status}</button>
     })
   }
 
@@ -1522,7 +1538,12 @@ export default function MyAppbar(props) {
           const duplicatedRole = response.data.results.filter(
             ({ role }, index) => !idsRole.includes(role, index + 1)
           );
+          const idsStatus = response.data.results.map((o) => o.user_status);
+          const duplicatedStatus = response.data.results.filter(
+            ({ user_status }, index) => !idsStatus.includes(user_status, index + 1)
+          );
           setdefaultAreaRole(duplicatedRole);
+          setdefaultAreaStatus(duplicatedStatus);
           if(response.data.results.length === 0){
             setdefaultAreaRole([])
           }
@@ -2015,6 +2036,8 @@ export default function MyAppbar(props) {
                       {/* {choseUsers()} */}
                       <p>Role</p>
                       {choseRole()}
+                      <p>Status</p>
+                      {choseStatus()}
                     </div>
                     :
                     (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)
