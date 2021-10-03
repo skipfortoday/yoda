@@ -1078,6 +1078,7 @@ export default function MyAppbar(props) {
     console.log('filterModel.toString()',filterModel.toString())
     console.log('activeTabel', activeTabel)
     getDataKu(filterModel.toString())
+    handleCloseFilter()
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
@@ -1175,6 +1176,10 @@ export default function MyAppbar(props) {
         console.log('res getFilteredDataMerekModel', response.data.results)
         props.getFilteredDataMerekModel(response.data.results)
       }
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
     })
     .catch((err) => { 
       console.warn(err.response)

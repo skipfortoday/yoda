@@ -22,9 +22,10 @@ export default function CMUJarakTempuh(props) {
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
-  const { dataSort } = props;
+  const { dataSort, isFilter } = props;
 
   async function sortJarakTempuhUnitDesc() {
+    console.log('Data => Dsc', Data)
     const mydata = [...Data].sort(function (a, b) {
       let x = a.jarak_tempuh.toLowerCase();
       let y = b.jarak_tempuh.toLowerCase();
@@ -36,11 +37,15 @@ export default function CMUJarakTempuh(props) {
       }
       return 0;
     });
+    mydata.map((item) => {
+      console.log("item", item);
+    });
     setData(mydata);
-    console.log("mydata", mydata);
+    console.log("mydata Dsc => ", mydata);
   }
 
   async function sortJarakTempuhUnitAsc() {
+    console.log('Data => Asc', Data)
     const mydata = [...Data].sort(function (a, b) {
       let x = a.jarak_tempuh.toLowerCase();
       let y = b.jarak_tempuh.toLowerCase();
@@ -53,14 +58,15 @@ export default function CMUJarakTempuh(props) {
       return 0;
     });
     mydata.map((item) => {
-      console.log("item", item.name);
+      console.log("item", item);
     });
     setData(mydata);
-    console.log("mydata", mydata);
+    console.log("mydata Asc => ", mydata);
   }
 
   useEffect(() => {
     if (dataSort) {
+      console.log('dataSort')
       if (dataSort === "jarakTempuhUnitDesc") {
         sortJarakTempuhUnitDesc();
       }
@@ -70,16 +76,16 @@ export default function CMUJarakTempuh(props) {
     }else{
       sortJarakTempuhUnitDesc();
     }
-    if(props.filteredDataJarak){
-      setFilteredDataJarak(props.filteredDataJarak)
+    if(isFilter){
+      console.log('props filteredDataJarak', props.filteredDataJarak)
+      setData(props.filteredDataJarak)
     }
-    LoadData();
-  }, [props.filteredDataJarak]);
+  }, [isFilter, dataSort]);
   
   useEffect(() => {
     setMenuAnchorEl(null);
     ResetInputs();
-    LoadData();
+    // LoadData();
   }, [props.val]);
 
   async function LoadData() {
@@ -214,7 +220,7 @@ export default function CMUJarakTempuh(props) {
       <Box fullWidth sx={{ maxHeight: "70vh", height: "70vh" }}>
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={filteredDataJarak}
+          rows={Data}
           checkboxSelection
           onSelectionModelChange={(newId) => {
             props.changeIcons(newId, "jarak-tempuh");

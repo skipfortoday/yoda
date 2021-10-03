@@ -23,7 +23,7 @@ export default function CMUnit(props) {
   const [DeleteChosenId, setDeleteChosenId] = useState([]);
   const [DeleteType, setDeleteType] = useState(false);
   const [Deleted, setDeleted] = useState(false);
-  const { currentSubTab, dataSort } = props;
+  const { currentSubTab, dataSort, isFilter } = props;
   const [filteredData, setFilteredData] = useState([]);
   const [filteredDataJarak, setFilteredDataJarak] = useState([]);
 
@@ -629,6 +629,7 @@ export default function CMUnit(props) {
           val={Deleted}
           dataSort={dataSort}
           filteredDataJarak={filteredDataJarak}
+          isFilter={isFilter}
         />
       ),
     },

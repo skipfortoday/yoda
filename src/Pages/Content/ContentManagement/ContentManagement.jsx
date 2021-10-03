@@ -16,6 +16,7 @@ export default function ContentManagementPage() {
   const [filteredData, setFilteredData] = useState([]);
   const [filteredDataJarak, setFilteredDataJarak] = useState([]);
   const [dataFilterMulti, setDataFilterMulti] = useState([]);
+  const [isFilter, setIsFilter] = useState(false);
   const getDataFilter = (val) => {
     // do not forget to bind getData in constructor
     // console.log('+ filter ContentManagementPage => ',val);
@@ -58,6 +59,10 @@ export default function ContentManagementPage() {
     setFilteredDataJarak(val)
   }
 
+  const doFilter = (val) => {
+    setIsFilter(val)
+  }
+
   const DATA = {
     header: "Manajemen konten",
     tabsMenu: [
@@ -72,6 +77,7 @@ export default function ContentManagementPage() {
             currentSubTab={(val) => {currentSubTab(val)}}
             filteredData={filteredData}
             filteredDataJarak={filteredDataJarak}
+            isFilter={isFilter}
           />
         ),
       },
@@ -96,6 +102,7 @@ export default function ContentManagementPage() {
         getDataFilterMulti={getDataFilterMulti}
         getFilteredDataMerekModel={getFilteredDataMerekModel}
         getFilteredDataJarak={getFilteredDataJarak}
+        doFilter={doFilter}
       />
 
       <Container maxWidth="xl">
