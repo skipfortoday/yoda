@@ -1911,8 +1911,6 @@ export default function MyAppbar(props) {
                     </Button> */}
                   </label>
                 : <span></span>}
-                <span><button onClick={() => console.log('props', props)}>cek props</button></span>}
-                
                 <Button
                   disableRipple
                   id="basic-button"
@@ -2092,11 +2090,20 @@ export default function MyAppbar(props) {
                       {areasSelectedCabangUser()}
                       <hr/>
                       {/* {choseUsers()} */}
-                      <p>Role</p>
+                      {defaultAreaRole.length > 0
+                        ? <p className="color-primary">Role</p>
+                        : <span></span>
+                      }
                       {choseRole()}
-                      <p>Status</p>
+                      {defaultAreaStatus.length > 0
+                        ? <p className="color-primary">Status</p>
+                        : <span></span>
+                      }
                       {choseStatus()}
-                      <p>Cabang</p>
+                      {defaultAreaCabangUser.length > 0
+                        ? <p className="color-primary">Cabang</p>
+                        : <span></span>
+                      }
                       {choseCabangUser()}
                     </div>
                     :
