@@ -10,9 +10,11 @@ const INPUTS = [
 ]
 
 export default function CMUTahun(props) {
+  // console.log('props CMTahun => ', props)
   const [Data, setData] = useState([])
   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
   const thisToken = sessionStorage.getItem('token')
+  const { isFilter, filteredDataTahun } = props;
 
   useEffect(() => { LoadData() }, [])
 
@@ -37,6 +39,14 @@ export default function CMUTahun(props) {
      })
   }
 
+  function doSort(items) {
+    var tempData = items
+    tempData.forEach((dat, idx) => {
+      dat.index = idx + 1;
+    });
+    setData(tempData)
+  }
+
   const { indexPage, ActiveSubPage } = props
   const { isMenuOpen } = props
   const { MenuanchorEl, setMenuAnchorEl } = props
@@ -54,7 +64,12 @@ export default function CMUTahun(props) {
     }else{
       sortTahunDesc();
     }
-  }, [props.dataSort]);
+    if(isFilter){
+      console.log('props filteredDataTahun', filteredDataTahun)
+      // setData(filteredDataTahun)
+      doSort(filteredDataTahun)
+    }
+  }, [props.dataSort, isFilter]);
 
   function sortTahunAsc() {
     const mydata = [...Data].sort((a, b) => {
@@ -69,7 +84,8 @@ export default function CMUTahun(props) {
       return 0;
     });
     
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
@@ -89,7 +105,8 @@ export default function CMUTahun(props) {
       return 0;
     });
     
-    setData(mydata);
+    // setData(mydata);
+    doSort(mydata)
     console.log("mydata", mydata);
   }
   
@@ -124,7 +141,7 @@ export default function CMUTahun(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'tahun', headerName: 'Merek', minWidth: 180, flex: 1 },
+    { field: 'tahun', headerName: 'Tahun pembuatan unit', minWidth: 180, flex: 1 },
   ]
 
   return (

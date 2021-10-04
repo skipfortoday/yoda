@@ -25,6 +25,7 @@ const INPUTS = [
 ];
 
 export default function CMLWilayah(props) {
+  console.log('props CMLWilayah', props)
   const [Data, setData] = useState([]);
   const [Wilayah, setWilayah] = useState([]);
   const [ProvinsiArr, setProvinsiArr] = useState([]);
@@ -35,8 +36,9 @@ export default function CMLWilayah(props) {
   const [Kecamatan, setKecamatan] = useState([]);
   const [CabangArr, setCabangArr] = useState([]);
   const [Cabang, setCabang] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
-  const { dataSort } = props;
+  const { dataSort, isFilter } = props;
 
   const dataType = {
     // "provinsiWilayahDesc": "nama_cabang",
@@ -122,7 +124,7 @@ export default function CMLWilayah(props) {
     }
   }, [dataSort]);
 
-  useEffect(() => { LoadData() }, [])
+  // useEffect(() => { LoadData() }, [])
 
   async function LoadData() {
     await axiosBackend.get('/cm/kantor')
@@ -136,24 +138,36 @@ export default function CMLWilayah(props) {
   }
 
   useEffect(() => {
-    LoadData();
+    // LoadData();
     getWilayah();
     getCabang();
   }, []);
 
+  useEffect(() => {
+    if(isFilter && props.filteredDataWilayah.length > 0){
+      console.log('props filteredDataWilayah', props.filteredData)
+      setFilteredData(props.filteredDataWilayah)
+    }
+    if(!isFilter && props.filteredDataWilayah.length === 0){
+      console.log('data kosong', props)
+      LoadData()
+    }
+  }, [props.filteredDataWilayah, isFilter]);
+
   async function LoadData() {
+    console.log('LoadData setFilteredData')
     await axiosBackend.get("/cm/wilayah").then((response) => {
       var tempData = response.data;
       tempData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setData(tempData);
+      setFilteredData(tempData);
     });
   }
 
   async function getWilayah() {
     await axios
-      .get("https://yodamobi.sagaramedia.id/api/dropdown/indonesia")
+      .get(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/dropdown/indonesia`)
       .then((response) => {
         var tempData = response.data;
         console.log(tempData);
@@ -167,8 +181,8 @@ export default function CMLWilayah(props) {
     }
     
     async function getCabang() {
-      await axios
-      .get("https://yodamobi.sagaramedia.id/api/dropdown/nama-cabang")
+      await axiosBackend
+      .get("/dropdown/nama-cabang")
       .then((response) => {
         var tempData = response.data.nama_cabang;
         console.log(tempData, "CABANG");
@@ -224,7 +238,7 @@ export default function CMLWilayah(props) {
   }
 
   async function InsertData() {
-    await axios.post("https://yodamobi.sagaramedia.id/api/cm/wilayah", {
+    await axios.post(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/cm/wilayah`, {
         provinsi: Provinsi,
         kota: Kota,
         kecamatan: Kecamatan,
@@ -421,7 +435,7 @@ export default function CMLWilayah(props) {
                 value={Cabang}
               >
                 {CabangArr?.map((data, idx) => {
-                  console.log(data, "CABANG INPUT");
+                  // console.log(data, "CABANG INPUT");
                   return (
                   <MenuItem value={data.nama_cabang} key={idx} onClick={() => {
                     setCabang(data.nama_cabang)
@@ -447,7 +461,7 @@ export default function CMLWilayah(props) {
       <Box fullWidth sx={{ maxHeight: "70vh", height: "70vh" }}>
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={Data}
+          rows={filteredData}
           checkboxSelection
           disableColumnResize={false}
           disableSelectionOnClick

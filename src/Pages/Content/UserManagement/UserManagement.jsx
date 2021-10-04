@@ -11,6 +11,7 @@ import axios from "axios";
 export default function UserManagementPage() {
   const ActivePage = 1; // Staticly Setup for Active Menu
   const [ActiveTab, setActiveTab] = useState(0);
+  const [ActiveSubTab, setActiveSubTab] = useState(0);
 
   const [WaitingData, setWaitingData] = useState([]);
   const [AcceptedData, setAcceptedData] = useState([]);
@@ -37,8 +38,7 @@ export default function UserManagementPage() {
   async function GetAllUsers() {
     const thisToken = sessionStorage.getItem("token");
     console.log("thisToken", thisToken);
-    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
-    const baseURL = "https://yodacentral.herokuapp.com/api";
+    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
 
     console.log("GetAllUsers");
     var AllUsers = [];
@@ -118,15 +118,36 @@ export default function UserManagementPage() {
     setDataFilter(val);
   };
 
-  useEffect( () => {
+  useEffect(() => {
     LoadWaitingData();
     LoadAcceptedData();
     LoadRejectedData();
   }, [AllData]);
-  
+
+  const currentSubTab = (val) => {
+    console.log("currentSubTab 1 => ", val);
+    setActiveSubTab(val);
+  };
+
+  const [isFilter, setIsFilter] = useState(false);
+  const [filteredDataInternal, setFilteredDataInternal] = useState([]);
+  const doFilter = (val) => {
+    setIsFilter(val);
+  };
+  const getFilteredDataInternal = (val) => {
+    console.log("getFilteredDataInternal", val);
+    setFilteredDataInternal(val);
+  };
+
+  const [filteredData, setFilteredData] = useState([]);
+  const getFilteredDataUsersInternal = (val) => {
+    console.log("getFilteredDataUsersInternal", val);
+    setFilteredData(val);
+  };
+
   useEffect(() => {
     GetAllUsers();
-  },[])
+  }, []);
 
   const DATA = {
     header: "Manajemen pengguna",
@@ -156,6 +177,14 @@ export default function UserManagementPage() {
               GetAllUsers();
               LoadAcceptedData(); /*console.log('LoadAcceptedData')*/
             }}
+            currentSubTab={(val) => {
+              currentSubTab(val);
+            }}
+            isFilter={isFilter}
+            filteredData={filteredData}
+            reload={() => {
+              LoadAcceptedData(); /*console.log('LoadAcceptedData')*/
+            }}
           />
         ),
       },
@@ -182,9 +211,14 @@ export default function UserManagementPage() {
         tabsMenu={DATA.tabsMenu}
         ActiveTab={ActiveTab}
         setActiveTab={setActiveTab}
+        ActiveSubTab={ActiveSubTab}
         ActivePage={ActivePage}
         sendData={getData}
         getDataFilter={getDataFilter}
+        doFilter={doFilter}
+        getFilteredDataInternal={getFilteredDataInternal}
+        filteredDataInternal={filteredDataInternal}
+        getFilteredDataUsersInternal={getFilteredDataUsersInternal}
       />
 
       <Container maxWidth="xl">

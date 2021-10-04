@@ -58,13 +58,8 @@ export default function UMEdit(props) {
   }, []);
 
   const loadKantor = async () => {
-    await axios
-      .get("https://yodacentral.herokuapp.com/api/dropdown-kantor",{
-        headers: {
-          // Authorization: auth.token == null ? null : `Bearer ${auth.token}`
-          Authorization: `Bearer ${sessionStorage.getItem('token')}`
-        }
-      })
+    await axiosBackend
+      .get("/dropdown-kantor")
       .then((res) => {
         setListKantor(res.data.kantor);
       })
@@ -74,13 +69,8 @@ export default function UMEdit(props) {
   };
 
   const loadRoles = async () => {
-    await axios
-      .get("https://yodacentral.herokuapp.com/api/dropdown-roles",{
-        headers: {
-          // Authorization: auth.token == null ? null : `Bearer ${auth.token}`
-          Authorization: `Bearer ${sessionStorage.getItem('token')}`
-        }
-      })
+    await axiosBackend
+      .get("/dropdown-roles")
       .then((res) => {
         setListRoles(res.data.roles);
       })

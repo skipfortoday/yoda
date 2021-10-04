@@ -29,6 +29,11 @@ a {
   display: flex;
 }
 
+.hr-filter{
+  margin-top: 20px;
+  border: 1px solid #E8E8E8;
+}
+
 /* margin */
 .m-1 {
   margin: 0.25rem !important;
@@ -100,6 +105,13 @@ a {
 }
 
 /* color */
+.color-primary {
+  color: #25282B; 
+}
+.color-primary-grey {
+  color: #A0A4A8 !important;
+}
+
 .bg-gray-main {
   background:#E8E8E8 !important;
 }
@@ -232,4 +244,27 @@ a {
   text-align: center;
   color: #CACCCF;
   padding: 60px 0;
+}
+
+/* .css-1ss5fkm-MuiButtonBase-root-MuiTab-root {
+  background: rgb(221, 221, 221) !important;
+  padding: 0px !important;
+  width: 70px !important;
+  margin: 0px !important;
+} */
+
+.navbar .filteroff{
+  color: #A0A4A8 !important;
+}
+
+.filteron {
+  color: #78C2B4 !important;
+}
+
+.navbar .sortingoff{
+  color: #A0A4A8 !important;
+}
+
+.navbar .sorting {
+  color: #78C2B4 !important;
 }

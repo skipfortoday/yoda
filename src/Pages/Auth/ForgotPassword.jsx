@@ -27,6 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import BlockIcon from "@mui/icons-material/Block";
 import { CheckEmail } from "../../Helper/RegexHelper";
 import axiosBackend from "../../Helper/axiosBackend";
+// import Alert from '@mui/material/Alert';
 
 const TEXTS = {
   main: {
@@ -78,6 +79,28 @@ export default function ForgotPasswordPage() {
       setEmailFormat(true);
     } else {
       setEmailFormat(false);
+  // const [InputEmail, setInputEmail] = useState({ value: '', error: false, disabled: false, });
+  // const [ActiveSection, setActiveSection] = useState(0)
+  // const [emailExist, setEmailExist] = useState(false)
+
+  // async function checkEmailExist() {
+  //   const thisToken = sessionStorage.getItem('token')
+  //   console.log('thisToken', thisToken)
+  //   const baseURL=  process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  //   try {
+  //     await axiosBackend.post(`${baseURL}/check-email`, {
+  //       email: InputEmail,
+  //     })
+  //     console.log('email tidak terdaftar')
+  //     setEmailExist(true)
+  //     setTimeout(()=>{
+  //       setEmailExist(false)
+  //     }, 3000)
+  //   } catch (err){
+  //     handleNextClick()
+  //     console.log('email terdaftar')
+  //     // console.log('err', err)
+
     }
   }
 
@@ -167,6 +190,17 @@ export default function ForgotPasswordPage() {
                 >
                   {TEXTS.form1.header2}
                 </Typography>
+          {/* <Box paddingLeft={upMd?Math.ceil(spaceBetween/2):0} paddingTop={upMd?10:2}>
+            {emailExist ? (
+              <Alert severity="error">Email Tidak Terdaftar</Alert>
+            ) : (
+              <span></span>
+            )}
+            <Collapse in={ActiveSection===0} timeout="auto">
+              <Stack direction="column" sx={{ paddingY: 2, marginBottom: upMd?2:2 }} alignItems="center" spacing={2}>
+                <img src="./images/web/success.png" alt="Success" width={upMd?"200px":"200px"} />
+                <Typography variant="div" fontWeight="bold" fontSize={36} sx={{  }}>{TEXTS.form1.header1}</Typography>
+                <Typography variant="div" fontSize={14} color="text.secondary" sx={{ width: 300, textAlign: 'center' }}>{TEXTS.form1.header2}</Typography> */}
               </Stack>
               <Stack
                 direction="column"
@@ -257,22 +291,8 @@ export default function ForgotPasswordPage() {
                   >
                     {TEXTS.form1.submitButton}
                   </Button>
-                </FormControl>
-              </Stack>
-            </Collapse>
-            <Collapse in={ActiveSection === 1} timeout="auto">
-              <Stack
-                direction="column"
-                sx={{ paddingY: 4, marginBottom: upMd ? 2 : 2 }}
-                alignItems="center"
-                spacing={2}
-              >
-                <img
-                  src="./images/web/success.png"
-                  alt="Success"
-                  width={upMd ? "200px" : "200px"}
-                />
-                <Typography
+                  {/* <Button variant="contained" color="primary" size="large" onClick={checkEmailExist}>{TEXTS.form1.submitButton}</Button> */}
+            <Typography
                   variant="div"
                   fontWeight="bold"
                   fontSize={36}
@@ -288,6 +308,7 @@ export default function ForgotPasswordPage() {
                 >
                   {TEXTS.form2.header2}
                 </Typography>
+                </FormControl>
               </Stack>
               <Stack
                 direction="column"

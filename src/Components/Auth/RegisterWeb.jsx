@@ -39,6 +39,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import Alert from "@mui/material/Alert";
 
+// import DownloadIcon from '@mui/icons-material/Download';
+
 export default function RegisterWeb(props) {
   const theme = useTheme();
   const upMd = useMediaQuery(theme.breakpoints.up("md"));
@@ -101,7 +103,7 @@ export default function RegisterWeb(props) {
 
   async function checkEmailHasBeenRegistered(val){
     const thisToken = sessionStorage.getItem("token");
-    const baseURL = "https://yodacentral.herokuapp.com/api";
+    const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_PROD;
     try {
       const data = await axios.post(`${baseURL}/check-email`, {
         email: val,
@@ -186,8 +188,7 @@ export default function RegisterWeb(props) {
   async function checkEmailExist(val) {
     const thisToken = sessionStorage.getItem("token");
     console.log("thisToken", thisToken);
-    // const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
-    const baseURL = "https://yodacentral.herokuapp.com/api";
+    const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_PROD;
     try {
       const data = await axios.post(`${baseURL}/check-email`, {
         email: InputEmail,
@@ -269,6 +270,7 @@ export default function RegisterWeb(props) {
       setPhoneNumber({ ...PhoneNumber, error: true });
     } else setPhoneNumber({ ...PhoneNumber, error: false });
 
+
     if (FullName.value === "") {
       isPassed = false;
     }
@@ -291,26 +293,45 @@ export default function RegisterWeb(props) {
   }
 
   async function RegisterUser() {
-    await axiosBackend
-      .post("/register", {
-        name: FullName.value,
-        email: InputEmail.value,
-        password: InputPassword.value,
-        password_confirmation: InputCPassword.value,
-        phone_number: PhoneNumber.value,
-        // profile_picture: null,
-      })
-      .then((response) => {
-        console.log(response);
-        handleNextClick();
-      })
-      .catch((err) => {
-        if (err.response.data.errors.password) {
-          setActiveSection(0);
-          setInputPassword({ ...InputPassword, error: true });
-        }
-        console.warn(err.response);
-      });
+    // await axiosBackend
+    //   .post("/register", {
+    //     name: FullName.value,
+    //     email: InputEmail.value,
+    //     password: InputPassword.value,
+    //     password_confirmation: InputCPassword.value,
+    //     phone_number: PhoneNumber.value,
+    //     // profile_picture: null,
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     handleNextClick();
+    //   })
+    //   .catch((err) => {
+    //     if (err.response.data.errors.password) {
+    //       setActiveSection(0);
+    //       setInputPassword({ ...InputPassword, error: true });
+    //     }
+    //     console.warn(err.response);
+    //   });
+    await axiosBackend.post('/register', {
+      name: FullName.value,
+      email: InputEmail.value,
+      password: InputPassword.value,
+      password_confirmation: InputCPassword.value,
+      phone_number: `+62`+PhoneNumber.value,
+      // profile_picture: null,
+    })
+    .then((response) => {
+      console.log(response)
+      handleNextClick()
+    })
+    .catch((err) => {
+      if (err.response.data.errors.password) {
+        setActiveSection(0)
+        setInputPassword({...InputPassword, error: true})
+      }
+      console.warn(err.response)
+    })
   }
 
   function handleToLoginClick() {
@@ -890,28 +911,25 @@ export default function RegisterWeb(props) {
                   </InputLabel>
                   <OutlinedInput
                     id="login-form-number"
-                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 15 }}
                     type="text"
                     value={PhoneNumber.value}
-                    onChange={(e) =>
-                      setPhoneNumber({ ...PhoneNumber, value: e.target.value })
-                    }
+                    onChange={(e) => setPhoneNumber({...PhoneNumber, value: e.target.value})}
+                    startAdornment={<InputAdornment position="start">+62</InputAdornment>}
                     endAdornment={
-                      <InputAdornment position="end">
-                        {PhoneNumber.disabled ? (
-                          <BlockIcon />
-                        ) : PhoneNumber.value === "" ? (
-                          <PhoneIcon />
-                        ) : PhoneNumber.value !== "" ? (
-                          <PhoneIcon color="primary" />
-                        ) : // : PhoneNumber.value!==''? (
-                        //   <IconButton edge="end"
-                        //     onClick={() => setPhoneNumber({...PhoneNumber, value: ''})}
-                        //   >
-                        //     <CancelIcon />
-                        //   </IconButton>
-                        // )
-                        null}
+                      <InputAdornment position="start">
+                        { PhoneNumber.disabled? ( <BlockIcon /> )
+                          : PhoneNumber.value===''? ( <PhoneIcon /> )
+                          : PhoneNumber.value!==''? ( <PhoneIcon color="primary" /> )
+                          // : PhoneNumber.value!==''? (
+                          //   <IconButton edge="end"
+                          //     onClick={() => setPhoneNumber({...PhoneNumber, value: ''})}
+                          //   >
+                          //     <CancelIcon />
+                          //   </IconButton>
+                          // )
+                          : null
+                        }
                       </InputAdornment>
                     }
                     label={TEXTS.form2.phoneNumber}

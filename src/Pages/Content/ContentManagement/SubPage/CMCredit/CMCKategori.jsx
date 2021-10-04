@@ -117,7 +117,7 @@ export default function CMCKategori(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'kategori', headerName: 'Katgori', minWidth: 180, flex: 1 },
+    { field: 'kategori', headerName: 'Kategori', minWidth: 180, flex: 1 },
   ]
 
   return (

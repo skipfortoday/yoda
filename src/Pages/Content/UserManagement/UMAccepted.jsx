@@ -16,7 +16,8 @@ import PopupEdit from "../../../Components/DataGridComponents/PopupEdit.jsx";
 
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
-  const { reload } = props;
+  const [ActiveSubPage, setActiveSubPage] = useState(0);
+  const { reload, currentSubTab, isFilter } = props;
   const [ActiveRole, setActiveRole] = useState(0);
   const [EditData, setEditData] = useState(null);
   const [data, setdata] = useState(props.data);
@@ -169,7 +170,7 @@ export default function UMAccepted(props) {
     { field: "id", headerName: "ID", hide: true },
     {
       field: "name",
-      headerName: "Name & email",
+      headerName: "Nama & email",
       minWidth: 300,
       flex: 1,
       renderCell: StylingNameEmail,
@@ -296,13 +297,20 @@ export default function UMAccepted(props) {
   };
 
   useEffect(() => {
-    if (props.dataFilter) {
+    if (props.dataFilter && props.filteredData.length === 0) {
       filterData();
       // if(props.dataFilter !== ''){
       //   filterData()
       // }
     }
-  }, [props.dataFilter]);
+  // }, [props.dataFilter]);
+
+    if (props.filteredData.length > 0 && isFilter) {
+      console.log('props.filteredData', props.filteredData)
+      setCurentDataFiltered(props.filteredData)
+    }
+
+  }, [props.dataFilter, props.filteredData, isFilter]);
 
   return (
     <>
@@ -315,6 +323,8 @@ export default function UMAccepted(props) {
             size="large"
             color={ActiveRole === index ? "mint20" : "grey20"}
             onClick={() => {
+              setActiveSubPage(index);
+              currentSubTab(index);
               handleChangeTab(index);
             }}
           >

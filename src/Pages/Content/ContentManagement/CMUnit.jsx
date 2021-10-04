@@ -15,7 +15,7 @@ import CMUJenisUnit from "./SubPage/CMUnit/CMUJenisUnit";
 import axios from "axios";
 
 export default function CMUnit(props) {
-  // console.log('props CMUnit', props)
+  console.log('props CMUnit', props)
 
   const [ActiveSubPage, setActiveSubPage] = useState(0);
   // const { currentSubTab } = props;
@@ -23,7 +23,9 @@ export default function CMUnit(props) {
   const [DeleteChosenId, setDeleteChosenId] = useState([]);
   const [DeleteType, setDeleteType] = useState(false);
   const [Deleted, setDeleted] = useState(false);
-  const { currentSubTab, dataSort } = props;
+  const { currentSubTab, dataSort, isFilter, filteredDataTahun } = props;
+  const [filteredData, setFilteredData] = useState([]);
+  const [filteredDataJarak, setFilteredDataJarak] = useState([]);
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
@@ -480,7 +482,7 @@ export default function CMUnit(props) {
     };
     console.log("filters => ", filters);
     axios
-      .post("https://yodamobi.sagaramedia.id/api/filter", {
+      .post(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/filter`, {
         table: "Merek, model, varian",
         filters,
       })
@@ -531,7 +533,7 @@ export default function CMUnit(props) {
             };
             // console.log('filters', filters)
             const resp = await axios.post(
-              "https://yodamobi.sagaramedia.id/api/filter",
+              `${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/filter`,
               {
                 table: "Merek, model, varian",
                 filters,
@@ -559,7 +561,7 @@ export default function CMUnit(props) {
         };
         console.log("filters => ", filters);
         await axios
-          .post("https://yodamobi.sagaramedia.id/api/filter", {
+          .post(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/filter`, {
             table: "Merek, model, varian",
             filters,
           })
@@ -593,6 +595,8 @@ export default function CMUnit(props) {
           changeIcons={changeIcons}
           val={Deleted}
           dataSort={dataSort}
+          filteredData={filteredData}
+          isFilter={isFilter}
         />
       ),
     },
@@ -609,6 +613,8 @@ export default function CMUnit(props) {
           changeIcons={changeIcons}
           val={Deleted}
           dataSort={dataSort}
+          filteredDataTahun={filteredDataTahun}
+          isFilter={isFilter}
         />
       ),
     },
@@ -625,6 +631,8 @@ export default function CMUnit(props) {
           changeIcons={changeIcons}
           val={Deleted}
           dataSort={dataSort}
+          filteredDataJarak={filteredDataJarak}
+          isFilter={isFilter}
         />
       ),
     },
@@ -717,9 +725,15 @@ export default function CMUnit(props) {
     if (props.dataFilterMulti) {
       doFilterData();
     }
-    currentSubTab(0);
+    // currentSubTab(0);
+    if(props.filteredData){
+      setFilteredData(props.filteredData)
+    }
+    if(props.filteredDataJarak){
+      setFilteredDataJarak(props.filteredDataJarak)
+    }
     
-  }, [props.dataFilter, props.dataFilterMulti]);
+  }, [props.dataFilter, props.dataFilterMulti, props.filteredData, props.filteredDataJarak]);
 
   return (
     <>

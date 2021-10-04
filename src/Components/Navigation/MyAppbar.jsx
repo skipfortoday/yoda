@@ -27,6 +27,7 @@ import ProfileCard from "../Auth/ProfileCard";
 import UploadIcon from "@mui/icons-material/Upload";
 import FilterListIcon from "@mui/icons-material/FilterList";
 // import NestedMenuItem from "material-ui-nested-menu-item";
+import DownloadIcon from '@mui/icons-material/Download';
 import axios from "axios";
 
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -124,6 +125,9 @@ export default function MyAppbar(props) {
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [isActiveClassFilter, setIsActiveClassFilter] = useState(false);
+  const [isActiveClasssorting, setIsActiveClasssorting] = useState(false);
+  
 
   const isMainMenuOpen = Boolean(MenuanchorEl);
   const isMenuOpen = Boolean(anchorEl);
@@ -223,10 +227,12 @@ export default function MyAppbar(props) {
   const [anchorElSort, setAnchorElSort] = React.useState(null);
   const openSort = Boolean(anchorElSort);
   const handleClick = (event) => {
+    setIsActiveClasssorting(true)
     setAnchorElSort(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorElSort(null);
+    setIsActiveClasssorting(false)
   };
 
   // menu filter
@@ -234,9 +240,11 @@ export default function MyAppbar(props) {
   const openFilter = Boolean(anchorElFilter);
   const handleClickFilter = (event) => {
     setAnchorElFilter(event.currentTarget);
+    setIsActiveClassFilter(true)
   };
   const handleCloseFilter = () => {
     setAnchorElFilter(null);
+    setIsActiveClassFilter(false)
   };
 
   // sort data
@@ -906,10 +914,33 @@ export default function MyAppbar(props) {
   };
 
   const [selectedArea, setSelectedArea] = useState([]);
+  const [selectedAreaModel, setSelectedAreaModel] = useState([]);
+  const [selectedAreaVarian, setSelectedAreaVarian] = useState([]);
+  const [selectedAreaJarak, setSelectedAreaJarak] = useState([]);
+  const [selectedAreaTahun, setSelectedAreaTahun] = useState([]);
+  const [selectedAreaUsers, setSelectedAreaUsers] = useState([]);
+  const [selectedAreaProvinsi, setSelectedAreaProvinsi] = useState([]);
+  const [selectedAreaKota, setSelectedAreaKota] = useState([]);
+  const [selectedAreaKecamatan, setSelectedAreaKecamatan] = useState([]);
+  const [selectedAreaCabang, setSelectedAreaCabang] = useState([]);
+  const [selectedAreaRole, setSelectedAreaRole] = useState([]);
+  const [selectedAreaStatus, setSelectedAreaStatus] = useState([]);
+  const [selectedAreaCabangUser, setSelectedAreaCabangUser] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
   const [defaultAreaModel, setDefaultAreaModel] = useState([]);
+  const [defaultAreaVarian, setDefaultAreaVarian] = useState([]);
+  const [defaultAreaJarak, setDefaultAreaJarak] = useState([]);
+  const [defaultAreaTahun, setdefaultAreaTahun] = useState([]);
+  const [defaultAreaProvinsi, setdefaultAreaProvinsi] = useState([]);
+  const [defaultAreaKota, setdefaultAreaKota] = useState([]);
+  const [defaultAreaKecamatan, setdefaultAreaKecamatan] = useState([]);
+  const [defaultAreaCabang, setdefaultAreaCabang] = useState([]);
+  const [defaultAreaRole, setdefaultAreaRole] = useState([]);
+  const [defaultAreaStatus, setdefaultAreaStatus] = useState([]);
+  const [defaultAreaCabangUser, setdefaultAreaCabangUser] = useState([]);
+  const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
     setDefaultArea(defaultArea)
@@ -936,9 +967,53 @@ export default function MyAppbar(props) {
     const array = selectedArea.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayModel = selectedAreaModel.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayVarian = selectedAreaVarian.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayProvinsi = selectedAreaProvinsi.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayKota = selectedAreaKota.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayKecamatan = selectedAreaKecamatan.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayCabang = selectedAreaCabang.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayTahun = selectedAreaTahun.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayUsers = selectedAreaUsers.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayRole = selectedAreaRole.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayStatus = selectedAreaStatus.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayCabangUser = selectedAreaCabangUser.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
+    setSelectedAreaModel(arrayModel)
+    setSelectedAreaVarian(arrayVarian)
+    setSelectedAreaProvinsi(arrayProvinsi)
+    setSelectedAreaKota(arrayKota)
+    setSelectedAreaKecamatan(arrayKecamatan)
+    setSelectedAreaCabang(arrayCabang)
+    setSelectedAreaRole(arrayRole)
+    setSelectedAreaStatus(arrayStatus)
+    setSelectedAreaCabangUser(arrayCabangUser)
+    setSelectedAreaTahun(arrayTahun)
+    setSelectedAreaUsers(arrayUsers)
   }
 
   const choseAreas = () => {
@@ -964,33 +1039,102 @@ export default function MyAppbar(props) {
     })
   }
 
-  const doSearch1 = (x) => {
-    console.log('x', x)
-    const inventory = [
-      {name: 'apples', quantity: 2},
-      {name: 'bananas', quantity: 0},
-      {name: 'cherries', quantity: 5}
-    ];
-    
-    const result = inventory.find( ({ name }) => name === x );
-    
-    console.log(result) // { name: 'cherries', quantity: 5 }
+  const areasSelectedModel = () => {
+    return selectedAreaModel.map((area) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {area.model}
+            </Button>
+    })
   }
 
-  const doSearchOri = ((e) => {
-    const searchString = e.toLowerCase();
-    console.log('searchString', searchString)
-    console.log('defaultArea search', defaultArea)
+  const areasSelectedVarian = () => {
+    return selectedAreaVarian.map((area) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {area.varian}
+            </Button>
+    })
+  }
 
-    const filteredCharacters = defaultArea.filter((character) => {
-        return (
-            character.name.toLowerCase().includes(searchString)
-        );
-    });
-    setDefaultArea(filteredCharacters)
-    console.log('doSearch',filteredCharacters);
-})
+  const areasSelectedProvinsi = () => {
+    return selectedAreaProvinsi.map((provinsi) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(provinsi)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {provinsi.provinsi}
+            </Button>
+    })
+  }
 
+  const areasSelectedKota= () => {
+    return selectedAreaKota.map((kota) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(kota)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {kota.kota}
+            </Button>
+    })
+  }
+
+  const areasSelectedKecamatan = () => {
+    return selectedAreaKecamatan.map((kecamatan) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(kecamatan)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {kecamatan.kecamatan}
+            </Button>
+    })
+  }
+
+  const areasSelectedCabang = () => {
+    return selectedAreaCabang.map((cabang_pengelola) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(cabang_pengelola)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {cabang_pengelola.cabang_pengelola}
+            </Button>
+    })
+  }
+
+  const areasSelectedRole = () => {
+    return selectedAreaRole.map((role) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(role)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {role.role}
+            </Button>
+    })
+  }
+
+  const areasSelectedStatus = () => {
+    return selectedAreaStatus.map((user_status) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(user_status)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {user_status.user_status}
+            </Button>
+    })
+  }
+
+  const areasSelectedCabangUser = () => {
+    return selectedAreaCabangUser.map((location) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(location)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {location.location}
+            </Button>
+    })
+  }
+
+
+  const areasSelectedJarak = () => {
+    return selectedAreaJarak.map((area) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(area)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {area.jarak_tempuh}
+            </Button>
+    })
+  }
+
+  const areasSelectedTahun = () => {
+    return selectedAreaTahun.map((tahun) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(tahun)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {tahun.tahun}
+            </Button>
+    })
+  }
+  const areasSelectedUsers = () => {
+    return selectedAreaUsers.map((user) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(user)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {user.user_status}
+            </Button>
+    })
+  }
+  
 
   const [selectedMerek, setSelectedMerek] = useState();
 
@@ -1005,17 +1149,6 @@ export default function MyAppbar(props) {
     console.log('filtered', filtered)
   }
 
-  const pushMerekOri2 = (item) => {
-    setSelectedMerek(item.name)
-    const data = selectedArea.concat(item)
-    // cek duplicated
-    console.log('data', data)
-    const ids = data.map(o => o.id)
-    const duplicated = data.filter(({id}, index) => !ids.includes(id, index + 1))
-    // console.log('duplicated', duplicated)
-    setSelectedArea(duplicated)
-  }
-
   const pushMerek = (item) => {
     setSelectedMerek(item.merek)
     const data = selectedArea.concat(item)
@@ -1027,6 +1160,15 @@ export default function MyAppbar(props) {
     setSelectedArea(duplicated)
   }
 
+  const pushModel = (item) => {
+    setSelectedMerek(item.model)
+    const data = selectedAreaModel.concat(item)
+    const ids = data.map(o => o.model)
+    const duplicated = data.filter(({model}, index) => !ids.includes(model, index + 1))
+    console.log('duplicated pushModel', duplicated)
+    setSelectedAreaModel(duplicated)
+  }
+
   const choseMerek = () => {
     return defaultArea.map((merek) => {
       // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
@@ -1034,89 +1176,364 @@ export default function MyAppbar(props) {
     })
   }
 
+  const pushVarian = (item) => {
+    setSelectedMerek(item.varian)
+    const data = selectedAreaVarian.concat(item)
+    const ids = data.map(o => o.varian)
+    const duplicated = data.filter(({varian}, index) => !ids.includes(varian, index + 1))
+    console.log('duplicated setSelectedAreaVarian', duplicated)
+    setSelectedAreaVarian(duplicated)
+  }
+
+  const pushProvinsi = (item) => {
+    const data = selectedAreaProvinsi.concat(item)
+    const ids = data.map(o => o.provinsi)
+    const duplicated = data.filter(({provinsi}, index) => !ids.includes(provinsi, index + 1))
+    setSelectedAreaProvinsi(duplicated)
+  }
+
+  const pushKota = (item) => {
+    const data = selectedAreaKota.concat(item)
+    const ids = data.map(o => o.kota)
+    const duplicated = data.filter(({kota}, index) => !ids.includes(kota, index + 1))
+    setSelectedAreaKota(duplicated)
+  }
+
+  const pushKecamatan = (item) => {
+    const data = selectedAreaKecamatan.concat(item)
+    const ids = data.map(o => o.kecamatan)
+    const duplicated = data.filter(({kecamatan}, index) => !ids.includes(kecamatan, index + 1))
+    setSelectedAreaKecamatan(duplicated)
+  }
+
+  const pushCabang = (item) => {
+    const data = selectedAreaCabang.concat(item)
+    const ids = data.map(o => o.cabang_pengelola)
+    const duplicated = data.filter(({cabang_pengelola}, index) => !ids.includes(cabang_pengelola, index + 1))
+    setSelectedAreaCabang(duplicated)
+  }
+
+  const pushRole = (item) => {
+    const data = selectedAreaRole.concat(item)
+    const ids = data.map(o => o.role)
+    const duplicated = data.filter(({role}, index) => !ids.includes(role, index + 1))
+    console.log('duplicated setSelectedAreaRole', duplicated)
+    setSelectedAreaRole(duplicated)
+  }
+
+  const pushStatus = (item) => {
+    const data = selectedAreaStatus.concat(item)
+    const ids = data.map(o => o.user_status)
+    const duplicated = data.filter(({user_status}, index) => !ids.includes(user_status, index + 1))
+    console.log('duplicated setSelectedAreaStatus', duplicated)
+    setSelectedAreaStatus(duplicated)
+  }
+
+  const pushCabangUser = (item) => {
+    const data = selectedAreaCabangUser.concat(item)
+    const ids = data.map(o => o.location)
+    const duplicated = data.filter(({location}, index) => !ids.includes(location, index + 1))
+    console.log('duplicated setSelectedAreaCabangUser', duplicated)
+    setSelectedAreaCabangUser(duplicated)
+  }
+
+
+  // jarak tempuh
+  const pushJarak = (item) => {
+    const data = selectedAreaJarak.concat(item)
+    // cek duplicated
+    // console.log('data', data)
+    const ids = data.map(o => o.jarak_tempuh)
+    const duplicated = data.filter(({jarak_tempuh}, index) => !ids.includes(jarak_tempuh, index + 1))
+    console.log('duplicated jarak_tempuh', duplicated)
+    setSelectedAreaJarak(duplicated)
+  }
+
+  // jarak tempuh
+  const pushTahun = (item) => {
+    const data = selectedAreaTahun.concat(item)
+    // cek duplicated
+    // console.log('data', data)
+    const ids = data.map(o => o.tahun)
+    const duplicated = data.filter(({tahun}, index) => !ids.includes(tahun, index + 1))
+    console.log('duplicated tahun', duplicated)
+    setSelectedAreaTahun(duplicated)
+  }
+
+  // jarak tempuh
+  const pushUser = (item) => {
+    const data = selectedAreaUsers.concat(item)
+    // cek duplicated
+    // console.log('data', data)
+    const ids = data.map(o => o.user_status)
+    const duplicated = data.filter(({user_status}, index) => !ids.includes(user_status, index + 1))
+    console.log('duplicated user_status', duplicated)
+    setSelectedAreaUsers(duplicated)
+  }
+
 
   const choseModel = () => {
     return defaultAreaModel.map((model) => {
-      // return <button onClick={() => pushMerek(merek)} className="btn-list-sort">{merek.name}</button>
-      return <button onClick={() => pushMerek(model)} className="btn-list-sort">{model.model}</button>
+      return <button onClick={() => pushModel(model)} className="btn-list-sort">{model.model}</button>
     })
   }
 
+  const choseVarian = () => {
+    return defaultAreaVarian.map((varian) => {
+      return <button onClick={() => pushVarian(varian)} className="btn-list-sort">{varian.varian}</button>
+    })
+  }
 
-  const [doMore, setdoMore] = useState(true);
-  const [myindex, setindex] = useState();
+  const choseJarak = () => {
+    return defaultAreaJarak.map((jarak) => {
+      return <button onClick={() => pushJarak(jarak)} className="btn-list-sort">{jarak.jarak_tempuh}</button>
+    })
+  }
 
-const doConcat = () => {
-  // const dahlah = data
-  // const dataThree = dataO.concat(dataT)
-  console.log('***doConcat',areaBeforeSearch)
-}
+  const choseTahun = () => {
+    return defaultAreaTahun.map((tahun) => {
+      return <button onClick={() => pushTahun(tahun)} className="btn-list-sort">{tahun.tahun}</button>
+    })
+  }
+
+  const choseProvinsi = () => {
+    return defaultAreaProvinsi.map((wilayah) => {
+      return <button onClick={() => pushProvinsi(wilayah)} className="btn-list-sort">{wilayah.provinsi}</button>
+    })
+  }
+
+  const chosekota = () => {
+    return defaultAreaKota.map((kota) => {
+      return <button onClick={() => pushKota(kota)} className="btn-list-sort">{kota.kota}</button>
+    })
+  }
+
+  const choseKecamatan = () => {
+    return defaultAreaKecamatan.map((kecamatan) => {
+      return <button onClick={() => pushKecamatan(kecamatan)} className="btn-list-sort">{kecamatan.kecamatan}</button>
+    })
+  }
+
+  const choseCabang = () => {
+    return defaultAreaCabang.map((cabang_pengelola) => {
+      return <button onClick={() => pushCabang(cabang_pengelola)} className="btn-list-sort">{cabang_pengelola.cabang_pengelola}</button>
+    })
+  }
+
+  const choseRole = () => {
+    return defaultAreaRole.map((user) => {
+      return <button onClick={() => pushRole(user)} className="btn-list-sort">{user.role}</button>
+    })
+  }
+
+  const choseStatus = () => {
+    return defaultAreaStatus.map((user) => {
+      return <button onClick={() => pushStatus(user)} className="btn-list-sort">{user.user_status}</button>
+    })
+  }
+
+  const choseCabangUser = () => {
+    return defaultAreaCabangUser.map((user) => {
+      return <button onClick={() => pushCabangUser(user)} className="btn-list-sort">{user.location}</button>
+    })
+  }
+
+  const choseUsers = () => {
+    return defaultAreaUsers.map((user) => {
+      return <button onClick={() => pushUser(user)} className="btn-list-sort">{user.user_status}</button>
+    })
+  }
+
   
-  const multiFilter = async (x, index) => {
-    // console.log('index', index)
-    console.log('---1 areaBeforeSearch data', index, areaBeforeSearch)
-    setdoMore(false)
-    var tempData = [];
-    // console.log('get ke => ', x.id)
-      const filters = {
-        Merek   : x.merek,
-      }
-      // console.log('filters => ', filters)
-      axios.post('https://yodamobi.sagaramedia.id/api/filter',{
-        table: 'Merek, model, varian', filters
-      })
-      .then((response) =>{ 
-        console.log('++++res ', index, response.data.results)
-        // pushMerek()
-        response.data.results.forEach((x) => {
-          // console.log('looping data', x)
-          tempData.push({...x})
-        })
-        // console.log('tempdata', tempData)
-        console.log('---2 areaBeforeSearch data', areaBeforeSearch)
-        // const dataSatu = areaBeforeSearch
-        
-        // console.log('&*&% dataCo => ', dataCo.type)
-        const dataCo = areaBeforeSearch.concat(response.data.results)
-        setAreaBeforeSearch(dataCo)
-        setTimeout(() => {
-          console.log('dataSettimeout dataCo => ', dataCo)
-          console.log('dataSettimeout areaBeforeSearch => ', areaBeforeSearch)
-        }, 3000)
-        // setAreaBeforeSearch([...areaBeforeSearch].tempData)
-        setdoMore(true)
-      })
-      .catch((err) => { 
-        console.warn(err.response)
-      })
-  }
-
   const doFilterData = async () => {
-    setAreaBeforeSearch([])
+    // console.log('selectedArea', selectedArea)
+    // setAreaBeforeSearch([])
+    const filterModel = []
+    const filterdataMerek = []
+    const filterdataModel = []
+    const filterdataVarian = []
+    const filterdataProvinsi = []
+    const filterdataKota = []
+    const filterdataKecamatan = []
+    const filterdataCabang = []
+    const filterdataRole = []
+    const filterdataStatus = []
+    const filterdataCabangUser = []
+    const filterdataTahun = []
+    if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+      console.log('selectedAreaJarak', selectedAreaJarak)
+      selectedAreaJarak.forEach((x) => {
+        filterModel.push(x.jarak_tempuh)
+      })
+    }
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      console.log('selectedAreaTahun', selectedAreaTahun)
+      selectedAreaTahun.forEach((x) => {
+        filterdataTahun.push(x.tahun)
+      })
+      getDataTahun(filterdataTahun.toString())
+    }
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1){
+      console.log('selectedAreaProvinsi', selectedAreaProvinsi)
+      selectedAreaProvinsi.forEach((x) => {
+        filterdataProvinsi.push(x.provinsi)
+      })
+      selectedAreaKota.forEach((x) => {
+        filterdataKota.push(x.kota)
+      })
+      selectedAreaKecamatan.forEach((x) => {
+        filterdataKecamatan.push(x.kecamatan)
+      })
+      selectedAreaCabang.forEach((x) => {
+        filterdataCabang.push(x.cabang_pengelola)
+      })
+      console.log('filterdataProvinsi', filterdataProvinsi)
+      getDataWilayah(filterdataProvinsi.toString(), filterdataKota.toString(), filterdataKecamatan.toString(), filterdataCabang.toString())
+    }
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      console.log('selectedAreaModel', selectedAreaModel)
+      selectedArea.forEach((y) => {
+        filterdataMerek.push(y.merek)
+      })
+      selectedAreaModel.forEach((x) => {
+        filterdataModel.push(x.model)
+      })
+      selectedAreaVarian.forEach((x) => {
+        filterdataVarian.push(x.varian)
+      })
+      getDataKuNew(filterdataMerek.toString(), filterdataModel.toString(), filterdataVarian.toString())
+    }
+    if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab === 1){
+      console.log('filterUser')
+      selectedAreaRole.forEach((x) => {
+        filterdataRole.push(x.role)
+      })
+      selectedAreaStatus.forEach((x) => {
+        filterdataStatus.push(x.user_status)
+      })
+      selectedAreaCabangUser.forEach((x) => {
+        filterdataCabangUser.push(x.location)
+      })
+      getDataUsers(filterdataRole.toString(), filterdataStatus.toString(), filterdataCabangUser.toString())
+    }
+    
+    // console.log('filterdataMerek.toString()',filterdataMerek.toString())
+    // console.log('filterdataModel.toString()',filterdataModel.toString())
+    // console.log('filterdataVarian', filterdataVarian.toString())
+    // handleCloseFilter()
 
-    props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
-    props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
+    // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
+    // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
   }
 
-  const doFilterData2 = () => {
-    const requests = [];
-    const url = 'https://yodamobi.sagaramedia.id/api/filter';
-    const filters            = {
-      Merek   : selectedMerek,
-    }
-    for (let i = 0; i < selectedArea.length; i++) {
-        requests.push(axios.post(url, { params: {
-            table: 'Merek, model, varian',
-            filters
-        }})
-        )
-    }
+  const getDataWilayah= async (provinsi, kota, kecamatan, cabang) => {
+    await axiosBackend.post('/filterWilayah',{
+      provinsi: provinsi,
+      kota: kota,
+      kecamatan: kecamatan,
+      cabang_pengelola: cabang
+    })
+    .then((response) =>{ 
+      console.log('response provinsi', response)
+      setFilteredData(response.data.results)
+      console.log('res getFilteredDataWilayah', response.data.results)
+      props.getFilteredDataWilayah(response.data.results)
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
 
-    axios.all(requests)
-        .then((res) => {
-            console.log(res);
-        });
-  };
+  const getDataUsers= async (role, Status, cabang) => {
+    await axiosBackend.post('/filterUser',{
+      role: role,
+      Status: Status,
+      cabang: cabang
+    })
+    .then((response) =>{ 
+      console.log('response', response.data.results)
+      setFilteredData(response.data.results)
+      props.getFilteredDataUsersInternal(response.data.results)
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  const getDataKuNew = async (merek, model, varian) => {
+    await axiosBackend.post('/filterMMV',{
+      merek: merek,
+      model: model,
+      varian: varian
+    })
+    .then((response) =>{ 
+      console.log('response', response)
+      setFilteredData(response.data.results)
+      if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+        console.log('res getFilteredDataJarak', response.data.results)
+        props.getFilteredDataJarak(response.data.results)
+      }
+      if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+        console.log('res getFilteredDataTahun', response.data.results)
+        props.getFilteredDataTahun(response.data.results)
+      }
+      if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+        console.log('res getFilteredDataMerekModel', response.data.results)
+        props.getFilteredDataMerekModel(response.data.results)
+      }
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  const getDataProvinsi = async (tahun) => {
+    await axiosBackend.post('/filterTahun',{
+      tahun: tahun
+    })
+    .then((response) =>{
+      setFilteredData(response.data.results)
+      console.log('res getFilteredDataTahun', response.data.results)
+      props.getFilteredDataTahun(response.data.results)
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  const getDataTahun = async (tahun) => {
+    await axiosBackend.post('/filterTahun',{
+      tahun: tahun
+    })
+    .then((response) =>{
+      setFilteredData(response.data.results)
+      console.log('res getFilteredDataTahun', response.data.results)
+      props.getFilteredDataTahun(response.data.results)
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
 
   async function uploadExcel(e) {
     for (let i = 0; i < e.target.files.length; i++) {
@@ -1124,7 +1541,7 @@ const doConcat = () => {
         console.log(e.target.files[i]);
         axios
           .post(
-            "https://yodamobi.sagaramedia.id/api/upload-excel",
+            `${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/upload-excel`,
             {
               excel: e.target.files[i],
             },
@@ -1144,59 +1561,247 @@ const doConcat = () => {
     }
   }
 
-  const cekFilterOri = () => {
-    // const arr = [{id: 1, name: 'one'}, {id: 2, name: 'two'}, {id: 1, name: 'one'}]
-    const ids = selectedArea.map(o => o.id)
-    const filtered = selectedArea.filter(({id}, index) => !ids.includes(id, index + 1))
-    setSelectedArea(filtered)
-    // console.log(filtered)
-  }
-
-  const doSearch = ((e) => {
-    cekFilter(e)
-  })
+  // const doSearch = ((e) => {
+  //   cekFilter(e)
+  // })
 
   const [searchEmpty, setsearchEmpty] = useState(false);
   const [noArea, setnoArea] = useState(true);
   const [allDataMerek, setAllDataMerek] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [activeTabel, setActiveTabel] = useState('');
+  const [showFilter, setShowFilter] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
-  const cekFilter = async (item) => {
-    await axiosBackend
-      .post("/filter2", {
-        table: "Merek, model, varian",
-        keyword: item,
-      })
-      .then((response) => {
-        setAllDataMerek(response.data.results);
-        // console.log('res get filter', response.data.results)
-        const ids = response.data.results.merek.map((o) => o.merek);
-        const duplicated = response.data.results.merek.filter(
-          ({ merek }, index) => !ids.includes(merek, index + 1)
-        );
-        // console.log('duplicated', duplicated)
-        const idsModel = response.data.results.model.map((o) => o.model);
-        const duplicatedModel = response.data.results.model.filter(
-          ({ model }, index) => !idsModel.includes(model, index + 1)
-        );
-        // console.log('setAllDataMerek', allDataMerek)
-        // console.log('res get filter', response.data.results)
-
-        setDefaultArea(duplicated);
-        setDefaultAreaModel(duplicatedModel);
-        if (duplicated.length === 0) {
-          setsearchEmpty(true);
-          if (defaultArea > 0) {
-            setnoArea(false);
+  const doSearch = async (item) => {
+    console.log('activeTabel', activeTabel)
+    setSearchValue(item)
+    if(activeTabel === "users") {
+      console.log('tab users')
+      await axiosBackend
+        .post("/buttonUser", {
+          keyword: item,
+        })
+        .then((response) => {
+          console.log('res get filter', response.data.results)
+          const idsRole = response.data.results.map((o) => o.role);
+          const duplicatedRole = response.data.results.filter(
+            ({ role }, index) => !idsRole.includes(role, index + 1)
+          );
+          const idsStatus = response.data.results.map((o) => o.user_status);
+          const duplicatedStatus = response.data.results.filter(
+            ({ user_status }, index) => !idsStatus.includes(user_status, index + 1)
+          );
+          const idsCabangUser = response.data.results.map((o) => o.user_status);
+          const duplicatedCabangUser = response.data.results.filter(
+            ({ user_status }, index) => !idsCabangUser.includes(user_status, index + 1)
+          );
+          setdefaultAreaRole(duplicatedRole);
+          setdefaultAreaStatus(duplicatedStatus);
+          setdefaultAreaCabangUser(duplicatedCabangUser);
+          if(response.data.results.length === 0){
+            setdefaultAreaRole([])
           }
-        } else {
-          setnoArea(false);
-          setsearchEmpty(false);
-        }
-      })
-      .catch((err) => {
-        console.warn(err.response);
-      });
+          if(response.data.results.length === 0 && item !== ""){
+            setsearchEmpty(true)
+          } else {
+            setsearchEmpty(false)
+          }
+        })
+        .catch((err) => {
+          console.warn(err.response);
+        });
+    }
+    else {
+      await axiosBackend
+        .post("/filter2", {
+          table: activeTabel,
+          keyword: item,
+        })
+        .then((response) => {
+          setAllDataMerek(response.data.results);
+          console.log('res get filter', response.data.results)
+          const ids = response.data.results.map((o) => o.merek);
+          const duplicated = response.data.results.filter(
+            ({ merek }, index) => !ids.includes(merek, index + 1)
+          );
+          setDefaultArea(duplicated);
+          console.log('duplicated', duplicated)
+  
+          if(activeTabel === "jarak_tempuhs"){
+            console.log('jarak_tempuhs', response.data.results)
+            setDefaultAreaJarak(response.data.results)
+          }
+          if(activeTabel === "tahun_pembuatans"){
+            console.log('tahun_pembuatans', response.data.results)
+            setdefaultAreaTahun(response.data.results)
+          }
+          if(activeTabel === "users"){
+            console.log('users', response.data.results)
+            const idsUsers = response.data.results.map((o) => o.model);
+            const duplicatedUser = response.data.results.filter(
+              ({ model }, index) => !idsUsers.includes(model, index + 1)
+            );
+            console.log('duplicatedUser users', duplicatedUser)
+            setdefaultAreaUsers(duplicatedUser)
+          }
+          if(activeTabel === "wilayahs"){
+            // console.log('wilayahs', response.data.results)
+            // setDefaultAreaJarak(response.data.results)
+            const idsProvinsi = response.data.results.map((o) => o.provinsi);
+            const duplicatedProvinsi = response.data.results.filter(
+              ({ provinsi }, index) => !idsProvinsi.includes(provinsi, index + 1)
+            );
+            const idsKota = response.data.results.map((o) => o.kota);
+            const duplicatedKota = response.data.results.filter(
+              ({ kota }, index) => !idsKota.includes(kota, index + 1)
+            );
+            const idsKecamatan = response.data.results.map((o) => o.kecamatan);
+            const duplicatedKecamatan = response.data.results.filter(
+              ({ kecamatan }, index) => !idsKecamatan.includes(kecamatan, index + 1)
+            );
+            const idsCabang = response.data.results.map((o) => o.cabang_pengelola);
+            const duplicatedCabang = response.data.results.filter(
+              ({ cabang_pengelola }, index) => !idsCabang.includes(cabang_pengelola, index + 1)
+            );
+            console.log('duplicatedProvinsi', duplicatedProvinsi)
+            setdefaultAreaProvinsi(duplicatedProvinsi)
+            setdefaultAreaKota(duplicatedKota)
+            setdefaultAreaKecamatan(duplicatedKecamatan)
+            setdefaultAreaCabang(duplicatedCabang)
+          }
+          
+          const idsModel = response.data.results.map((o) => o.model);
+          const duplicatedModel = response.data.results.filter(
+            ({ model }, index) => !idsModel.includes(model, index + 1)
+          );
+          const idsVarian = response.data.results.map(o => o.varian)
+          const duplicatedVarian = response.data.results.filter(({varian}, index) => !idsVarian.includes(varian, index + 1))
+  
+          setDefaultAreaModel(duplicatedModel);
+          setDefaultAreaVarian(duplicatedVarian)
+          console.log('duplicatedModel', duplicatedModel)
+          console.log('duplicatedVarian', duplicatedVarian)
+          if(response.data.results.length === 0){
+            setDefaultArea([])
+            setDefaultAreaModel([])
+            setDefaultAreaVarian([])
+          }
+          if(response.data.results.length === 0 && item !== ""){
+            setsearchEmpty(true)
+          } else {
+            setsearchEmpty(false)
+          }
+        })
+        .catch((err) => {
+          console.warn(err.response);
+        });
+    }
   };
+
+  const getDataKu = async (item) => {
+    await axiosBackend.post('/filter2',{
+      table: activeTabel,
+      keyword: item
+    })
+    .then((response) =>{ 
+      // setFilteredData(response.data.results)
+      if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+        console.log('res getFilteredDataJarak', response.data.results)
+        props.getFilteredDataJarak(response.data.results)
+      }
+      if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+        console.log('res getFilteredDataTahun', response.data.results)
+        props.getFilteredDataTahun(response.data.results)
+      }
+      if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+        console.log('res getFilteredDataMerekModel', response.data.results)
+        props.getFilteredDataMerekModel(response.data.results)
+      }
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  const getDataUser = async (item) => {
+    await axiosBackend.post('/filterUser',{
+      role: 'External',
+      cabang: 'Test',
+      Status: ''
+    })
+    .then((response) =>{ 
+      setFilteredData(response.data.results)
+      // if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+      //   console.log('res getFilteredDataJarak', response.data.results)
+      //   props.getFilteredDataJarak(response.data.results)
+      // }
+      // if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      //   console.log('res getFilteredDataTahun', response.data.results)
+      //   props.getFilteredDataTahun(response.data.results)
+      // }
+      // if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      //   console.log('res getFilteredDataMerekModel', response.data.results)
+      //   props.getFilteredDataMerekModel(response.data.results)
+      // }
+      // props.doFilter(true)
+      // setTimeout(() => {
+      //   props.doFilter(false)
+      // }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
+  }
+
+  useEffect(() => {
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      setShowFilter(true)
+      setShowUpload(true)
+    }
+    else if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      setShowFilter(true)
+    }
+    else if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1){
+      setShowFilter(true)
+    }
+    else if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
+      setShowFilter(true)
+    }
+    else if(ActivePage === 1 && ActiveSubTab === 1 && ActiveTab ===1){
+      setShowFilter(true)
+    }
+    else {
+      setShowFilter(false)
+      setShowUpload(false)
+    }
+  }, [ActivePage, ActiveSubTab, ActiveTab])
+
+  useEffect(() => {
+    if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+      setActiveTabel('jarak_tempuhs')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+      setActiveTabel('merek_model_varians')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+      setActiveTabel('tahun_pembuatans')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1){
+      setActiveTabel('wilayahs')
+    }
+    if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
+      setActiveTabel('users')
+    }
+    if(ActivePage === 1 && ActiveSubTab === 1 && ActiveTab ===1){
+      setActiveTabel('users_external')
+    }
+  }, [ActivePage, ActiveSubTab, ActiveTab])
 
   useEffect(() => {
     setNameSort(texts[0].name);
@@ -1207,15 +1812,16 @@ const doConcat = () => {
   }, [ActiveTab]);
 
   useEffect(() => {
-    if (defaultArea.length === 0) {
-      if (selectedArea.length === 0) {
-        setnoArea(true);
+    if (defaultArea.length === 0 && searchValue === ""){
+      // console.log('default area length', defaultArea.length)
+      if(selectedArea.length === 0){
+        setnoArea(true)
       }
     } else {
-      setnoArea(false);
+      setnoArea(false)
     }
     setNameSort(texts[0].name);
-  }, [defaultArea]);
+  }, [defaultArea, searchValue]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -1273,7 +1879,7 @@ const doConcat = () => {
           </Box>
           {upMd ? (
             <>
-              <div>
+              <div className="navbar color-primary-grey">
                 {/* <Button
                   id="basic-button"
                   aria-controls="basic-menu"
@@ -1294,15 +1900,24 @@ const doConcat = () => {
                     uploadExcel(e);
                   }}
                 />
-                <label htmlFor="raised-button-file">
-                  <Button
-                    variant="raised"
-                    component="span"
-                    // className={classes.button}
-                  >
-                    Upload
-                  </Button>
-                </label>
+                {/* <button onClick={() => getDataUser()}>getDataUser</button> */}
+                {showUpload ? 
+                  <label htmlFor="raised-button-file">
+                    <Button
+                      variant="raised"
+                      component="span"
+                      startIcon={<DownloadIcon />}
+                    >Unggah data
+                    </Button>
+                    {/* <Button
+                      id="basic-button"
+                      startIcon={<DownloadIcon />}
+                    >
+                      {"Unggah data"}
+                    </Button> */}
+                  </label>
+                : <span></span>}
+                {/* <button onClick={() => console.log(props)}>lah</button> */}
                 <Button
                   disableRipple
                   id="basic-button"
@@ -1310,7 +1925,7 @@ const doConcat = () => {
                   aria-haspopup="true"
                   aria-expanded={openSort ? "true" : undefined}
                   onClick={handleClick}
-                  color="primary"
+                  className={`${isActiveClasssorting ? "sortingon" : "sortingoff"}`}
                   startIcon={<ImportExportIcon />}
                 >
                   {"Sortir"}
@@ -1341,21 +1956,24 @@ const doConcat = () => {
                     <div className="flex tab-sort mt-8">{choseTab()}</div>
                     <hr className="border-grey my-5" />
                     <p>
+                    {/* <button onClick={() => console.log(props)}>cek</button> */}
                       <b>Urutkan Berdasarkan</b>
                     </p>
                     <div className="list-filter">{choseListFilter()}</div>
                   </div>
                 </Menu>
               </div>
-              <div>
+              {showFilter
+              ?
+              <div className="navbar">
                 <Button
                   disableRipple
                   id="basic-button"
                   aria-controls="basic-menu"
                   aria-haspopup="true"
                   aria-expanded={openFilter ? "true" : undefined}
+                  className={`box ${isActiveClassFilter ? "filteron" : "filteroff"}`}
                   onClick={handleClickFilter}
-                  color="primary"
                   startIcon={<FilterListIcon />}
                 >
                   {"Filter"}
@@ -1394,34 +2012,153 @@ const doConcat = () => {
                         />
                       </Search>
                     </div>
-                    {/* <button onClick={() => cek()}>cek</button> */}
-                    <div className="mt-5">
-                      {/* <p>Selected</p> */}
-                      {/* {areasSelected()} */}
-                      {areasSelected()}
-                    </div>
-                    <hr/>
-                    {/* <div>
-                      <p>Chose</p>
-                      {choseAreas()}
-                    </div> */}
+                    {/* <button onClick={() => console.log('cek props', props)}>cek props</button> */}
+                    { (props.ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0) ?
                     <div>
-                      {/* <p>Merek</p> */}
-                      {choseMerek()}
-                      {/* <p>Model</p>
-                      {choseModel()} */}
-                      {/* {noArea ? 
-                        <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
+                      <div className="mt-5">
+                        {/* <p>Selected</p> */}
+                        {/* {areasSelected()} */}
+                        {areasSelected()}
+                        {areasSelectedModel()}
+                        {areasSelectedVarian()}
+                      </div>
+                      {selectedArea.length > 0 || selectedAreaModel.length > 0 || selectedAreaVarian.length > 0
+                        ? <hr className="hr-filter"/>
+                        : <span></span>
+                      }
+                      {/* <div>
+                        <p>Chose</p>
+                        {choseAreas()}
+                      </div> */}
+                      <div>
+                      {/* <button onClick={() => console.log('defaultAreaModel', defaultAreaModel)}>defaultAreaModel</button> */}
+                        {/* <p>Merek</p>
+                        {choseMerek()}
+                        <p>Model</p>
+                        {choseModel()} */}
+                        {defaultArea.length > 0
+                         ? <p className="color-primary">Merek</p>
+                         : <span></span>
+                        }
+                        {choseMerek()}
+                        {defaultAreaModel.length > 0
+                         ? <p className="color-primary">Model</p>
+                         : <span></span>
+                        }
+                        {choseModel()}
+                        {defaultAreaVarian.length > 0
+                         ? <p className="color-primary">Varian</p>
+                         : <span></span>
+                        }
+                        {choseVarian()}
+                        {/* {noArea ? 
+                          <div className="empty-search">Isi keyword untuk melakukan pencarian.</div> : 
+                          <span></span>
+                        } */}
+                        {defaultArea.length === 0 && defaultAreaModel.length === 0 && defaultAreaVarian.length === 0 && searchValue === ""
+                          ? <div className="empty-search">Isi keyword untuk melakukan pencarian.</div>
+                          : <span></span>
+                        }
+                        {defaultArea.length === 0 && defaultAreaModel.length === 0 && defaultAreaVarian.length === 0 && searchValue !== ""
+                          ? <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div>
+                          : <span></span>
+                        }
+                        {/* {searchEmpty ? 
+                          <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div> : 
+                          <span></span>
+                        } */}
+                      </div>
+                    </div>
+                    : (props.ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0) 
+                    ? 
+                    <div>
+                      {/* <p>Areas selected</p> */}
+                      {areasSelectedJarak()}
+                      <hr/>
+                      {choseJarak()}
+                      {/* <button onClick={() => console.log('defaultAreaJarak', defaultAreaJarak)}>defaultAreaJarak</button> */}
+                    </div>
+                    : (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab === 0) 
+                    ? 
+                    <div>
+                      {/* <p>Tahun selected</p> */}
+                      {areasSelectedTahun()}
+                      <hr/>
+                      {choseTahun()}
+                      {/* <button onClick={() => console.log('defaultAreaTahun', defaultAreaTahun)}>defaultAreaTahun</button> */}
+                    </div>
+                    :
+                    (props.ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1)
+                    ?
+                    <div>
+                      {/* {areasSelectedUsers()} */}
+                      {areasSelectedRole()}
+                      {areasSelectedStatus()}
+                      {areasSelectedCabangUser()}
+                      <hr/>
+                      {/* {choseUsers()} */}
+                      {defaultAreaRole.length > 0
+                        ? <p className="color-primary">Role</p>
+                        : <span></span>
+                      }
+                      {choseRole()}
+                      {defaultAreaStatus.length > 0
+                        ? <p className="color-primary">Status</p>
+                        : <span></span>
+                      }
+                      {choseStatus()}
+                      {defaultAreaCabangUser.length > 0
+                        ? <p className="color-primary">Cabang</p>
+                        : <span></span>
+                      }
+                      {choseCabangUser()}
+                    </div>
+                    :
+                    (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)
+                    ?
+                    <div>
+                      {areasSelectedProvinsi()}
+                      {areasSelectedKota()}
+                      {areasSelectedKecamatan()}
+                      {areasSelectedCabang()}
+                      <hr/>
+                      {defaultAreaProvinsi.length > 0
+                        ?
+                        <p>provinsi</p>
+                        :
                         <span></span>
                       }
-                      {searchEmpty ? 
-                        <div className="empty-search">Hasil tidak ditemukan, masukkan keyword lain.</div> : 
+                      {choseProvinsi()}
+                      {defaultAreaKota.length > 0
+                        ?
+                        <p>kota</p>
+                        :
                         <span></span>
-                      } */}
+                      }
+                      {chosekota()}
+                      {defaultAreaKecamatan.length > 0
+                        ?
+                        <p>Kecamatan</p>
+                        :
+                        <span></span>
+                      }
+                      {choseKecamatan()}
+                      {defaultAreaCabang.length > 0
+                        ?
+                        <p>Cabang pengelola</p>
+                        :
+                        <span></span>
+                      }
+                      {choseCabang()}
                     </div>
+                    :
+                    <span><button onClick={() => console.log('propss', props)}>Model</button></span>}
+                    {/* <button onClick={() => cek()}>cek</button> */}
                   </div>
                 </Menu>
               </div>
+              :
+              <span></span>}
               {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ color: "tint.black.60" }} />
@@ -1434,6 +2171,16 @@ const doConcat = () => {
               </Search> */}
             </>
           ) : null}
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon sx={{ color: "tint.black.60" }} />
+            </SearchIconWrapper>
+            <StyledInputBaseFilter
+              color="primary"
+              placeholder="Cari . . ."
+              inputProps={{ "aria-label": "search" }}
+            />
+          </Search>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={1} color="red20">

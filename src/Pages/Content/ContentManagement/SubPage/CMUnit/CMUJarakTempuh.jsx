@@ -16,13 +16,16 @@ const INPUTS = [
 ];
 
 export default function CMUJarakTempuh(props) {
+  // console.log('props CMUJarakTempuh', props)
   const [Data, setData] = useState([]);
+  const [filteredDataJarak, setFilteredDataJarak] = useState([]);
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
-  const { dataSort } = props;
+  const { dataSort, isFilter } = props;
 
   async function sortJarakTempuhUnitDesc() {
+    console.log('Data => Dsc', Data)
     const mydata = [...Data].sort(function (a, b) {
       let x = a.jarak_tempuh.toLowerCase();
       let y = b.jarak_tempuh.toLowerCase();
@@ -34,11 +37,15 @@ export default function CMUJarakTempuh(props) {
       }
       return 0;
     });
+    mydata.map((item) => {
+      console.log("item", item);
+    });
     setData(mydata);
-    console.log("mydata", mydata);
+    console.log("mydata Dsc => ", mydata);
   }
 
   async function sortJarakTempuhUnitAsc() {
+    console.log('Data => Asc', Data)
     const mydata = [...Data].sort(function (a, b) {
       let x = a.jarak_tempuh.toLowerCase();
       let y = b.jarak_tempuh.toLowerCase();
@@ -51,14 +58,15 @@ export default function CMUJarakTempuh(props) {
       return 0;
     });
     mydata.map((item) => {
-      console.log("item", item.name);
+      console.log("item", item);
     });
     setData(mydata);
-    console.log("mydata", mydata);
+    console.log("mydata Asc => ", mydata);
   }
 
   useEffect(() => {
     if (dataSort) {
+      console.log('dataSort')
       if (dataSort === "jarakTempuhUnitDesc") {
         sortJarakTempuhUnitDesc();
       }
@@ -68,8 +76,11 @@ export default function CMUJarakTempuh(props) {
     }else{
       sortJarakTempuhUnitDesc();
     }
-    LoadData();
-  }, []);
+    if(isFilter){
+      console.log('props filteredDataJarak', props.filteredDataJarak)
+      setData(props.filteredDataJarak)
+    }
+  }, [isFilter, dataSort]);
   
   useEffect(() => {
     setMenuAnchorEl(null);
