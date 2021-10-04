@@ -927,6 +927,7 @@ export default function MyAppbar(props) {
   const [selectedAreaStatus, setSelectedAreaStatus] = useState([]);
   const [selectedAreaCabangUser, setSelectedAreaCabangUser] = useState([]);
   const [selectedAreaNameUser, setSelectedAreaNameUser] = useState([]);
+  const [selectedAreaUserPhone, setSelectedAreaUserPhone] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -942,6 +943,7 @@ export default function MyAppbar(props) {
   const [defaultAreaStatus, setdefaultAreaStatus] = useState([]);
   const [defaultAreaCabangUser, setdefaultAreaCabangUser] = useState([]);
   const [defaultAreaNameUser, setdefaultAreaNameUser] = useState([]);
+  const [defaultAreaUserPhone, setdefaultAreaUserPhone] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -1005,6 +1007,9 @@ export default function MyAppbar(props) {
     const arrayNameUser = selectedAreaNameUser.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayUserPhone= selectedAreaUserPhone.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
@@ -1018,6 +1023,7 @@ export default function MyAppbar(props) {
     setSelectedAreaStatus(arrayStatus)
     setSelectedAreaCabangUser(arrayCabangUser)
     setSelectedAreaNameUser(arrayNameUser)
+    setSelectedAreaUserPhone(arrayUserPhone)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaUsers(arrayUsers)
   }
@@ -1124,6 +1130,15 @@ export default function MyAppbar(props) {
             </Button>
     })
   }
+
+  const areasSelectedUserPhone = () => {
+    return selectedAreaUserPhone.map((phone_number) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(phone_number)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {phone_number.phone_number}
+            </Button>
+    })
+  }
+
 
 
   const areasSelectedJarak = () => {
@@ -1259,6 +1274,15 @@ export default function MyAppbar(props) {
     setSelectedAreaNameUser(duplicated)
   }
 
+  const pushUserPhone= (item) => {
+    const data = selectedAreaUserPhone.concat(item)
+    const ids = data.map(o => o.phone_number)
+    const duplicated = data.filter(({phone_number}, index) => !ids.includes(phone_number, index + 1))
+    console.log('duplicated setSelectedAreaUserPhone', duplicated)
+    setSelectedAreaUserPhone(duplicated)
+  }
+
+
 
 
   // jarak tempuh
@@ -1367,6 +1391,12 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseUserPhone = () => {
+    return defaultAreaUserPhone.map((user) => {
+      return <button onClick={() => pushUserPhone(user)} className="btn-list-sort">{user.phone_number}</button>
+    })
+  }
+
   const choseUsers = () => {
     return defaultAreaUsers.map((user) => {
       return <button onClick={() => pushUser(user)} className="btn-list-sort">{user.user_status}</button>
@@ -1389,6 +1419,7 @@ export default function MyAppbar(props) {
     const filterdataStatus = []
     const filterdataCabangUser = []
     const filterdataNameUser = []
+    const filterdataUserPhone = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1452,13 +1483,10 @@ export default function MyAppbar(props) {
       selectedAreaNameUser.forEach((x) => {
         filterdataNameUser.push(x.name)
       })
-      // selectedAreaStatus.forEach((x) => {
-      //   filterdataStatus.push(x.user_status)
-      // })
-      // selectedAreaCabangUser.forEach((x) => {
-      //   filterdataCabangUser.push(x.location)
-      // })
-      getDataUsersExternal(filterdataNameUser.toString())
+      selectedAreaUserPhone.forEach((x) => {
+        filterdataUserPhone.push(x.phone_number)
+      })
+      getDataUsersExternal(filterdataNameUser.toString(), filterdataUserPhone.toString())
     }
     
     // console.log('filterdataMerek.toString()',filterdataMerek.toString())
@@ -1470,9 +1498,10 @@ export default function MyAppbar(props) {
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
   }
 
-  const getDataUsersExternal= async (nama) => {
+  const getDataUsersExternal= async (nama, phone) => {
     await axios.post('https://yodacentral.herokuapp.com/api/filterExternal',{
-      nama: nama
+      nama: nama,
+      phone_number: phone
     })
     .then((response) =>{ 
       console.log('getDataUsersExternal', response.data.results)
@@ -1649,12 +1678,17 @@ export default function MyAppbar(props) {
         .then((response) => {
           setAllDataMerek(response.data.results);
           console.log('res get filter', response.data.results)
-          const idsModel = response.data.results.map((o) => o.name);
+          const idsUserName = response.data.results.map((o) => o.name);
           const duplicatedModel = response.data.results.filter(
-            ({ name }, index) => !idsModel.includes(name, index + 1)
+            ({ name }, index) => !idsUserName.includes(name, index + 1)
           );
-          console.log('duplicatedModel', duplicatedModel)
+          const idsUserPhone = response.data.results.map((o) => o.name);
+          const duplicatedUserPhone = response.data.results.filter(
+            ({ name }, index) => !idsUserPhone.includes(name, index + 1)
+          );
+          console.log('duplicatedUserPhone', duplicatedUserPhone)
           setdefaultAreaNameUser(duplicatedModel)
+          setdefaultAreaUserPhone(duplicatedModel)
           // console.log('duplicatedVarian', duplicatedVarian)
           // if(response.data.results.length === 0){
           //   setDefaultArea([])
@@ -2238,8 +2272,11 @@ export default function MyAppbar(props) {
                     ?
                     <div>
                       {areasSelectedNameUser()}
+                      {areasSelectedUserPhone()}
                       <p>name</p>
                       {choseNameUser()}
+                      <p>Phone</p>
+                      {choseUserPhone()}
                     </div>
                     :
                     (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)

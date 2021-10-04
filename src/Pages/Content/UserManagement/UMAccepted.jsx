@@ -315,6 +315,10 @@ export default function UMAccepted(props) {
       console.log('props.filteredData', props.filteredData)
       setCurentDataFiltered(props.filteredData);
     }
+    if (props.filteredDataEx.length > 0 && isFilter) {
+      console.log('++props.filteredDataEx', props.filteredDataEx)
+      setCurentDataFiltered(props.filteredDataEx);
+    }
 
   }, [props.dataFilter, props.filteredDataEx, isFilter]);
 
