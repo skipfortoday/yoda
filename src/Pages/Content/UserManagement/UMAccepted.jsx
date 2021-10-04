@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
 import AvatarNameEmail from "../../../Components/DataGridComponents/AvatarNameEmail";
@@ -12,7 +12,7 @@ import {
   Popover,
 } from "@mui/material";
 import UMEdit from "./UMEdit";
-import PopupEdit from "../../../Components/DataGridComponents/PopupEdit.jsx"
+import PopupEdit from "../../../Components/DataGridComponents/PopupEdit.jsx";
 
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
@@ -174,14 +174,24 @@ export default function UMAccepted(props) {
       flex: 1,
       renderCell: StylingNameEmail,
     },
-    { field: "phone_number", headerName: "No. Handphone", minWidth: 160, renderCell: StylingPhoneNumber },
+    {
+      field: "phone_number",
+      headerName: "No. Handphone",
+      minWidth: 160,
+      renderCell: StylingPhoneNumber,
+    },
     {
       field: "role",
       headerName: "Role",
       minWidth: 150,
       renderCell: StylingRole,
     },
-    { field: "location", headerName: "Kantor", minWidth: 160, renderCell: StylingLocation },
+    {
+      field: "location",
+      headerName: "Kantor",
+      minWidth: 160,
+      renderCell: StylingLocation,
+    },
     {
       field: "created_at",
       headerName: "Tanggal registrasi",
@@ -197,12 +207,18 @@ export default function UMAccepted(props) {
     { field: "user_code", headerName: "Kode user", minWidth: 130 },
   ];
 
+  const dataSent = () => {
+    // handleChangeTab(0)
+    reload();
+  };
+
   function StylingNameEmail(params) {
     return (
       <PopupEdit
         row={params.row}
         reload={reload}
         fromTable={"name"}
+        dataSent={dataSent}
       />
     );
   }
@@ -213,6 +229,7 @@ export default function UMAccepted(props) {
         row={params.row}
         reload={reload}
         fromTable={"phone_number"}
+        dataSent={dataSent}
       />
     );
   }
@@ -223,6 +240,7 @@ export default function UMAccepted(props) {
         row={params.row}
         reload={reload}
         fromTable={"location"}
+        dataSent={dataSent}
       />
     );
   }
@@ -238,6 +256,7 @@ export default function UMAccepted(props) {
         reload={reload}
         fromTable={"role"}
         value={params.value}
+        dataSent={dataSent}
       />
     );
   }
@@ -249,6 +268,7 @@ export default function UMAccepted(props) {
         reload={reload}
         fromTable={"user_status"}
         value={params.value}
+        dataSent={dataSent}
       />
     );
   }
@@ -303,7 +323,7 @@ export default function UMAccepted(props) {
         ))}
       </Stack>
       <Box fullWidth sx={{ maxHeight: "70vh", height: "70vh" }}>
-          {/* <Popover
+        {/* <Popover
             open={isMainMenuOpen}
             onClose={() => setMenuAnchorEl(null)}
             anchorEl={MenuanchorEl}

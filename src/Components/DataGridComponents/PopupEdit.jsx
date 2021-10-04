@@ -7,54 +7,13 @@ import UMEdit from "../../Pages/Content/UserManagement/UMEdit";
 import AvatarNameEmail from "./AvatarNameEmail"
 
 export default function PopupEdit(props) {
-  const { reload } = props;
+  const { reload, dataSent } = props;
   const { row, fromTable } = props;
-//   const { TEXTS } = props;
-  // console.warn(row.email)
-//   const { redBtnClick, greenBtnClick } = props;
+  console.warn(fromTable, "FT");
+  console.warn(row.name, row.id);
+
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMainMenuOpen = Boolean(MenuanchorEl);
-//   const [Hide, setHide] = useState(true);
-
-//   const handleRejectorDeleteUser = async () => {
-//     if (fromPage==='UMWaiting') {
-//       const config = { 
-//         target_email: row.email,
-//         user_status: 'Rejected',
-//         role: 'Rejected',
-//         location: 'Not set',
-//       }
-//       console.log(config)
-//       await axiosBackend.post('/user-management', { 
-//         target_email: row.email,
-//         user_status: 'Rejected',
-//         role: 'Non Aktif',
-//         location: 'Not set',
-//       })
-//       .then((response) => {
-//         console.log(response.data)
-//         redBtnClick()
-//       })
-//       .catch((err) => {console.log(err.response) })
-//     }
-//     else if (fromPage==="UMRejected") {
-//       // const config = { 
-//       //   target_email: row.email,
-//       //   user_status: 'Deleted',
-//       //   role: 'Deleted',
-//       //   location: 'Not set',
-//       // }
-//       // SALAH GANTI NANTI
-//       // redBtnClick()
-
-//       await axiosBackend.get(`/um/delete/${row.id}`,)
-//       .then((response) => {
-//         console.log(response.data)
-//         redBtnClick()
-//       })
-//       .catch((err) => {console.log(err.response) })
-//     }
-//   }
 
   return (
     <Box sx={{ width: '100%', minHeight: 40 }} >
@@ -130,6 +89,7 @@ export default function PopupEdit(props) {
               // acceptBtnClick={() => {}}
               setMenuAnchorEl={setMenuAnchorEl}
               reload={reload}
+              dataSent={dataSent}
               // fromPage={fromPage}
             />
            </Popover>

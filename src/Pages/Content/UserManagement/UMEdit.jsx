@@ -38,8 +38,7 @@ let obj = {
 };
 
 export default function UMEdit(props) {
-  console.log(props.data, "EDIT USER");
-  const { data, reload, field } = props;
+  const { data, reload, field, dataSent } = props;
   const { setMenuAnchorEl } = props;
   const [Switch, setSwitch] = useState(false);
   const [ListKantor, setListKantor] = useState([]);
@@ -67,7 +66,6 @@ export default function UMEdit(props) {
         }
       })
       .then((res) => {
-        console.log(res, "RES LIST KANTOR");
         setListKantor(res.data.kantor);
       })
       .catch((err) => {
@@ -84,7 +82,6 @@ export default function UMEdit(props) {
         }
       })
       .then((res) => {
-        console.log(res.data.roles, "RES LIST ROLES");
         setListRoles(res.data.roles);
       })
       .catch((err) => {
@@ -94,8 +91,6 @@ export default function UMEdit(props) {
 
   const handleEditUser = async () => {
     if (field === "name") {
-      console.log(InputName, "IN");
-      console.log(InputEmail, "IE");
       await axiosBackend
         .post("/um/updateNamaEmail", {
           id: data.id,
@@ -105,7 +100,7 @@ export default function UMEdit(props) {
         .then((res) => {
           console.log(res);
           setMenuAnchorEl(null);
-          reload()
+          // reload()
         })
         .catch((err) => {
           console.log(err.response);
@@ -120,7 +115,7 @@ export default function UMEdit(props) {
         .then((res) => {
           console.log(res);
           setMenuAnchorEl(null);
-          reload()
+          // reload()
         })
         .catch((err) => {
           console.log(err.response);
@@ -135,7 +130,7 @@ export default function UMEdit(props) {
       .then((res) => {
         console.log(res);
         setMenuAnchorEl(null);
-        reload()
+        // reload()
       })
       .catch((err) => {
         console.log(err.response);
@@ -150,7 +145,7 @@ export default function UMEdit(props) {
         .then((res) => {
           console.log(res);
           setMenuAnchorEl(null);
-          reload()
+          // reload()
         })
         .catch((err) => {
           console.log(err.response);
@@ -165,41 +160,14 @@ export default function UMEdit(props) {
         .then((res) => {
           console.log(res);
           setMenuAnchorEl(null);
-          reload()
+          // reload()
         })
         .catch((err) => {
           console.log(err.response);
           setMenuAnchorEl(null);
         });
     }
-    // const config = {
-    //   target_email: data.email,
-    //   user_status: "Active",
-    //   role: Switch ? "External" : InputRole.value,
-    //   location: InputKantor.value,
-    // };
-    // console.warn(config);
-
-    // if (Switch) {
-    //   SendData();
-    // } else {
-    //   if (InputRole.value === "") {
-    //     setInputRole({ ...InputRole, error: true });
-    //   } else {
-    //     setInputRole({ ...InputRole, error: false });
-    //   }
-    //   if (InputKantor.value === "") {
-    //     setInputKantor({ ...InputKantor, error: true });
-    //   } else {
-    //     setInputKantor({ ...InputKantor, error: false });
-    //   }
-    //   if (InputRole.value !== "" && InputKantor.value !== "") {
-    //     SendData();
-    //   }
-    // }
-    console.log("Before Reload")
-    reload()
-    console.log("After Reload")
+    dataSent()
   };
 
   return (
