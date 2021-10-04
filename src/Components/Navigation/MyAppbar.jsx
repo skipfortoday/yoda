@@ -926,6 +926,11 @@ export default function MyAppbar(props) {
   const [selectedAreaRole, setSelectedAreaRole] = useState([]);
   const [selectedAreaStatus, setSelectedAreaStatus] = useState([]);
   const [selectedAreaCabangUser, setSelectedAreaCabangUser] = useState([]);
+  const [selectedAreaNameUser, setSelectedAreaNameUser] = useState([]);
+  const [selectedAreaUserPhone, setSelectedAreaUserPhone] = useState([]);
+  const [selectedAreaUserEmail, setSelectedAreaUserEmail] = useState([]);
+  const [selectedAreaUserStatus, setSelectedAreaUserStatus] = useState([]);
+  const [selectedAreaUserCreated, setSelectedAreaUserCreated] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -940,6 +945,11 @@ export default function MyAppbar(props) {
   const [defaultAreaRole, setdefaultAreaRole] = useState([]);
   const [defaultAreaStatus, setdefaultAreaStatus] = useState([]);
   const [defaultAreaCabangUser, setdefaultAreaCabangUser] = useState([]);
+  const [defaultAreaNameUser, setdefaultAreaNameUser] = useState([]);
+  const [defaultAreaUserPhone, setdefaultAreaUserPhone] = useState([]);
+  const [defaultAreaUserEmail, setdefaultAreaUserEmail] = useState([]);
+  const [defaultAreaUserStatus, setdefaultAreaUserStatus] = useState([]);
+  const [defaultAreaUserCreated, setdefaultAreaUserCreated] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -1000,6 +1010,21 @@ export default function MyAppbar(props) {
     const arrayCabangUser = selectedAreaCabangUser.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayNameUser = selectedAreaNameUser.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayUserPhone = selectedAreaUserPhone.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayUserEmail = selectedAreaUserEmail.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayUserStatus= selectedAreaUserStatus.filter(function(element, i) {
+      return element.id !== item.id;
+    });
+    const arrayUserCreated= selectedAreaUserCreated.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
@@ -1012,6 +1037,11 @@ export default function MyAppbar(props) {
     setSelectedAreaRole(arrayRole)
     setSelectedAreaStatus(arrayStatus)
     setSelectedAreaCabangUser(arrayCabangUser)
+    setSelectedAreaNameUser(arrayNameUser)
+    setSelectedAreaUserPhone(arrayUserPhone)
+    setSelectedAreaUserEmail(arrayUserEmail)
+    setSelectedAreaUserStatus(arrayUserStatus)
+    setSelectedAreaUserCreated(arrayUserCreated)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaUsers(arrayUsers)
   }
@@ -1110,6 +1140,47 @@ export default function MyAppbar(props) {
             </Button>
     })
   }
+
+  const areasSelectedNameUser = () => {
+    return selectedAreaNameUser.map((name) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(name)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {name.name}
+            </Button>
+    })
+  }
+
+  const areasSelectedUserPhone = () => {
+    return selectedAreaUserPhone.map((phone_number) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(phone_number)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {phone_number.phone_number}
+            </Button>
+    })
+  }
+
+  const areasSelectedUserEmail = () => {
+    return selectedAreaUserEmail.map((email) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(email)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {email.email}
+            </Button>
+    })
+  }
+
+  const areasSelectedUserStatus = () => {
+    return selectedAreaUserStatus.map((user_status) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(user_status)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {user_status.user_status}
+            </Button>
+    })
+  }
+
+  const areasSelectedUserCreated = () => {
+    return selectedAreaUserCreated.map((created_at) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(created_at)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {created_at.created_at}
+            </Button>
+    })
+  }
+
 
 
   const areasSelectedJarak = () => {
@@ -1237,6 +1308,46 @@ export default function MyAppbar(props) {
     setSelectedAreaCabangUser(duplicated)
   }
 
+  const pushNameUser = (item) => {
+    const data = selectedAreaNameUser.concat(item)
+    const ids = data.map(o => o.name)
+    const duplicated = data.filter(({name}, index) => !ids.includes(name, index + 1))
+    console.log('duplicated setSelectedAreaNameUser', duplicated)
+    setSelectedAreaNameUser(duplicated)
+  }
+
+  const pushUserPhone= (item) => {
+    const data = selectedAreaUserPhone.concat(item)
+    const ids = data.map(o => o.phone_number)
+    const duplicated = data.filter(({phone_number}, index) => !ids.includes(phone_number, index + 1))
+    console.log('duplicated setSelectedAreaUserPhone', duplicated)
+    setSelectedAreaUserPhone(duplicated)
+  }
+
+  const pushUserEmail= (item) => {
+    const data = selectedAreaUserEmail.concat(item)
+    const ids = data.map(o => o.email)
+    const duplicated = data.filter(({email}, index) => !ids.includes(email, index + 1))
+    console.log('duplicated setSelectedAreaUserEmail', duplicated)
+    setSelectedAreaUserEmail(duplicated)
+  }
+
+  const pushUserStatus= (item) => {
+    const data = selectedAreaUserStatus.concat(item)
+    const ids = data.map(o => o.user_status)
+    const duplicated = data.filter(({user_status}, index) => !ids.includes(user_status, index + 1))
+    console.log('duplicated setSelectedAreaUserStatus', duplicated)
+    setSelectedAreaUserStatus(duplicated)
+  }
+
+  const pushUserCreated= (item) => {
+    const data = selectedAreaUserCreated.concat(item)
+    const ids = data.map(o => o.created_at)
+    const duplicated = data.filter(({created_at}, index) => !ids.includes(created_at, index + 1))
+    console.log('duplicated setSelectedAreaUserCreated', duplicated)
+    setSelectedAreaUserCreated(duplicated)
+  }
+
 
   // jarak tempuh
   const pushJarak = (item) => {
@@ -1338,9 +1449,39 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseNameUser = () => {
+    return defaultAreaNameUser.map((user) => {
+      return <button onClick={() => pushNameUser(user)} className="btn-list-sort">{user.name}</button>
+    })
+  }
+
+  const choseUserPhone = () => {
+    return defaultAreaUserPhone.map((user) => {
+      return <button onClick={() => pushUserPhone(user)} className="btn-list-sort">{user.phone_number}</button>
+    })
+  }
+
+  const choseUserEmail = () => {
+    return defaultAreaUserEmail.map((user) => {
+      return <button onClick={() => pushUserEmail(user)} className="btn-list-sort">{user.email}</button>
+    })
+  }
+
+  const choseUserStatus = () => {
+    return defaultAreaUserStatus.map((user) => {
+      return <button onClick={() => pushUserStatus(user)} className="btn-list-sort">{user.user_status}</button>
+    })
+  }
+
+  const choseUserCreated = () => {
+    return defaultAreaUserCreated.map((user) => {
+      return <button onClick={() => pushUserCreated(user)} className="btn-list-sort">{user.created_at}</button>
+    })
+  }
+
   const choseUsers = () => {
     return defaultAreaUsers.map((user) => {
-      return <button onClick={() => pushUser(user)} className="btn-list-sort">{user.user_status}</button>
+      return <button onClick={() => pushUserEmail(user)} className="btn-list-sort">{user.user_status}</button>
     })
   }
 
@@ -1359,6 +1500,11 @@ export default function MyAppbar(props) {
     const filterdataRole = []
     const filterdataStatus = []
     const filterdataCabangUser = []
+    const filterdataNameUser = []
+    const filterdataUserPhone = []
+    const filterdataUserEmail = []
+    const filterdataUserStatus = []
+    const filterdataUserCreated= []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1416,6 +1562,26 @@ export default function MyAppbar(props) {
       })
       getDataUsers(filterdataRole.toString(), filterdataStatus.toString(), filterdataCabangUser.toString())
     }
+
+    if(ActivePage === 1 && ActiveSubTab === 1 && ActiveTab === 1){
+      console.log('filterUser')
+      selectedAreaNameUser.forEach((x) => {
+        filterdataNameUser.push(x.name)
+      })
+      selectedAreaUserPhone.forEach((x) => {
+        filterdataUserPhone.push(x.phone_number)
+      })
+      selectedAreaUserEmail.forEach((x) => {
+        filterdataUserEmail.push(x.email)
+      })
+      selectedAreaUserStatus.forEach((x) => {
+        filterdataUserStatus.push(x.user_status)
+      })
+      selectedAreaUserCreated.forEach((x) => {
+        filterdataUserCreated.push(x.created_at)
+      })
+      getDataUsersExternal(filterdataNameUser.toString(), filterdataUserPhone.toString(), filterdataUserEmail.toString(),filterdataUserStatus.toString(), filterdataUserCreated.toString())
+    }
     
     // console.log('filterdataMerek.toString()',filterdataMerek.toString())
     // console.log('filterdataModel.toString()',filterdataModel.toString())
@@ -1424,6 +1590,28 @@ export default function MyAppbar(props) {
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
+  }
+
+  const getDataUsersExternal= async (nama, phone, email, user_status, created_at) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/filterExternal',{
+      nama: nama,
+      phone_number: phone,
+      email: email,
+      user_status: user_status,
+      created_at: created_at
+    })
+    .then((response) =>{ 
+      console.log('getDataUsersExternal', response.data.results)
+      setFilteredData(response.data.results)
+      props.getFilteredDataUsersExternal(response.data.results)
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
   }
 
   const getDataWilayah= async (provinsi, kota, kecamatan, cabang) => {
@@ -1577,6 +1765,58 @@ export default function MyAppbar(props) {
   const doSearch = async (item) => {
     console.log('activeTabel', activeTabel, item)
     setSearchValue(item)
+    if(activeTabel === "users_external") {
+      console.log('wadudu')
+      await axiosBackend
+        .post("/filter2", {
+          table: 'users',
+          keyword: item,
+        })
+        .then((response) => {
+          setAllDataMerek(response.data.results);
+          console.log('res get filter', response.data.results)
+          const idsUserName = response.data.results.map((o) => o.name);
+          const duplicatedModel = response.data.results.filter(
+            ({ name }, index) => !idsUserName.includes(name, index + 1)
+          );
+          const idsUserPhone = response.data.results.map((o) => o.phone_number);
+          const duplicatedUserPhone = response.data.results.filter(
+            ({ phone_number }, index) => !idsUserPhone.includes(phone_number, index + 1)
+          );
+          const idsUserEmail = response.data.results.map((o) => o.email);
+          const duplicatedUserEmail = response.data.results.filter(
+            ({ email }, index) => !idsUserEmail.includes(email, index + 1)
+          );
+          const idsUserStatus = response.data.results.map((o) => o.user_status);
+          const duplicatedUserStatus = response.data.results.filter(
+            ({ user_status }, index) => !idsUserStatus.includes(user_status, index + 1)
+          );
+          const idsUserCreated = response.data.results.map((o) => o.created_at);
+          const duplicatedUserCreated= response.data.results.filter(
+            ({ created_at }, index) => !idsUserCreated.includes(created_at, index + 1)
+          );
+          // console.log('duplicatedUserPhone', duplicatedUserPhone)
+          setdefaultAreaNameUser(duplicatedModel)
+          setdefaultAreaUserPhone(duplicatedUserPhone)
+          setdefaultAreaUserEmail(duplicatedUserEmail)
+          setdefaultAreaUserStatus(duplicatedUserStatus)
+          setdefaultAreaUserCreated(duplicatedUserCreated)
+          // console.log('duplicatedVarian', duplicatedVarian)
+          // if(response.data.results.length === 0){
+          //   setDefaultArea([])
+          //   setDefaultAreaModel([])
+          //   setDefaultAreaVarian([])
+          // }
+          // if(response.data.results.length === 0 && item !== ""){
+          //   setsearchEmpty(true)
+          // } else {
+          //   setsearchEmpty(false)
+          // }
+        })
+        .catch((err) => {
+          console.warn(err.response);
+        });
+    }
     if(activeTabel === "users") {
       console.log('tab users')
       await axiosBackend
@@ -1613,7 +1853,7 @@ export default function MyAppbar(props) {
           console.warn(err.response);
         });
     }
-    else {
+    if(activeTabel !== "users" && activeTabel !== "users_external"){
       await axiosBackend
         .post("/filter2", {
           table: activeTabel,
@@ -2112,6 +2352,63 @@ export default function MyAppbar(props) {
                         : <span></span>
                       }
                       {choseCabangUser()}
+                    </div>
+                    :
+                    (props.ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1)
+                    ?
+                    <div>
+                      {/* {areasSelectedUsers()} */}
+                      {areasSelectedRole()}
+                      {areasSelectedStatus()}
+                      {areasSelectedCabangUser()}
+                      <hr/>
+                      {/* {choseUsers()} */}
+                      {defaultAreaRole.length > 0
+                        ? <p className="color-primary">Role</p>
+                        : <span></span>
+                      }
+                      {choseRole()}
+                      {defaultAreaStatus.length > 0
+                        ? <p className="color-primary">Status</p>
+                        : <span></span>
+                      }
+                      {choseStatus()}
+                      {defaultAreaCabangUser.length > 0
+                        ? <p className="color-primary">Cabang</p>
+                        : <span></span>
+                      }
+                      {choseCabangUser()}
+                    </div>
+                    :
+                    (props.ActivePage === 1 && ActiveSubTab === 1 && ActiveTab ===1)
+                    ?
+                    <div>
+                      {areasSelectedNameUser()}
+                      {areasSelectedUserPhone()}
+                      {areasSelectedUserEmail()}
+                      {areasSelectedUserStatus()}
+                      {areasSelectedUserCreated()}
+                      {defaultAreaNameUser.length > 0
+                        ? <p className="color-primary">Nama & Email</p>
+                        : <span></span>
+                      }
+                      {choseNameUser()}
+                      {choseUserEmail()}
+                      {defaultAreaUserPhone.length > 0
+                        ? <p className="color-primary">No. Handphone</p>
+                        : <span></span>
+                      }
+                      {choseUserPhone()}
+                      {defaultAreaUserStatus.length > 0
+                        ? <p className="color-primary">Status</p>
+                        : <span></span>
+                      }
+                      {choseUserStatus()}
+                      {defaultAreaUserCreated.length > 0
+                        ? <p className="color-primary">Tanggal registrasi</p>
+                        : <span></span>
+                      }
+                      {choseUserCreated()}
                     </div>
                     :
                     (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)

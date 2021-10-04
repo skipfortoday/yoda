@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import UMEdit from "./UMEdit";
 import PopupEdit from "../../../Components/DataGridComponents/PopupEdit.jsx";
+import axios from 'axios'
 
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
@@ -159,9 +160,20 @@ export default function UMAccepted(props) {
     filteredData.forEach((data, idx) => {
       tempData.push({ ...data, index: idx + 1 });
     });
-    console.log("tempData", tempData);
-    setCurentData(tempData);
-    setCurentDataFiltered(tempData);
+    if(newTabIndex === 1){
+      console.log('newTabIndex 1', newTabIndex)
+      GetAllUsers()
+    }
+    if(newTabIndex === 0){
+      console.log('newTabIndex 0', newTabIndex)
+      // filterData()
+      // setCurentDataFiltered(tempData);
+      GetAllUsersInternal()
+    }
+    // GetAllUsers()
+    // console.log("tempData handleChangeTab", tempData);
+    // setCurentData(tempData);
+    // setCurentDataFiltered(tempData);
     // setCurentData(data)
   };
 
@@ -280,7 +292,7 @@ export default function UMAccepted(props) {
   ];
 
   const filterData = () => {
-    console.log("CurentData", CurentData);
+    console.log("filterData CurentData", CurentData);
     if (CurentData.length > 0) {
       if (props.dataFilter === "Reset") {
         setCurentDataFiltered(CurentData);
@@ -296,21 +308,75 @@ export default function UMAccepted(props) {
     }
   };
 
+  async function GetAllUsers() {
+    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+
+    // console.log('GetAllUsers')
+    // var AllUsers = [];
+    try {
+      const data = await axios.post(`${baseURL}/filterExternal`, {
+        role: "",
+        Status: "",
+        cabang: ""
+      })
+      console.log('data GetAllUsers External UMAccepted', data.data.results)
+      setCurentDataFiltered(data.data.results);
+      // if(data.status === 200){
+      //   AllUsers = data.data.results
+      //   console.log('AllUsers', AllUsers)
+      //   return AllUsers
+      // }
+    } catch (err){
+      console.log('err', err)
+    }
+  }
+
+  async function GetAllUsersInternal() {
+    const thisToken = sessionStorage.getItem('token')
+    console.log('thisToken', thisToken)
+    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+
+    // console.log('GetAllUsers')
+    var AllUsers = [];
+    try {
+      const data = await axios.post(`${baseURL}/filterUser`, {
+        role: "",
+        Status: "",
+        cabang: ""
+      })
+      console.log('data GetAllUsersInternal', data.data.results)
+      setCurentDataFiltered(data.data.results);
+    } catch (err){
+      console.log('err', err)
+    }
+  }
+
   useEffect(() => {
     if (props.dataFilter && props.filteredData.length === 0) {
-      filterData();
+      // filterData();
       // if(props.dataFilter !== ''){
       //   filterData()
       // }
     }
-  // }, [props.dataFilter]);
-
-    if (props.filteredData.length > 0 && isFilter) {
-      console.log('props.filteredData', props.filteredData)
-      setCurentDataFiltered(props.filteredData)
+    if (props.filteredDataEx.length === 0 && !isFilter) {
+      GetAllUsers()
     }
 
-  }, [props.dataFilter, props.filteredData, isFilter]);
+    // if (props.filteredDataEx.length > 0 && isFilter) {
+    //   console.log('props.filteredDataEx', props.filteredDataEx)
+    //   setCurentDataFiltered(props.filteredDataEx);
+    // }
+    if (props.filteredData.length > 0 && isFilter) {
+      console.log('props.filteredData', props.filteredData)
+      setCurentDataFiltered(props.filteredData);
+    }
+    if (props.filteredDataEx.length > 0 && isFilter) {
+      console.log('++props.filteredDataEx', props.filteredDataEx)
+      setCurentDataFiltered(props.filteredDataEx);
+    }
+
+  }, [props.dataFilter, props.filteredDataEx, isFilter]);
 
   return (
     <>
