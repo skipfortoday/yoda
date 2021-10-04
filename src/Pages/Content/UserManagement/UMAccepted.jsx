@@ -12,6 +12,7 @@ import {
   Popover,
 } from "@mui/material";
 import UMEdit from "./UMEdit";
+import axios from 'axios'
 
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
@@ -138,9 +139,19 @@ export default function UMAccepted(props) {
     filteredData.forEach((data, idx) => {
       tempData.push({ ...data, index: idx + 1 });
     });
-    console.log("tempData", tempData);
-    setCurentData(tempData);
-    setCurentDataFiltered(tempData);
+    if(newTabIndex === 1){
+      console.log('newTabIndex 1', newTabIndex)
+      GetAllUsers()
+    }
+    if(newTabIndex === 0){
+      console.log('newTabIndex 0', newTabIndex)
+      // filterData()
+      setCurentDataFiltered(tempData);
+    }
+    // GetAllUsers()
+    // console.log("tempData handleChangeTab", tempData);
+    // setCurentData(tempData);
+    // setCurentDataFiltered(tempData);
     // setCurentData(data)
   };
 
@@ -240,6 +251,29 @@ export default function UMAccepted(props) {
     }
   };
 
+  async function GetAllUsers() {
+    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+
+    // console.log('GetAllUsers')
+    // var AllUsers = [];
+    try {
+      const data = await axios.post(`${baseURL}/filterExternal`, {
+        role: "",
+        Status: "",
+        cabang: ""
+      })
+      console.log('data GetAllUsers External UMAccepted', data.data.results)
+      setCurentDataFiltered(data.data.results);
+      // if(data.status === 200){
+      //   AllUsers = data.data.results
+      //   console.log('AllUsers', AllUsers)
+      //   return AllUsers
+      // }
+    } catch (err){
+      console.log('err', err)
+    }
+  }
+
   useEffect(() => {
     if (props.dataFilter && props.filteredData.length === 0) {
       // filterData();
@@ -248,11 +282,7 @@ export default function UMAccepted(props) {
       // }
     }
     if (props.filteredDataEx.length === 0 && !isFilter) {
-      filterData()
-      // filterData();
-      // if(props.dataFilter !== ''){
-      //   filterData()
-      // }
+      GetAllUsers()
     }
 
     if (props.filteredDataEx.length > 0 && isFilter) {
