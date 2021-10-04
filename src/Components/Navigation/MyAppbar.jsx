@@ -926,6 +926,7 @@ export default function MyAppbar(props) {
   const [selectedAreaRole, setSelectedAreaRole] = useState([]);
   const [selectedAreaStatus, setSelectedAreaStatus] = useState([]);
   const [selectedAreaCabangUser, setSelectedAreaCabangUser] = useState([]);
+  const [selectedAreaNameUser, setSelectedAreaNameUser] = useState([]);
   const [selectedAreaNew, setSelectedAreaNew] = useState([]);
   const [areaBeforeSearch, setAreaBeforeSearch] = useState([]);
   const [defaultArea, setDefaultArea] = useState([]);
@@ -940,6 +941,7 @@ export default function MyAppbar(props) {
   const [defaultAreaRole, setdefaultAreaRole] = useState([]);
   const [defaultAreaStatus, setdefaultAreaStatus] = useState([]);
   const [defaultAreaCabangUser, setdefaultAreaCabangUser] = useState([]);
+  const [defaultAreaNameUser, setdefaultAreaNameUser] = useState([]);
   const [defaultAreaUsers, setdefaultAreaUsers] = useState([]);
 
   const cek = () => {
@@ -1000,6 +1002,9 @@ export default function MyAppbar(props) {
     const arrayCabangUser = selectedAreaCabangUser.filter(function(element, i) {
       return element.id !== item.id;
     });
+    const arrayNameUser = selectedAreaNameUser.filter(function(element, i) {
+      return element.id !== item.id;
+    });
     // console.log('data', array)
     setSelectedArea(array)
     setSelectedMerek(item.name)
@@ -1012,6 +1017,7 @@ export default function MyAppbar(props) {
     setSelectedAreaRole(arrayRole)
     setSelectedAreaStatus(arrayStatus)
     setSelectedAreaCabangUser(arrayCabangUser)
+    setSelectedAreaNameUser(arrayNameUser)
     setSelectedAreaTahun(arrayTahun)
     setSelectedAreaUsers(arrayUsers)
   }
@@ -1107,6 +1113,14 @@ export default function MyAppbar(props) {
     return selectedAreaCabangUser.map((location) => {
       return <Button className="m-1" onClick={() => pushAreaDefault(location)} variant="outlined" endIcon={<HighlightOffIcon />}>
               {location.location}
+            </Button>
+    })
+  }
+
+  const areasSelectedNameUser = () => {
+    return selectedAreaNameUser.map((name) => {
+      return <Button className="m-1" onClick={() => pushAreaDefault(name)} variant="outlined" endIcon={<HighlightOffIcon />}>
+              {name.name}
             </Button>
     })
   }
@@ -1237,6 +1251,15 @@ export default function MyAppbar(props) {
     setSelectedAreaCabangUser(duplicated)
   }
 
+  const pushNameUser = (item) => {
+    const data = selectedAreaNameUser.concat(item)
+    const ids = data.map(o => o.name)
+    const duplicated = data.filter(({name}, index) => !ids.includes(name, index + 1))
+    console.log('duplicated setSelectedAreaNameUser', duplicated)
+    setSelectedAreaNameUser(duplicated)
+  }
+
+
 
   // jarak tempuh
   const pushJarak = (item) => {
@@ -1338,6 +1361,12 @@ export default function MyAppbar(props) {
     })
   }
 
+  const choseNameUser = () => {
+    return defaultAreaNameUser.map((user) => {
+      return <button onClick={() => pushNameUser(user)} className="btn-list-sort">{user.name}</button>
+    })
+  }
+
   const choseUsers = () => {
     return defaultAreaUsers.map((user) => {
       return <button onClick={() => pushUser(user)} className="btn-list-sort">{user.user_status}</button>
@@ -1359,6 +1388,7 @@ export default function MyAppbar(props) {
     const filterdataRole = []
     const filterdataStatus = []
     const filterdataCabangUser = []
+    const filterdataNameUser = []
     const filterdataTahun = []
     if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
       console.log('selectedAreaJarak', selectedAreaJarak)
@@ -1416,6 +1446,20 @@ export default function MyAppbar(props) {
       })
       getDataUsers(filterdataRole.toString(), filterdataStatus.toString(), filterdataCabangUser.toString())
     }
+
+    if(ActivePage === 1 && ActiveSubTab === 1 && ActiveTab === 1){
+      console.log('filterUser')
+      selectedAreaNameUser.forEach((x) => {
+        filterdataNameUser.push(x.name)
+      })
+      // selectedAreaStatus.forEach((x) => {
+      //   filterdataStatus.push(x.user_status)
+      // })
+      // selectedAreaCabangUser.forEach((x) => {
+      //   filterdataCabangUser.push(x.location)
+      // })
+      getDataUsersExternal(filterdataNameUser.toString())
+    }
     
     // console.log('filterdataMerek.toString()',filterdataMerek.toString())
     // console.log('filterdataModel.toString()',filterdataModel.toString())
@@ -1424,6 +1468,24 @@ export default function MyAppbar(props) {
 
     // props.getDataFilter(selectedArea[0] ? selectedArea[0].merek : 'resetFilter')
     // props.getDataFilterMulti(selectedArea ? selectedArea : 'resetFilter')
+  }
+
+  const getDataUsersExternal= async (nama) => {
+    await axios.post('https://yodacentral.herokuapp.com/api/filterExternal',{
+      nama: nama
+    })
+    .then((response) =>{ 
+      console.log('getDataUsersExternal', response.data.results)
+      setFilteredData(response.data.results)
+      props.getFilteredDataUsersExternal(response.data.results)
+      props.doFilter(true)
+      setTimeout(() => {
+        props.doFilter(false)
+      }, 300)
+    })
+    .catch((err) => { 
+      console.warn(err.response)
+    })
   }
 
   const getDataWilayah= async (provinsi, kota, kecamatan, cabang) => {
@@ -1577,6 +1639,38 @@ export default function MyAppbar(props) {
   const doSearch = async (item) => {
     console.log('activeTabel', activeTabel)
     setSearchValue(item)
+    if(activeTabel === "users_external") {
+      console.log('wadudu')
+      await axiosBackend
+        .post("/filter2", {
+          table: 'users',
+          keyword: item,
+        })
+        .then((response) => {
+          setAllDataMerek(response.data.results);
+          console.log('res get filter', response.data.results)
+          const idsModel = response.data.results.map((o) => o.name);
+          const duplicatedModel = response.data.results.filter(
+            ({ name }, index) => !idsModel.includes(name, index + 1)
+          );
+          console.log('duplicatedModel', duplicatedModel)
+          setdefaultAreaNameUser(duplicatedModel)
+          // console.log('duplicatedVarian', duplicatedVarian)
+          // if(response.data.results.length === 0){
+          //   setDefaultArea([])
+          //   setDefaultAreaModel([])
+          //   setDefaultAreaVarian([])
+          // }
+          // if(response.data.results.length === 0 && item !== ""){
+          //   setsearchEmpty(true)
+          // } else {
+          //   setsearchEmpty(false)
+          // }
+        })
+        .catch((err) => {
+          console.warn(err.response);
+        });
+    }
     if(activeTabel === "users") {
       console.log('tab users')
       await axiosBackend
@@ -1613,7 +1707,7 @@ export default function MyAppbar(props) {
           console.warn(err.response);
         });
     }
-    else {
+    if(activeTabel !== "users" && activeTabel !== "users_external"){
       await axiosBackend
         .post("/filter2", {
           table: activeTabel,
@@ -2112,6 +2206,40 @@ export default function MyAppbar(props) {
                         : <span></span>
                       }
                       {choseCabangUser()}
+                    </div>
+                    :
+                    (props.ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1)
+                    ?
+                    <div>
+                      {/* {areasSelectedUsers()} */}
+                      {areasSelectedRole()}
+                      {areasSelectedStatus()}
+                      {areasSelectedCabangUser()}
+                      <hr/>
+                      {/* {choseUsers()} */}
+                      {defaultAreaRole.length > 0
+                        ? <p className="color-primary">Role</p>
+                        : <span></span>
+                      }
+                      {choseRole()}
+                      {defaultAreaStatus.length > 0
+                        ? <p className="color-primary">Status</p>
+                        : <span></span>
+                      }
+                      {choseStatus()}
+                      {defaultAreaCabangUser.length > 0
+                        ? <p className="color-primary">Cabang</p>
+                        : <span></span>
+                      }
+                      {choseCabangUser()}
+                    </div>
+                    :
+                    (props.ActivePage === 1 && ActiveSubTab === 1 && ActiveTab ===1)
+                    ?
+                    <div>
+                      {areasSelectedNameUser()}
+                      <p>name</p>
+                      {choseNameUser()}
                     </div>
                     :
                     (props.ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1)

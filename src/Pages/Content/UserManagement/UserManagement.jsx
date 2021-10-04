@@ -8,7 +8,8 @@ import UMAccepted from './UMAccepted'
 import UMRejected from './UMRejected'
 import axios from 'axios'
 
-export default function UserManagementPage() {
+export default function UserManagementPage(props) {
+  // console.log('props UserManagementPage', props)
   const ActivePage = 1; // Staticly Setup for Active Menu
   const [ActiveTab, setActiveTab] = useState(0)
   const [ActiveSubTab, setActiveSubTab] = useState(0);
@@ -31,7 +32,7 @@ export default function UserManagementPage() {
     return AllUsers;
   }
 
-  async function GetAllUsers() {
+  async function GetAllUsersOri() {
     const thisToken = sessionStorage.getItem('token')
     console.log('thisToken', thisToken)
     // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
@@ -45,7 +46,7 @@ export default function UserManagementPage() {
           Authorization: `Bearer ${thisToken}`,
         },
       })
-      console.log('data', data)
+      console.log('data GetAllUsers', data)
       if(data.status === 200){
         AllUsers = data.data.users
         return AllUsers
@@ -55,8 +56,34 @@ export default function UserManagementPage() {
     }
   }
 
+  async function GetAllUsers() {
+    const thisToken = sessionStorage.getItem('token')
+    console.log('thisToken', thisToken)
+    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+
+    // console.log('GetAllUsers')
+    var AllUsers = [];
+    try {
+      const data = await axios.post(`${baseURL}/filterUser`, {
+        role: "",
+        Status: "",
+        cabang: ""
+      })
+      console.log('data GetAllUsers', data)
+      if(data.status === 200){
+        AllUsers = data.data.results
+        console.log('AllUsers', AllUsers)
+        return AllUsers
+      }
+    } catch (err){
+      console.log('err', err)
+    }
+  }
+
+
   async function LoadWaitingData() {
-    console.log('LoadWaitingData')
+    console.log('2--LoadWaitingData')
     var tempUsers = await GetAllUsers()
     tempUsers = tempUsers.filter(user => { 
       return (
@@ -72,7 +99,7 @@ export default function UserManagementPage() {
     setWaitingData(tempUsers)
   }
   async function LoadAcceptedData() {
-    console.log('LoadAcceptedData')
+    
     var tempUsers = await GetAllUsers()
     tempUsers = tempUsers.filter(user => { 
       return (
@@ -88,9 +115,10 @@ export default function UserManagementPage() {
       user.user_code = "#" + user.id.toString().padStart(5, '0')
     });
     setAcceptedData(tempUsers)
+    console.log('1--LoadAcceptedData', tempUsers)
   }
   async function LoadRejectedData() {
-    console.log('LoadRejectedData')
+    console.log('3--LoadRejectedData')
     var tempUsers = await GetAllUsers()
     tempUsers = tempUsers.filter(user => {
       return (
@@ -133,16 +161,29 @@ export default function UserManagementPage() {
   }
 
   const [filteredData, setFilteredData] = useState([]);
+  const [filteredDataEx, setFilteredDataEx] = useState([]);
   const getFilteredDataUsersInternal = (val) => {
     console.log('getFilteredDataUsersInternal', val)
     setFilteredData(val)
   }
 
+  const getFilteredDataUsersExternal = (val) => {
+    console.log('---getFilteredDataUsersExternal', val)
+    // setFilteredData(val)
+    // setAcceptedData(val)
+    setFilteredDataEx(val)
+  }
+
   useEffect(() => {
-    LoadWaitingData()
-    LoadAcceptedData()
-    LoadRejectedData()
-  }, [])
+    if(filteredData.length === 0 && filteredDataEx.length === 0){
+      console.log('filteredDataEx & filteredData kosong')
+      LoadWaitingData()
+      LoadAcceptedData()
+      LoadRejectedData()
+    } else {
+      console.log('filteredDataEx & filteredData ada data')
+    }
+  }, [filteredData, filteredDataEx])
 
   const DATA = {
     header: 'Manajemen pengguna',
@@ -159,6 +200,7 @@ export default function UserManagementPage() {
             currentSubTab={(val) => {currentSubTab(val)}}
             isFilter={isFilter}
             filteredData={filteredData}
+            filteredDataEx={filteredDataEx}
             reload={() => {LoadAcceptedData(); /*console.log('LoadAcceptedData')*/}} /> },
       { value: 2, label: 'Ditolak', content: <UMRejected data={RejectedData} dataSort={dataSort} reload={() => {LoadRejectedData(); /*console.log('LoadRejectedData')*/}} /> },
     ]
@@ -178,6 +220,7 @@ export default function UserManagementPage() {
         getFilteredDataInternal={getFilteredDataInternal}
         filteredDataInternal={filteredDataInternal}
         getFilteredDataUsersInternal={getFilteredDataUsersInternal}
+        getFilteredDataUsersExternal={getFilteredDataUsersExternal}
       />
 
       <Container maxWidth="xl">
