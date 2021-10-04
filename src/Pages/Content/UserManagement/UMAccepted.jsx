@@ -146,7 +146,8 @@ export default function UMAccepted(props) {
     if(newTabIndex === 0){
       console.log('newTabIndex 0', newTabIndex)
       // filterData()
-      setCurentDataFiltered(tempData);
+      // setCurentDataFiltered(tempData);
+      GetAllUsersInternal()
     }
     // GetAllUsers()
     // console.log("tempData handleChangeTab", tempData);
@@ -274,6 +275,27 @@ export default function UMAccepted(props) {
     }
   }
 
+  async function GetAllUsersInternal() {
+    const thisToken = sessionStorage.getItem('token')
+    console.log('thisToken', thisToken)
+    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+
+    // console.log('GetAllUsers')
+    var AllUsers = [];
+    try {
+      const data = await axios.post(`${baseURL}/filterUser`, {
+        role: "",
+        Status: "",
+        cabang: ""
+      })
+      console.log('data GetAllUsersInternal', data.data.results)
+      setCurentDataFiltered(data.data.results);
+    } catch (err){
+      console.log('err', err)
+    }
+  }
+
   useEffect(() => {
     if (props.dataFilter && props.filteredData.length === 0) {
       // filterData();
@@ -285,9 +307,13 @@ export default function UMAccepted(props) {
       GetAllUsers()
     }
 
-    if (props.filteredDataEx.length > 0 && isFilter) {
-      console.log('props.filteredDataEx', props.filteredDataEx)
-      setCurentDataFiltered(props.filteredDataEx);
+    // if (props.filteredDataEx.length > 0 && isFilter) {
+    //   console.log('props.filteredDataEx', props.filteredDataEx)
+    //   setCurentDataFiltered(props.filteredDataEx);
+    // }
+    if (props.filteredData.length > 0 && isFilter) {
+      console.log('props.filteredData', props.filteredData)
+      setCurentDataFiltered(props.filteredData);
     }
 
   }, [props.dataFilter, props.filteredDataEx, isFilter]);
