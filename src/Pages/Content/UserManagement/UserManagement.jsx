@@ -51,11 +51,11 @@ export default function UserManagementPage(props) {
           setAllData(res.data.users);
           // return AllUsers;
         }
-        console.log("data GetAllUsers", data);
-        if (data.status === 200) {
-          AllUsers = data.data.users;
-          return AllUsers;
-        }
+        // console.log("data GetAllUsers", data);
+        // if (data.status === 200) {
+        //   AllUsers = data.data.users;
+        // }
+        return AllUsers;
       })
       .catch((err) => {
         console.log("err", err);
