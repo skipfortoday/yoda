@@ -156,19 +156,28 @@ export default function UMAccepted(props) {
         return data?.role?.toString().toLowerCase() === "external";
       // else return data.id === 1;
     });
-
+    console.log(filteredData, "FDFDFDFDFDFD");
+    console.log(data, "DATADATADATADATADATADATADATADATA");
+    
     filteredData.forEach((data, idx) => {
       tempData.push({ ...data, index: idx + 1 });
     });
+    console.log(newTabIndex, "NTI");
     if(newTabIndex === 1){
+      console.log("qwertyuiop");
       console.log('newTabIndex 1', newTabIndex)
-      GetAllUsers()
+      console.log('TDTDTDTDTD', tempData)
+      console.log('TDTDTDTDTD', tempData)
+      console.log('newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1')
+      setCurentData(tempData)
+      // GetAllUsers()
     }
     if(newTabIndex === 0){
-      console.log('newTabIndex 0', newTabIndex)
+      console.log('newTabIndex 0', newTabIndex, "000000000000000000000000000000000000000000000000000000")
+      setCurentData(tempData)
       // filterData()
       // setCurentDataFiltered(tempData);
-      GetAllUsersInternal()
+      // GetAllUsersInternal()
     }
     // GetAllUsers()
     // console.log("tempData handleChangeTab", tempData);
@@ -308,49 +317,49 @@ export default function UMAccepted(props) {
     }
   };
 
-  async function GetAllUsers() {
-    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  // async function GetAllUsers() {
+  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
 
-    // console.log('GetAllUsers')
-    // var AllUsers = [];
-    try {
-      const data = await axios.post(`${baseURL}/filterExternal`, {
-        role: "",
-        Status: "",
-        cabang: ""
-      })
-      console.log('data GetAllUsers External UMAccepted', data.data.results)
-      setCurentDataFiltered(data.data.results);
-      // if(data.status === 200){
-      //   AllUsers = data.data.results
-      //   console.log('AllUsers', AllUsers)
-      //   return AllUsers
-      // }
-    } catch (err){
-      console.log('err', err)
-    }
-  }
+  //   // console.log('GetAllUsers')
+  //   // var AllUsers = [];
+  //   try {
+  //     const data = await axios.post(`${baseURL}/filterExternal`, {
+  //       role: "",
+  //       Status: "",
+  //       cabang: ""
+  //     })
+  //     console.log('data GetAllUsers External UMAccepted', data.data.results)
+  //     setCurentDataFiltered(data.data.results);
+  //     // if(data.status === 200){
+  //     //   AllUsers = data.data.results
+  //     //   console.log('AllUsers', AllUsers)
+  //     //   return AllUsers
+  //     // }
+  //   } catch (err){
+  //     console.log('err', err)
+  //   }
+  // }
 
-  async function GetAllUsersInternal() {
-    const thisToken = sessionStorage.getItem('token')
-    console.log('thisToken', thisToken)
-    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
-    const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  // async function GetAllUsersInternal() {
+  //   const thisToken = sessionStorage.getItem('token')
+  //   console.log('thisToken', thisToken)
+  //   // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
 
-    // console.log('GetAllUsers')
-    var AllUsers = [];
-    try {
-      const data = await axios.post(`${baseURL}/filterUser`, {
-        role: "",
-        Status: "",
-        cabang: ""
-      })
-      console.log('data GetAllUsersInternal', data.data.results)
-      setCurentDataFiltered(data.data.results);
-    } catch (err){
-      console.log('err', err)
-    }
-  }
+  //   // console.log('GetAllUsers')
+  //   var AllUsers = [];
+  //   try {
+  //     const data = await axios.post(`${baseURL}/filterUser`, {
+  //       role: "",
+  //       Status: "",
+  //       cabang: ""
+  //     })
+  //     console.log('data GetAllUsersInternal', data.data.results)
+  //     setCurentDataFiltered(data.data.results);
+  //   } catch (err){
+  //     console.log('err', err)
+  //   }
+  // }
 
   useEffect(() => {
     if (props.dataFilter && props.filteredData.length === 0) {
@@ -360,7 +369,7 @@ export default function UMAccepted(props) {
       // }
     }
     if (props.filteredDataEx.length === 0 && !isFilter) {
-      GetAllUsers()
+      // GetAllUsers()
     }
 
     // if (props.filteredDataEx.length > 0 && isFilter) {
@@ -422,7 +431,7 @@ export default function UMAccepted(props) {
           </Popover> */}
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={CurentDataFiltered}
+          rows={CurentData}
           checkboxSelection
           disableColumnResize={false}
           disableSelectionOnClick

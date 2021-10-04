@@ -37,6 +37,7 @@ export default function CMUMerkModelVariant(props) {
     setFilteredData(tempData)
   }
 
+
   useEffect(() => {
     // LoadData();
     // if(props.filteredData){
@@ -55,18 +56,18 @@ export default function CMUMerkModelVariant(props) {
     if (props.dataFiltered) {
       // setData(props.dataFiltered);
       if (props.dataFiltered.length === 0) {
-        if(!isFilter){
+        if(!isFilter && !filteredData.length){
           console.log('props dataFiltered === 0')
           LoadData();
         }
         // console.log('props dataFiltered === 0')
-
+        
         // LoadData();
       }
     }
     if (props.dataFiltered === "resetFilter") {
       // console.log('props.dataFiltered reset')
-
+      
       // LoadData();
     }
     if(props.ActiveSubPage){
@@ -77,8 +78,21 @@ export default function CMUMerkModelVariant(props) {
     }
   }, [props.val, props.dataFiltered]);
 
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      console.log(props.filteredData.length, "PFD");
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setFilteredData(props.filteredData)
+    }
+  }, [props.filteredData])
+
   async function LoadData() {
     console.log('load data LoadData')
+
     // console.log('loadData')
     await axios
       .get(`${baseURL}/cm/merek-model-varian`, {
@@ -88,13 +102,16 @@ export default function CMUMerkModelVariant(props) {
       })
       .then((response) => {
         var tempData = response.data;
+        console.log(response, "RESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSE");
         tempData.forEach((dat, idx) => {
           dat.index = idx + 1;
         });
         // setData(tempData);
         setFilteredData(tempData)
-        console.log('LoadData setFilteredData', tempData)
-      });
+        // console.log('LoadData setFilteredData', tempData)
+      }).catch((err) => {
+        console.log(err, "Err");
+      })
   }
 
   const { indexPage, ActiveSubPage } = props;
@@ -245,33 +262,33 @@ export default function CMUMerkModelVariant(props) {
       InsertData();
     }
   }
-
+  
   function ResetInputs() {
     setInputMerek(INPUTS[0]);
     setInputModel(INPUTS[1]);
     setInputVarian(INPUTS[2]);
   }
-
+  
   async function InsertData() {
     await axios
-      .post(`${baseURL}/cm/merek-model-varian`, {
-        headers: {
-          Authorization: `Bearer ${thisToken}`,
-        },
-        merek: InputMerek.value,
-        model: InputModel.value,
-        varian: InputVarian.value,
-      })
-      .then((response) => {
-        // console.log(response.data)
-
-        setMenuAnchorEl(null);
-        ResetInputs();
-        LoadData();
-      })
-      .catch((err) => {
-        console.warn(err.response);
-      });
+    .post(`${baseURL}/cm/merek-model-varian`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+      merek: InputMerek.value,
+      model: InputModel.value,
+      varian: InputVarian.value,
+    })
+    .then((response) => {
+      // console.log(response.data)
+      
+      setMenuAnchorEl(null);
+      ResetInputs();
+      LoadData();
+    })
+    .catch((err) => {
+      console.warn(err.response);
+    });
   }
 
   const DATAGRID_COLUMNS = [

@@ -121,13 +121,12 @@ export default function MyAppbar(props) {
   const { header, tabsMenu } = props;
   const { ActiveTab, setActiveTab } = props;
   const { ActiveSubTab } = props;
-
+  
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [isActiveClassFilter, setIsActiveClassFilter] = useState(false);
   const [isActiveClasssorting, setIsActiveClasssorting] = useState(false);
-  
 
   const isMainMenuOpen = Boolean(MenuanchorEl);
   const isMenuOpen = Boolean(anchorEl);
@@ -1488,6 +1487,7 @@ export default function MyAppbar(props) {
   
   const doFilterData = async () => {
     console.log('selectedArea', selectedArea)
+    console.log(ActivePage, ActiveSubTab, ActiveTab, "----------------------------------------------------")
     // setAreaBeforeSearch([])
     const filterModel = []
     const filterdataMerek = []
@@ -1820,11 +1820,22 @@ export default function MyAppbar(props) {
     if(activeTabel === "users") {
       console.log('tab users')
       await axiosBackend
-        .post("/buttonUser", {
+        .post("/filter2", {
+          table: 'users',
           keyword: item,
         })
         .then((response) => {
-          console.log('res get filter', response.data.results)
+          console.log("AAA", ActivePage, ActiveTab, ActiveSubTab);
+          if(ActivePage === 1 && ActiveTab === 0 && ActiveSubTab === 0){
+            props.searchedData("waiting", response.data.results)
+          }
+          if(ActivePage === 1 && ActiveTab === 1 && ActiveSubTab === 0){
+            props.searchedData("accepted", response.data.results)
+          }
+          if(ActivePage === 1 && ActiveTab === 2 && ActiveSubTab === 0){
+            props.searchedData("rejected", response.data.results)
+            console.log(response.data.results, "RDR");
+          }
           const idsRole = response.data.results.map((o) => o.role);
           const duplicatedRole = response.data.results.filter(
             ({ role }, index) => !idsRole.includes(role, index + 1)
@@ -1861,13 +1872,16 @@ export default function MyAppbar(props) {
         })
         .then((response) => {
           setAllDataMerek(response.data.results);
+          console.log("filter2", item);
+          console.log("resp2", response.data.results);
+          props.searchedData(response.data.results)
           console.log('res get filter', response.data.results)
           const ids = response.data.results.map((o) => o.merek);
           const duplicated = response.data.results.filter(
             ({ merek }, index) => !ids.includes(merek, index + 1)
           );
           setDefaultArea(duplicated);
-          console.log('duplicated', duplicated)
+          // console.log('duplicated', duplicated)
   
           if(activeTabel === "jarak_tempuhs"){
             console.log('jarak_tempuhs', response.data.results)
@@ -1921,8 +1935,8 @@ export default function MyAppbar(props) {
   
           setDefaultAreaModel(duplicatedModel);
           setDefaultAreaVarian(duplicatedVarian)
-          console.log('duplicatedModel', duplicatedModel)
-          console.log('duplicatedVarian', duplicatedVarian)
+          // console.log('duplicatedModel', duplicatedModel)
+          // console.log('duplicatedVarian', duplicatedVarian)
           if(response.data.results.length === 0){
             setDefaultArea([])
             setDefaultAreaModel([])
@@ -2035,13 +2049,80 @@ export default function MyAppbar(props) {
     if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1){
       setActiveTabel('wilayahs')
     }
-    if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
+    if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1 || ActivePage === 1 && ActiveSubTab === 0 && ActiveTab === 0 ){
       setActiveTabel('users')
     }
     if(ActivePage === 1 && ActiveSubTab === 1 && ActiveTab ===1){
       setActiveTabel('users_external')
     }
+    if(ActivePage === 2 && ActiveSubTab === 3 && ActiveTab === 0){
+      setActiveTabel('warnas')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 4 && ActiveTab === 0){
+      setActiveTabel('bahan_bakars')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 5 && ActiveTab === 0){
+      setActiveTabel('transmisis')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 6 && ActiveTab === 0){
+      setActiveTabel('kondisis')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 7 && ActiveTab === 0){
+      setActiveTabel('jenis_units')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab === 1){
+      setActiveTabel('kantors')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab === 2){
+      setActiveTabel('tujuan_penggunaans')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab === 2){
+      setActiveTabel('kategoris')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab === 2){
+      setActiveTabel('tipe_asuransis')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 3 && ActiveTab === 2){
+      setActiveTabel('kesertaan_asuransis')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 4 && ActiveTab === 2){
+      setActiveTabel('nilai_pertanggungans')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 5 && ActiveTab === 2){
+      setActiveTabel('pembayaran_asuransis')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 6 && ActiveTab === 2){
+      setActiveTabel('tenors')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 7 && ActiveTab === 2){
+      setActiveTabel('angsuran_pertamas')
+    }
+    if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab === 3){
+      setActiveTabel('penjuals')
+    }
   }, [ActivePage, ActiveSubTab, ActiveTab])
+
+  // useEffect(() => {
+  //   console.log("FIRST", ActivePage, ActiveSubTab, ActiveTab);
+  //   if(ActivePage === 2 && ActiveSubTab === 2 && ActiveTab ===0){
+  //     setActiveTabel('jarak_tempuhs')
+  //   }
+  //   if(ActivePage === 2 && ActiveSubTab === 0 && ActiveTab ===0){
+  //     setActiveTabel('merek_model_varians')
+  //   }
+  //   if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===0){
+  //     setActiveTabel('tahun_pembuatans')
+  //   }
+  //   if(ActivePage === 2 && ActiveSubTab === 1 && ActiveTab ===1){
+  //     setActiveTabel('wilayahs')
+  //   }
+  //   if(ActivePage === 1 && ActiveSubTab === 0 && ActiveTab ===1){
+  //     setActiveTabel('users')
+  //   }
+  //   if(ActivePage === 1 && ActiveSubTab === 1 && ActiveTab ===1){
+  //     setActiveTabel('users_external')
+  //   }
+  // }, [])
 
   useEffect(() => {
     setNameSort(texts[0].name);
@@ -2240,7 +2321,9 @@ export default function MyAppbar(props) {
                     <div className="mt-5">
                       {/* <button onClick={() => cekFilter()}>cek</button> */}
                       <Search
-                        onChange={(filed) => doSearch(filed.target.value)}
+                        onChange={(filed) => {
+                          doSearch(filed.target.value)
+                        }}
                       >
                         <SearchIconWrapper>
                           <SearchIcon sx={{ color: "tint.black.60" }} />
@@ -2468,7 +2551,15 @@ export default function MyAppbar(props) {
               </Search> */}
             </>
           ) : null}
-          <Search onChange={(filed) => doSearch(filed.target.value)}>
+          <Search onChange={(filed) =>{
+            // setItem(filed.target.value)
+            console.log("Filed", filed.target.value);
+            // setSearchInput(filed.target.value)
+            setTimeout(() => {
+              doSearch(filed.target.value)
+            },3000)
+
+          }}>
             <SearchIconWrapper>
               <SearchIcon sx={{ color: "tint.black.60" }} />
             </SearchIconWrapper>
@@ -2476,6 +2567,7 @@ export default function MyAppbar(props) {
               color="primary"
               placeholder="Cari . . ."
               inputProps={{ "aria-label": "search" }}
+              // value={searchInput}
             />
           </Search>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>

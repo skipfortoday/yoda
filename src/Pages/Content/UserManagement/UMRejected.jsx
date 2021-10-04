@@ -7,8 +7,10 @@ import AcceptingAction from '../../../Components/DataGridComponents/AcceptingAct
 
 
 export default function UMRejected(props) {
+  console.log("FROM UMRejected");
   const { reload } = props;
   const [data, setdata] = useState(props.data)
+  console.log(data, "DATA UMR");
   // reload to refresh
 
   const DATAGRID_COLUMNS = [

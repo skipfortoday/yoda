@@ -18,7 +18,7 @@ const top100Films = [
 
 export default function CMSeller(props) {
   const [ActiveSubPage, setActiveSubPage] = useState(0);
-  const { currentSubTab, dataSort } = props;
+  const { currentSubTab, dataSort, filteredData } = props;
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
@@ -39,6 +39,7 @@ export default function CMSeller(props) {
           isMenuOpen={isMenuOpen}
           ActiveSubPage={ActiveSubPage}
           dataSort={dataSort}
+          filteredData={filteredData}
         />
       ),
     },

@@ -124,6 +124,18 @@ export default function CMLWilayah(props) {
     }
   }, [dataSort]);
 
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setFilteredData(props.filteredData)
+    }
+  }, [props.filteredData])
+
   // useEffect(() => { LoadData() }, [])
 
   async function LoadData() {
@@ -138,7 +150,7 @@ export default function CMLWilayah(props) {
   }
 
   useEffect(() => {
-    // LoadData();
+    LoadData();
     getWilayah();
     getCabang();
   }, []);

@@ -19,22 +19,22 @@ export default function UserManagementPage(props) {
   const [RejectedData, setRejectedData] = useState([]);
   const [AllData, setAllData] = useState([]);
 
-  async function GetAllUsersOri() {
-    const thisToken = sessionStorage.getItem("token");
-    console.log("thisToken", thisToken);
-    // console.log('GetAllUsers')
-    var AllUsers = [];
-    await axiosBackend
-      .get("/users")
-      .then((response) => {
-        console.log("response", response);
-        AllUsers = response.data.users;
-      })
-      .catch((err) => {
-        console.warn(err.response);
-      });
-    return AllUsers;
-  }
+  // async function GetAllUsersOri() {
+  //   const thisToken = sessionStorage.getItem("token");
+  //   console.log("thisToken", thisToken);
+  //   // console.log('GetAllUsers')
+  //   var AllUsers = [];
+  //   await axiosBackend
+  //     .get("/users")
+  //     .then((response) => {
+  //       console.log("response", response);
+  //       AllUsers = response.data.users;
+  //     })
+  //     .catch((err) => {
+  //       console.warn(err.response);
+  //     });
+  //   return AllUsers;
+  // }
 
   async function GetAllUsers() {
     const thisToken = sessionStorage.getItem("token");
@@ -90,8 +90,8 @@ export default function UserManagementPage(props) {
   async function LoadWaitingData() {
     console.log("LoadWaitingData");
     // var tempUsers = await GetAllUsers();
-    let tempUsers;
-    tempUsers = AllData.filter((user) => {
+    let tempUsers = await GetAllUsers();
+    tempUsers = tempUsers.filter((user) => {
       // console.log('2--LoadWaitingData')
       // var tempUsers = await GetAllUsers()
       // tempUsers = tempUsers.filter(user => {
@@ -109,49 +109,51 @@ export default function UserManagementPage(props) {
   }
   async function LoadAcceptedData() {
     console.log("LoadAcceptedData");
-    let tempUsers;
-    tempUsers = AllData.filter((user) => {
+    let tempUsers = await GetAllUsers();
+    tempUsers = tempUsers.filter((user) => {
       // var tempUsers = await GetAllUsers()
       // tempUsers = tempUsers.filter(user => {
-      return (
-        user.user_status.toString().toLowerCase() !== "unconfirmed" &&
-        user.user_status.toString().toLowerCase() !== "rejected" &&
-        // (user.user_status.toString().toLowerCase() === "active" ||
-        // user.user_status.toString().toLowerCase() === "non aktif")
-        user?.role?.name !== "Super Admin"
-      );
-    });
-    tempUsers.forEach((user, index) => {
-      user.index = index + 1;
-      user.user_code = "#" + user.id.toString().padStart(5, "0");
-    });
-    setAcceptedData(tempUsers);
-  }
-  async function LoadRejectedData() {
-    console.log("LoadRejectedData");
-    let tempUsers;
-    tempUsers = AllData.filter((user) => {
-      return user.user_status.toString().toLowerCase() === "rejected";
-    });
-    //   setAcceptedData(tempUsers)
-    //   console.log('1--LoadAcceptedData', tempUsers)
+        return (
+          user.user_status.toString().toLowerCase() !== "unconfirmed" &&
+          user.user_status.toString().toLowerCase() !== "rejected" &&
+          // (user.user_status.toString().toLowerCase() === "active" ||
+          // user.user_status.toString().toLowerCase() === "non aktif")
+          user?.role?.name !== "Super Admin"
+          );
+        });
+        tempUsers.forEach((user, index) => {
+          user.index = index + 1;
+          user.user_code = "#" + user.id.toString().padStart(5, "0");
+        });
+        console.log(tempUsers,"TUTUTUTUTUTUTUTU");
+        setAcceptedData(tempUsers);
+      }
+      async function LoadRejectedData() {
+        console.log("LoadRejectedData");
+        let tempUsers = await GetAllUsers();
+        tempUsers = tempUsers.filter((user) => {
+          return user.user_status.toString().toLowerCase() === "rejected";
+        });
+        //   setAcceptedData(tempUsers)
+        //   console.log('1--LoadAcceptedData', tempUsers)
     // }
     // async function LoadRejectedData() {
-    //   console.log('3--LoadRejectedData')
-    //   var tempUsers = await GetAllUsers()
-    //   tempUsers = tempUsers.filter(user => {
+      //   console.log('3--LoadRejectedData')
+      //   var tempUsers = await GetAllUsers()
+      //   tempUsers = tempUsers.filter(user => {
     //     return (
-    //       user.user_status.toString().toLowerCase() === 'rejected'
-    //     )
-    //   })
-    tempUsers.forEach((user, index) => {
-      user.index = index + 1;
-    });
-    setRejectedData(tempUsers);
-  }
-
-  const [dataSort, setDataSort] = useState([]);
-  const getData = (val) => {
+      //       user.user_status.toString().toLowerCase() === 'rejected'
+      //     )
+      //   })
+      tempUsers.forEach((user, index) => {
+        user.index = index + 1;
+      });
+      console.log(tempUsers,"REERERERERERERE");
+      setRejectedData(tempUsers);
+    }
+    
+    const [dataSort, setDataSort] = useState([]);
+    const getData = (val) => {
     // do not forget to bind getData in constructor
     console.log(val);
     setDataSort(val);
@@ -190,6 +192,7 @@ export default function UserManagementPage(props) {
   const getFilteredDataUsersInternal = (val) => {
     console.log("getFilteredDataUsersInternal", val);
     setFilteredData(val);
+    setAcceptedData(val);
   };
 
   const getFilteredDataUsersExternal = (val) => {
@@ -213,6 +216,19 @@ export default function UserManagementPage(props) {
       console.log("filteredDataEx & filteredData ada data");
     }
   }, [filteredData, filteredDataEx]);
+
+  const searchedData = (key, val) => {
+    if(key === "waiting"){
+      console.log("SDW", val);
+      setWaitingData(val)
+    }else if(key === "accepted"){
+      console.log("SDA");
+      setAcceptedData(val)
+    }else if(key === "rejected"){
+      console.log("SDR");
+      setRejectedData(val)
+    }
+  }
 
   const DATA = {
     header: "Manajemen pengguna",
@@ -286,6 +302,7 @@ export default function UserManagementPage(props) {
         filteredDataInternal={filteredDataInternal}
         getFilteredDataUsersInternal={getFilteredDataUsersInternal}
         getFilteredDataUsersExternal={getFilteredDataUsersExternal}
+        searchedData={searchedData}
       />
 
       <Container maxWidth="xl">

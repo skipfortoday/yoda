@@ -10,7 +10,7 @@ const INPUTS = [
 ]
 
 export default function CMUTahun(props) {
-  // console.log('props CMTahun => ', props)
+  console.log('props CMTahun => ', props)
   const [Data, setData] = useState([])
   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
   const thisToken = sessionStorage.getItem('token')
@@ -70,6 +70,18 @@ export default function CMUTahun(props) {
       doSort(filteredDataTahun)
     }
   }, [props.dataSort, isFilter]);
+
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      console.log(props.filteredData.length, "PFD");
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
 
   function sortTahunAsc() {
     const mydata = [...Data].sort((a, b) => {

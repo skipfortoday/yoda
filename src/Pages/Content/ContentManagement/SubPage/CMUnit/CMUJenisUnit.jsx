@@ -75,6 +75,18 @@ export default function CMUJenisUnit(props) {
     LoadData();
   }, [props.val]);
 
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
+
   async function LoadData() {
     await axios.get(`${baseURL}/cm/jenis-unit`, {
       headers: {

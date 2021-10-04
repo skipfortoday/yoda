@@ -52,6 +52,18 @@ export default function CMUWarna(props) {
     setData(mydata);
     console.log("mydata", mydata);
   }
+
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
   
   async function LoadData() {
     await axios.get(`${baseURL}/cm/warna`, {

@@ -70,6 +70,18 @@ export default function CMCTipeAsuransi(props) {
 
   useEffect(() => { LoadData() }, [])
 
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
+
   async function LoadData() {
     await axiosBackend.get('/cm/tipe-asuransi')
     .then((response) => { 

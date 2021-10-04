@@ -81,6 +81,18 @@ export default function CMUJarakTempuh(props) {
       setData(props.filteredDataJarak)
     }
   }, [isFilter, dataSort]);
+
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      console.log(props.filteredData.length, "PFD");
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
   
   useEffect(() => {
     setMenuAnchorEl(null);
