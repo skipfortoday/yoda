@@ -1346,7 +1346,7 @@ export default function MyAppbar(props) {
 
   
   const doFilterData = async () => {
-    // console.log('selectedArea', selectedArea)
+    console.log('selectedArea', selectedArea)
     // setAreaBeforeSearch([])
     const filterModel = []
     const filterdataMerek = []
@@ -1575,7 +1575,7 @@ export default function MyAppbar(props) {
   const [searchValue, setSearchValue] = useState('');
 
   const doSearch = async (item) => {
-    console.log('activeTabel', activeTabel)
+    console.log('activeTabel', activeTabel, item)
     setSearchValue(item)
     if(activeTabel === "users") {
       console.log('tab users')
@@ -2171,7 +2171,7 @@ export default function MyAppbar(props) {
               </Search> */}
             </>
           ) : null}
-          <Search>
+          <Search onChange={(filed) => doSearch(filed.target.value)}>
             <SearchIconWrapper>
               <SearchIcon sx={{ color: "tint.black.60" }} />
             </SearchIconWrapper>
@@ -2191,7 +2191,7 @@ export default function MyAppbar(props) {
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
-            >
+              >
               <Badge badgeContent={17} color="red20">
                 <NotificationsIcon color="primary" sx={{ width: 32 }} />
               </Badge>
@@ -2228,6 +2228,7 @@ export default function MyAppbar(props) {
             </IconButton>
           </Box>
         </Toolbar>
+
       </AppBar>
       <Popover
         open={isMainMenuOpen}
