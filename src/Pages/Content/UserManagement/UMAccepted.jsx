@@ -224,7 +224,7 @@ export default function UMAccepted(props) {
   ];
 
   const filterData = () => {
-    console.log("CurentData", CurentData);
+    console.log("filterData CurentData", CurentData);
     if (CurentData.length > 0) {
       if (props.dataFilter === "Reset") {
         setCurentDataFiltered(CurentData);
@@ -242,18 +242,25 @@ export default function UMAccepted(props) {
 
   useEffect(() => {
     if (props.dataFilter && props.filteredData.length === 0) {
-      filterData();
+      // filterData();
+      // if(props.dataFilter !== ''){
+      //   filterData()
+      // }
+    }
+    if (props.filteredDataEx.length === 0 && !isFilter) {
+      filterData()
+      // filterData();
       // if(props.dataFilter !== ''){
       //   filterData()
       // }
     }
 
-    if (props.filteredData.length > 0 && isFilter) {
-      console.log('props.filteredData', props.filteredData)
-      setCurentDataFiltered(props.filteredData)
+    if (props.filteredDataEx.length > 0 && isFilter) {
+      console.log('props.filteredDataEx', props.filteredDataEx)
+      setCurentDataFiltered(props.filteredDataEx);
     }
 
-  }, [props.dataFilter, props.filteredData, isFilter]);
+  }, [props.dataFilter, props.filteredDataEx, isFilter]);
 
   return (
     <>
