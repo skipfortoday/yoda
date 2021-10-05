@@ -735,10 +735,6 @@ export default function CMUnit(props) {
     // currentSubTab(0);
     if (props.filteredData) {
       setFilteredData(props.filteredData);
-      console.log(
-        "SFDSFDSFDSFDSFDSFDSFDSFDSFDSFDSFDSFDSFDSFD",
-        props.filteredData
-      );
     }
     if (props.filteredDataJarak) {
       setFilteredDataJarak(props.filteredDataJarak);

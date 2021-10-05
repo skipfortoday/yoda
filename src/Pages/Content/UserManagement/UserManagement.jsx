@@ -113,47 +113,45 @@ export default function UserManagementPage(props) {
     tempUsers = tempUsers.filter((user) => {
       // var tempUsers = await GetAllUsers()
       // tempUsers = tempUsers.filter(user => {
-        return (
-          user.user_status.toString().toLowerCase() !== "unconfirmed" &&
-          user.user_status.toString().toLowerCase() !== "rejected" &&
-          // (user.user_status.toString().toLowerCase() === "active" ||
-          // user.user_status.toString().toLowerCase() === "non aktif")
-          user?.role?.name !== "Super Admin"
-          );
-        });
-        tempUsers.forEach((user, index) => {
-          user.index = index + 1;
-          user.user_code = "#" + user.id.toString().padStart(5, "0");
-        });
-        console.log(tempUsers,"TUTUTUTUTUTUTUTU");
-        setAcceptedData(tempUsers);
-      }
-      async function LoadRejectedData() {
-        console.log("LoadRejectedData");
-        let tempUsers = await GetAllUsers();
-        tempUsers = tempUsers.filter((user) => {
-          return user.user_status.toString().toLowerCase() === "rejected";
-        });
-        //   setAcceptedData(tempUsers)
-        //   console.log('1--LoadAcceptedData', tempUsers)
+      return (
+        user.user_status.toString().toLowerCase() !== "unconfirmed" &&
+        user.user_status.toString().toLowerCase() !== "rejected" &&
+        // (user.user_status.toString().toLowerCase() === "active" ||
+        // user.user_status.toString().toLowerCase() === "non aktif")
+        user?.role?.name !== "Super Admin"
+      );
+    });
+    tempUsers.forEach((user, index) => {
+      user.index = index + 1;
+      user.user_code = "#" + user.id.toString().padStart(5, "0");
+    });
+    setAcceptedData(tempUsers);
+  }
+  async function LoadRejectedData() {
+    console.log("LoadRejectedData");
+    let tempUsers = await GetAllUsers();
+    tempUsers = tempUsers.filter((user) => {
+      return user.user_status.toString().toLowerCase() === "rejected";
+    });
+    //   setAcceptedData(tempUsers)
+    //   console.log('1--LoadAcceptedData', tempUsers)
     // }
     // async function LoadRejectedData() {
-      //   console.log('3--LoadRejectedData')
-      //   var tempUsers = await GetAllUsers()
-      //   tempUsers = tempUsers.filter(user => {
+    //   console.log('3--LoadRejectedData')
+    //   var tempUsers = await GetAllUsers()
+    //   tempUsers = tempUsers.filter(user => {
     //     return (
-      //       user.user_status.toString().toLowerCase() === 'rejected'
-      //     )
-      //   })
-      tempUsers.forEach((user, index) => {
-        user.index = index + 1;
-      });
-      console.log(tempUsers,"REERERERERERERE");
-      setRejectedData(tempUsers);
-    }
-    
-    const [dataSort, setDataSort] = useState([]);
-    const getData = (val) => {
+    //       user.user_status.toString().toLowerCase() === 'rejected'
+    //     )
+    //   })
+    tempUsers.forEach((user, index) => {
+      user.index = index + 1;
+    });
+    setRejectedData(tempUsers);
+  }
+
+  const [dataSort, setDataSort] = useState([]);
+  const getData = (val) => {
     // do not forget to bind getData in constructor
     console.log(val);
     setDataSort(val);
@@ -175,6 +173,10 @@ export default function UserManagementPage(props) {
   const currentSubTab = (val) => {
     console.log("currentSubTab 1 => ", val);
     setActiveSubTab(val);
+  };
+
+  const cleanFilteredData = () => {
+    setFilteredData([]);
   };
 
   const [isFilter, setIsFilter] = useState(false);
@@ -218,17 +220,57 @@ export default function UserManagementPage(props) {
   }, [filteredData, filteredDataEx]);
 
   const searchedData = (key, val) => {
-    if(key === "waiting"){
+    if (key === "waiting") {
       console.log("SDW", val);
-      setWaitingData(val)
-    }else if(key === "accepted"){
+      val = val.filter((user) => {
+        return (
+          user?.role?.name !== "Super Admin" &&
+          user.user_status.toString().toLowerCase() === "unconfirmed"
+        );
+      });
+
+      val = val.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i);
+
+      console.log(val, "VAL");
+
+      val.forEach((user, index) => {
+        console.log("index", index);
+        user.index = index + 1;
+      });
+      setWaitingData(val);
+    } else if (key === "accepted") {
       console.log("SDA");
-      setAcceptedData(val)
-    }else if(key === "rejected"){
+      val = val.filter((user) => {
+        return user.user_status.toString().toLowerCase() !== "rejected";
+      });
+
+      val = val.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i);
+
+      console.log(val, "VAL");
+
+      val.forEach((user, index) => {
+        console.log("index", index);
+        user.index = index + 1;
+      });
+      setAcceptedData(val);
+      setFilteredData(val);
+    } else if (key === "rejected") {
       console.log("SDR");
-      setRejectedData(val)
+      val = val.filter((user) => {
+        return user.user_status.toString().toLowerCase() === "rejected";
+      });
+      val = val.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i);
+
+      console.log(val, "VAL");
+
+      val.forEach((user, index) => {
+        console.log("index", index);
+        user.index = index + 1;
+      });
+      setRejectedData(val);
+      setFilteredData(val);
     }
-  }
+  };
 
   const DATA = {
     header: "Manajemen pengguna",
@@ -255,7 +297,7 @@ export default function UserManagementPage(props) {
             dataSort={dataSort}
             dataFilter={dataFilter}
             reload={() => {
-              GetAllUsers();
+              // GetAllUsers();
               LoadAcceptedData(); /*console.log('LoadAcceptedData')*/
             }}
             currentSubTab={(val) => {
@@ -264,9 +306,6 @@ export default function UserManagementPage(props) {
             isFilter={isFilter}
             filteredData={filteredData}
             filteredDataEx={filteredDataEx}
-            reload={() => {
-              LoadAcceptedData(); /*console.log('LoadAcceptedData')*/
-            }}
           />
         ),
       },
@@ -277,6 +316,7 @@ export default function UserManagementPage(props) {
           <UMRejected
             data={RejectedData}
             dataSort={dataSort}
+            filteredData={filteredData}
             reload={() => {
               LoadRejectedData(); /*console.log('LoadRejectedData')*/
             }}

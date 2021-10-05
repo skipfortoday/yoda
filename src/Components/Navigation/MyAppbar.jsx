@@ -1639,7 +1639,7 @@ export default function MyAppbar(props) {
   const getDataUsers= async (role, Status, cabang) => {
     await axiosBackend.post('/filterUser',{
       role: role,
-      Status: Status,
+      status: Status,
       cabang: cabang
     })
     .then((response) =>{ 
@@ -1775,6 +1775,7 @@ export default function MyAppbar(props) {
         .then((response) => {
           setAllDataMerek(response.data.results);
           console.log('res get filter', response.data.results)
+          props.searchedData("rejected", response.data.results)
           const idsUserName = response.data.results.map((o) => o.name);
           const duplicatedModel = response.data.results.filter(
             ({ name }, index) => !idsUserName.includes(name, index + 1)
@@ -1818,7 +1819,7 @@ export default function MyAppbar(props) {
         });
     }
     if(activeTabel === "users") {
-      console.log('tab users')
+      console.log('tab users', item)
       await axiosBackend
         .post("/filter2", {
           table: 'users',

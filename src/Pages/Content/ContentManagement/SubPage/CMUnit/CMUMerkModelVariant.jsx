@@ -82,7 +82,7 @@ export default function CMUMerkModelVariant(props) {
     if(props.filteredData.length === 0){
       LoadData()
     }else{
-      console.log(props.filteredData.length, "PFD");
+      
       props.filteredData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
@@ -102,7 +102,6 @@ export default function CMUMerkModelVariant(props) {
       })
       .then((response) => {
         var tempData = response.data;
-        console.log(response, "RESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSERESPONSE");
         tempData.forEach((dat, idx) => {
           dat.index = idx + 1;
         });

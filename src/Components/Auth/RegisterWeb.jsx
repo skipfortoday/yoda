@@ -60,18 +60,21 @@ export default function RegisterWeb(props) {
   const [emailFormat, setEmailFormat] = useState(false);
   const [emailSudahTerdaftar, setEmailSudahTerdaftar] = useState(false);
   const [CharLength, setCharLength] = useState(0);
+  const [PhoneNumberLength, setPhoneNumberLength] = useState(0);
   const [UpperCaseExist, setUpperCaseExist] = useState(0);
   const [LowerCaseExist, setLowerCaseExist] = useState(0);
   const [NumericExist, setNumericExist] = useState(0);
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const [pass, setPass] = useState(null);
   const [checkPass, setCheckPass] = useState(false);
+  const [numPass, setNumPass] = useState(0);
   const isMainMenuOpen = Boolean(MenuanchorEl);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [open0, setOpen0] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
   const [placement, setPlacement] = useState();
 
   const handleClick = (newPlacement, event, id) => {
@@ -82,13 +85,21 @@ export default function RegisterWeb(props) {
       setOpen0(event !== false ? true : false);
       setOpen1(false);
       setOpen2(false);
+      setOpen3(false);
     } else if (id === 1) {
       setOpen1(event !== false ? true : false);
       setOpen0(false);
       setOpen2(false);
+      setOpen3(false);
     } else if (id === 2) {
       setOpen2(event !== false ? true : false);
       setOpen1(false);
+      setOpen0(false);
+      setOpen3(false);
+    } else if (id === 3) {
+      setOpen3(event !== false ? true : false);
+      setOpen1(false);
+      setOpen2(false);
       setOpen0(false);
     }
     if (event !== false) setPlacement(newPlacement);
@@ -132,6 +143,14 @@ export default function RegisterWeb(props) {
       setCharLength(false);
     } else {
       setCharLength(true);
+    }
+  }
+
+  function checkPhoneNumberLength(val) {
+    if (val.length < 10 || val.length > 15) {
+      setPhoneNumberLength(false);
+    } else {
+      setPhoneNumberLength(true);
     }
   }
 
@@ -182,6 +201,14 @@ export default function RegisterWeb(props) {
       setCheckPass(false);
     } else {
       setCheckPass(true);
+    }
+  }
+
+  function checkNumericOnly(val) {
+    if (!/^\d+$/.test(val)) {
+      setNumPass(false);
+    } else {
+      setNumPass(true);
     }
   }
 
@@ -914,7 +941,12 @@ export default function RegisterWeb(props) {
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 15 }}
                     type="text"
                     value={PhoneNumber.value}
-                    onChange={(e) => setPhoneNumber({...PhoneNumber, value: e.target.value})}
+                    onChange={(e) => {
+                      setPhoneNumber({...PhoneNumber, value: e.target.value})
+                      checkPhoneNumberLength(e.target.value)
+                      checkNumericOnly(e.target.value)
+                      handleClick("right-end", e, 3);
+                    }}
                     startAdornment={<InputAdornment position="start">+62</InputAdornment>}
                     endAdornment={
                       <InputAdornment position="start">
@@ -935,6 +967,62 @@ export default function RegisterWeb(props) {
                     label={TEXTS.form2.phoneNumber}
                   />
                 </FormControl>
+                <Popper
+                  open={open3}
+                  anchorEl={anchorEl}
+                  placement={placement}
+                  transition
+                >
+                  {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={350}>
+                      <Paper>
+                        <Typography sx={{ p: 1 }}>
+                          <div
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                // margin: "0 auto",
+                              }}
+                            >
+                              {!PhoneNumberLength ? (
+                                <CloseIcon style={{ color: "red" }} />
+                              ) : (
+                                <CheckIcon style={{ color: "green" }} />
+                              )}
+                              <p style={{ margin: "0 auto" }}>
+                                10 - 15 karakter
+                              </p>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height:"2.5em"
+                                // margin: "0 auto",
+                              }}
+                            >
+                              {!numPass ? (
+                                <CloseIcon style={{ color: "red" }} />
+                              ) : (
+                                <CheckIcon style={{ color: "green" }} />
+                              )}
+                              <p style={{ margin: "0 auto" }}>
+                                Harus angka
+                              </p>
+                            </div>
+                          </div>
+                        </Typography>
+                      </Paper>
+                    </Fade>
+                  )}
+                </Popper>
                 <FormControl fullWidth sx={{ paddingY: 2 }}>
                   <Button
                     variant="contained"

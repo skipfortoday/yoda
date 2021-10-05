@@ -75,7 +75,7 @@ export default function CMUTahun(props) {
     if(props.filteredData.length === 0){
       LoadData()
     }else{
-      console.log(props.filteredData.length, "PFD");
+      
       props.filteredData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });

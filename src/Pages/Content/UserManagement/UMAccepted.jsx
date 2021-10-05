@@ -32,6 +32,55 @@ export default function UMAccepted(props) {
   useEffect(() => {
     handleChangeTab(0);
   }, []);
+  
+  console.log(ActiveRole, "CST");
+  // useEffect(() => {
+  //   console.log(props.filteredData, "FDFDFD");
+  //   if(props.filteredData.length === 0){
+  //     handleChangeTab(0);
+  //   }else{
+  //     props.filteredData.forEach((dat, idx) => {
+  //       dat.index = idx + 1;
+  //     });
+  //     setCurentData(props.filteredData)
+  //   }
+  // }, [props.filteredData])
+
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      handleChangeTab(0)
+      console.log("IFIFIFIFIFIFIFIFIFI", props.filteredData);
+    }else{
+      console.log("ELSEELSEELSEELSE", props.filteredData);
+      let val;
+      if(ActiveRole === 0){
+        val = props.filteredData.filter((user) => {
+          return (
+            user?.role?.name !== "Super Admin" &&
+            user.user_status.toString().toLowerCase() !== "unconfirmed" &&
+            user.user_status.toString().toLowerCase() !== "rejected" &&
+            user.role.toString().toLowerCase() !== "external"
+          )
+        });
+      }else if(ActiveRole === 1){
+        val = props.filteredData.filter((user) => {
+          return (
+            user?.role?.name !== "Super Admin" &&
+            user.user_status.toString().toLowerCase() !== "unconfirmed" &&
+            user.user_status.toString().toLowerCase() !== "rejected" &&
+            user.role.toString().toLowerCase() === "external"
+          )
+        });
+      }
+
+      val = val.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i)
+
+      val.forEach((user, index) => {
+        user.index = index + 1;
+      });
+      setCurentData(val);
+    }
+  }, [props.filteredData]);
 
   function myFunctionDesc() {
     const mydata = [...CurentDataFiltered].sort(function (a, b) {
@@ -48,6 +97,13 @@ export default function UMAccepted(props) {
     setCurentDataFiltered(mydata);
     console.log("mydata", mydata);
   }
+
+  // (function reloadSelf() {
+  //   setTimeout(() => {
+  //     console.log("Executing");
+  //     setCurentData([])
+  //   },5000)
+  // })()
 
   function myFunctionAsc() {
     const mydata = [...CurentDataFiltered].sort(function (a, b) {
@@ -156,24 +212,17 @@ export default function UMAccepted(props) {
         return data?.role?.toString().toLowerCase() === "external";
       // else return data.id === 1;
     });
-    console.log(filteredData, "FDFDFDFDFDFD");
-    console.log(data, "DATADATADATADATADATADATADATADATA");
     
     filteredData.forEach((data, idx) => {
       tempData.push({ ...data, index: idx + 1 });
     });
-    console.log(newTabIndex, "NTI");
+
+    console.log(tempData, "TFTFTF");
     if(newTabIndex === 1){
-      console.log("qwertyuiop");
-      console.log('newTabIndex 1', newTabIndex)
-      console.log('TDTDTDTDTD', tempData)
-      console.log('TDTDTDTDTD', tempData)
-      console.log('newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1newTabIndex 1')
       setCurentData(tempData)
       // GetAllUsers()
     }
     if(newTabIndex === 0){
-      console.log('newTabIndex 0', newTabIndex, "000000000000000000000000000000000000000000000000000000")
       setCurentData(tempData)
       // filterData()
       // setCurentDataFiltered(tempData);
@@ -442,7 +491,9 @@ export default function UMAccepted(props) {
           //   )
           //   console.log(selectedRowData);
           // }}
-          onSelectionModelChange={(rows) => console.log(rows)}
+          onSelectionModelChange={(rows) => { 
+            console.log("ACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPT",rows)
+          }}
           onCellClick={(e) => {
             setMenuAnchorEl(true);
             setEditData(e);
