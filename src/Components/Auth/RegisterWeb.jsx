@@ -30,6 +30,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PhoneIcon from "@mui/icons-material/Phone";
+import PersonIcon from '@mui/icons-material/Person';
 import { CheckEmail, CheckNumber } from "../../Helper/RegexHelper";
 import axiosBackend from "../../Helper/axiosBackend";
 import axios from "axios";
@@ -734,7 +735,7 @@ export default function RegisterWeb(props) {
                   id="formCPassword"
                   error={InputCPassword.error}
                   disabled={InputCPassword.disabled}
-                  sx={!EPValid ? { backgroundColor:"rgba(0, 0, 0, 0.12)" }: { backgroundColor:"inherit" }}
+                  sx={!EPValid ? { backgroundColor:"rgba(0, 0, 0, 0.12)", borderRadius:"7px" }: { backgroundColor:"inherit", borderRadius:"7px" }}
                   onClick={() => handleClick("top", false, 2)}
                 >
                   <InputLabel htmlFor="login-form-cpassword">
@@ -967,6 +968,7 @@ export default function RegisterWeb(props) {
                   color="primary"
                   fullWidth
                   error={FullName.error}
+                  onClick={() => handleClick("top", false, 1)}
                 >
                   <InputLabel htmlFor="login-form-email">
                     {TEXTS.form2.fullName}
@@ -983,9 +985,9 @@ export default function RegisterWeb(props) {
                         {FullName.disabled ? (
                           <BlockIcon />
                         ) : FullName.value === "" ? (
-                          <CheckCircleIcon />
+                          <PersonIcon />
                         ) : FullName.value !== "" ? (
-                          <CheckCircleIcon color="primary" />
+                          <CheckIcon color="primary" />
                         ) : // : FullName.value!==''? (
                         //   <IconButton edge="end"
                         //     onClick={() => setFullName({...FullName, value: ''})}
@@ -1003,7 +1005,9 @@ export default function RegisterWeb(props) {
                   variant="outlined"
                   color="primary"
                   fullWidth
+                  id="formPhone"
                   error={PhoneNumber.error}
+                  onClick={() => handleClick("top", false, 1)}
                 >
                   <InputLabel htmlFor="login-form-number">
                     {TEXTS.form2.phoneNumber}
@@ -1017,11 +1021,13 @@ export default function RegisterWeb(props) {
                       setPhoneNumber({...PhoneNumber, value: e.target.value})
                       checkPhoneNumberLength(e.target.value)
                       checkNumericOnly(e.target.value)
-                      handleClick("right-end", e, 3);
+                      // handleClick("right-end", e, 3);
+                      let formBorder = document.getElementById('formPhone'); 
+                      handleClick("right-end", formBorder, 3);
                     }}
                     startAdornment={<InputAdornment position="start">+62</InputAdornment>}
                     endAdornment={
-                      <InputAdornment position="start">
+                      <InputAdornment position="end">
                         { PhoneNumber.disabled? ( <BlockIcon /> )
                           : PhoneNumber.value===''? ( <PhoneIcon /> )
                           : PhoneNumber.value!==''? ( <PhoneIcon color="primary" /> )
@@ -1046,9 +1052,9 @@ export default function RegisterWeb(props) {
                   transition
                 >
                   {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={350}>
+                    <Fade {...TransitionProps} timeout={350} style={{ height:"9vh" }}>
                       <Paper>
-                        <Typography sx={{ p: 1 }}>
+                        <Typography sx={{ p: .1 }}>
                           <div
                             style={{ display: "flex", flexDirection: "column" }}
                           >
