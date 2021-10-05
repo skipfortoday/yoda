@@ -65,8 +65,8 @@ export default function UserManagementPage(props) {
   async function GetAllUsers() {
     const thisToken = sessionStorage.getItem("token");
     console.log("thisToken", thisToken);
-    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
-    const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_PROD;
+    // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+    const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
 
     // console.log('GetAllUsers')
     var AllUsers = [];

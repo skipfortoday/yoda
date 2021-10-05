@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
   // async function checkEmailExist() {
   //   const thisToken = sessionStorage.getItem('token')
   //   console.log('thisToken', thisToken)
-  //   const baseURL=  process.env.REACT_APP_BACKEND_ENDPOINT_PROD
+  //   const baseURL=  process.env.REACT_APP_BACKEND_ENDPOINT_DEV
   //   try {
   //     await axiosBackend.post(`${baseURL}/check-email`, {
   //       email: InputEmail,

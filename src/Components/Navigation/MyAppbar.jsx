@@ -86,7 +86,7 @@ const StyledInputBaseFilter = styled(OutlinedInput)(({ theme }) => ({
 }));
 
 const uploadData = async (e) => {
-  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_PROD;
+  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const file = e.target.files[0];
   console.log("file", file);
   const bodyFormData = new FormData();

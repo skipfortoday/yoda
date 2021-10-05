@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import UMEdit from "./UMEdit";
 import PopupEdit from "../../../Components/DataGridComponents/PopupEdit.jsx";
-import axios from 'axios'
+import axios from "axios";
 
 export default function UMAccepted(props) {
   console.log("props UMAccepted", props);
@@ -32,48 +32,64 @@ export default function UMAccepted(props) {
   useEffect(() => {
     handleChangeTab(0);
   }, []);
-  
-  console.log(ActiveRole, "CST");
-  // useEffect(() => {
-  //   console.log(props.filteredData, "FDFDFD");
-  //   if(props.filteredData.length === 0){
-  //     handleChangeTab(0);
-  //   }else{
-  //     props.filteredData.forEach((dat, idx) => {
-  //       dat.index = idx + 1;
-  //     });
-  //     setCurentData(props.filteredData)
-  //   }
-  // }, [props.filteredData])
 
   useEffect(() => {
-    if(props.filteredData.length === 0){
-      handleChangeTab(0)
+    let val;
+    if (ActiveRole === 0) {
+      val = props.data.filter((user) => {
+        return (
+          user?.role?.name !== "Super Admin" &&
+          user.user_status.toString().toLowerCase() !== "unconfirmed" &&
+          user.user_status.toString().toLowerCase() !== "rejected" &&
+          user.role.toString().toLowerCase() !== "external"
+        );
+      });
+    } else if (ActiveRole === 1) {
+      val = props.data.filter((user) => {
+        return (
+          user?.role?.name !== "Super Admin" &&
+          user.user_status.toString().toLowerCase() !== "unconfirmed" &&
+          user.user_status.toString().toLowerCase() !== "rejected" &&
+          user.role.toString().toLowerCase() === "external"
+        );
+      });
+    }
+    val = val.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i);
+
+    val.forEach((user, index) => {
+      user.index = index + 1;
+    });
+    setCurentData(val);
+  }, [props.data]);
+
+  useEffect(() => {
+    if (props.filteredData.length === 0) {
+      handleChangeTab(0);
       console.log("IFIFIFIFIFIFIFIFIFI", props.filteredData);
-    }else{
+    } else {
       console.log("ELSEELSEELSEELSE", props.filteredData);
       let val;
-      if(ActiveRole === 0){
+      if (ActiveRole === 0) {
         val = props.filteredData.filter((user) => {
           return (
             user?.role?.name !== "Super Admin" &&
             user.user_status.toString().toLowerCase() !== "unconfirmed" &&
             user.user_status.toString().toLowerCase() !== "rejected" &&
             user.role.toString().toLowerCase() !== "external"
-          )
+          );
         });
-      }else if(ActiveRole === 1){
+      } else if (ActiveRole === 1) {
         val = props.filteredData.filter((user) => {
           return (
             user?.role?.name !== "Super Admin" &&
             user.user_status.toString().toLowerCase() !== "unconfirmed" &&
             user.user_status.toString().toLowerCase() !== "rejected" &&
             user.role.toString().toLowerCase() === "external"
-          )
+          );
         });
       }
 
-      val = val.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i)
+      val = val.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i);
 
       val.forEach((user, index) => {
         user.index = index + 1;
@@ -212,18 +228,18 @@ export default function UMAccepted(props) {
         return data?.role?.toString().toLowerCase() === "external";
       // else return data.id === 1;
     });
-    
+
     filteredData.forEach((data, idx) => {
       tempData.push({ ...data, index: idx + 1 });
     });
 
     console.log(tempData, "TFTFTF");
-    if(newTabIndex === 1){
-      setCurentData(tempData)
+    if (newTabIndex === 1) {
+      setCurentData(tempData);
       // GetAllUsers()
     }
-    if(newTabIndex === 0){
-      setCurentData(tempData)
+    if (newTabIndex === 0) {
+      setCurentData(tempData);
       // filterData()
       // setCurentDataFiltered(tempData);
       // GetAllUsersInternal()
@@ -367,7 +383,7 @@ export default function UMAccepted(props) {
   };
 
   // async function GetAllUsers() {
-  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
+  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
 
   //   // console.log('GetAllUsers')
   //   // var AllUsers = [];
@@ -392,8 +408,8 @@ export default function UMAccepted(props) {
   // async function GetAllUsersInternal() {
   //   const thisToken = sessionStorage.getItem('token')
   //   console.log('thisToken', thisToken)
-  //   // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
-  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
+  //   // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
 
   //   // console.log('GetAllUsers')
   //   var AllUsers = [];
@@ -426,14 +442,13 @@ export default function UMAccepted(props) {
     //   setCurentDataFiltered(props.filteredDataEx);
     // }
     if (props.filteredData.length > 0 && isFilter) {
-      console.log('props.filteredData', props.filteredData)
+      console.log("props.filteredData", props.filteredData);
       setCurentDataFiltered(props.filteredData);
     }
     if (props.filteredDataEx.length > 0 && isFilter) {
-      console.log('++props.filteredDataEx', props.filteredDataEx)
+      console.log("++props.filteredDataEx", props.filteredDataEx);
       setCurentDataFiltered(props.filteredDataEx);
     }
-
   }, [props.dataFilter, props.filteredDataEx, isFilter]);
 
   return (
@@ -491,8 +506,11 @@ export default function UMAccepted(props) {
           //   )
           //   console.log(selectedRowData);
           // }}
-          onSelectionModelChange={(rows) => { 
-            console.log("ACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPT",rows)
+          onSelectionModelChange={(rows) => {
+            console.log(
+              "ACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPTACCEPT",
+              rows
+            );
           }}
           onCellClick={(e) => {
             setMenuAnchorEl(true);

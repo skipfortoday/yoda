@@ -19,7 +19,7 @@ const INPUTS = [
 
 export default function CMUBahanBakar(props) {
   const [Data, setData] = useState([]);
-  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_PROD;
+  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
 
   const { dataSort } = props;
