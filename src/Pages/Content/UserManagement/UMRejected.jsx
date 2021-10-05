@@ -38,7 +38,7 @@ export default function UMRejected(props) {
   ];
 
   useEffect(() => {
-    if (props.filteredData !== undefined) {
+    if (!props.filteredData) {
       console.log("ELSEELSEELSEELSE", props.filteredData);
       let val = props.filteredData.filter((user) => {
         return (
@@ -53,9 +53,15 @@ export default function UMRejected(props) {
       val.forEach((user, index) => {
         user.index = index + 1;
       });
+      console.log(val,"val");
       setdata(val);
     }
   }, [props.filteredData]);
+
+  useEffect(() => {
+    console.log("re-render")
+    setdata(props.data)
+  },[props.data])
 
   function myFunctionDesc() {
     const mydata = [...data].sort(function (a, b) {

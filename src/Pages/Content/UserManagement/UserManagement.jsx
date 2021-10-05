@@ -147,6 +147,7 @@ export default function UserManagementPage(props) {
     tempUsers.forEach((user, index) => {
       user.index = index + 1;
     });
+    console.log(tempUsers,"TURTURTUR");
     setRejectedData(tempUsers);
   }
 

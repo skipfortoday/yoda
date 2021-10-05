@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { useHistory } from 'react-router-dom';
 import { format } from "date-fns";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import axiosBackend from "../../Helper/axiosBackend";
@@ -58,6 +59,7 @@ export default function ProfileCard() {
   const [OpenHistory, setOpenHistory] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [userNow, setuserNow] = useState(auth.user);
+  const history = useHistory()
 
   // useEffect(() => {
   //   setuserNow(auth.user)
@@ -72,6 +74,11 @@ export default function ProfileCard() {
       .catch((err) => {
         console.warn(err.response);
       });
+  }
+
+  const Logout = () => {
+    auth.logout()
+    history.push('/login')
   }
 
   return (
@@ -184,6 +191,7 @@ export default function ProfileCard() {
                 </Typography>
                 <Divider />
               </Box>
+                <Button variant="contained" onClick={() => Logout()} >Logout</Button>
             </Stack>
             <Stack alignItems="center" sx={{ paddingX: 5 }}>
               <Typography fontSize={12} color="tint.grey.50" textAlign="center">
