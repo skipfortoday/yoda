@@ -12,6 +12,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import CancelIcon from '@mui/icons-material/Cancel';
 import BlockIcon from '@mui/icons-material/Block';
+import CheckIcon from "@mui/icons-material/Check";
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -148,6 +149,7 @@ export default function LoginPage() {
                   endAdornment={
                     <InputAdornment position="end">
                       { InputEmail.disabled? ( <BlockIcon /> )
+                        : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(InputEmail.value) ? ( <CheckIcon /> )
                         : InputEmail.value===''? ( <EmailIcon /> )
                         : InputEmail.value!==''? (
                           <IconButton edge="end"

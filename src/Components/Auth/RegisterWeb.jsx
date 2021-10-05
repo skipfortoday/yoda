@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import {
   Button,
@@ -56,14 +56,23 @@ export default function RegisterWeb(props) {
   const { spaceBetween } = props;
 
   const [ActiveSection, setActiveSection] = useState(0);
+  const [email, setEmail] = useState(false);
   const [emailExist, setEmailExist] = useState(false);
   const [emailFormat, setEmailFormat] = useState(false);
   const [emailSudahTerdaftar, setEmailSudahTerdaftar] = useState(false);
-  const [CharLength, setCharLength] = useState(0);
+  const [emailValid, setEmailValid] = useState(false);
+  
   const [PhoneNumberLength, setPhoneNumberLength] = useState(0);
+
+  const [CharLength, setCharLength] = useState(0);
   const [UpperCaseExist, setUpperCaseExist] = useState(0);
   const [LowerCaseExist, setLowerCaseExist] = useState(0);
   const [NumericExist, setNumericExist] = useState(0);
+  const [passwordValid, setPasswordValid] = useState(false);
+  
+  const [EPValid, setEPValid] = useState(false);
+  const [EPCPValid, setEPCPValid] = useState(false);
+
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const [pass, setPass] = useState(null);
   const [checkPass, setCheckPass] = useState(false);
@@ -77,9 +86,49 @@ export default function RegisterWeb(props) {
   const [open3, setOpen3] = useState(false);
   const [placement, setPlacement] = useState();
 
+  useEffect(() => {
+    if(EPValid && checkPass){
+      setEPCPValid(true)
+    }else{
+      setEPCPValid(false)
+    }
+  },[EPValid, checkPass])
+
+  useEffect(() => {
+    if(emailValid && passwordValid){
+      setEPValid(true)
+    }else{
+      setEPValid(false)
+    }
+  },[emailValid, passwordValid])
+
+  useEffect(() => {
+    if(emailFormat && !emailSudahTerdaftar){
+      setEmailValid(true)
+    }else{
+      setEmailValid(false)
+    }
+  },[emailFormat, emailSudahTerdaftar])
+
+  useEffect(() => {
+    if(CharLength && UpperCaseExist && LowerCaseExist && NumericExist){
+      setPasswordValid(true)
+    }else{
+      setPasswordValid(false)
+    }
+  },[CharLength, UpperCaseExist, LowerCaseExist, NumericExist])
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() =>{
+        checkEmailHasBeenRegistered(email)},
+      1000
+      );
+    return () => clearTimeout(timeoutId);
+  }, [email]);
+
   const handleClick = (newPlacement, event, id) => {
     if(event !== false){
-      setAnchorEl(event.currentTarget);
+      setAnchorEl(event);
     }
     if (id === 0) {
       setOpen0(event !== false ? true : false);
@@ -115,19 +164,18 @@ export default function RegisterWeb(props) {
   async function checkEmailHasBeenRegistered(val){
     const thisToken = sessionStorage.getItem("token");
     const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_PROD;
-    try {
-      const data = await axios.post(`${baseURL}/check-email`, {
-        email: val,
-      });
-      console.log("data", data);
+    console.log("before");
+    await axios.post(`${baseURL}/check-email`, {
+      email: val,
+    }).then((res) => {
+      console.log("res", res);
       setEmailSudahTerdaftar(
-        data.data.meesage === "Email Not Registered" ? false : true
+        res.data.meesage === "Email Not Registered" ? false : true
       );
-    } catch (err) {
+    }).catch((err) => {
       console.log("not passed");
-      setEmailSudahTerdaftar(true);
-      console.log("err", err);
-    }
+      setEmailSudahTerdaftar(true)
+    })
   }
 
   function checkValidEmailFormat(val) {
@@ -439,7 +487,9 @@ export default function RegisterWeb(props) {
                   color="primary"
                   fullWidth
                   error={InputEmail.error}
-                  onClick={() => handleClick("top", false, 0)}
+                  onClick={() =>handleClick("top", false, 0)}
+                  id="formEmail"
+                  style={{ left:"0px" }}
                 >
                   <InputLabel htmlFor="login-form-email">
                     {TEXTS.form1.email}
@@ -450,12 +500,14 @@ export default function RegisterWeb(props) {
                     value={InputEmail.value}
                     onChange={(e) => {
                       setInputEmail({ ...InputEmail, value: e.target.value });
-                      checkEmailHasBeenRegistered(e.target.value);
+                      setEmail(e.target.value)
                       checkValidEmailFormat(e.target.value);
-                      handleClick("right-end", e, 0);
+                      let formBorder = document.getElementById('formEmail'); 
+                      handleClick("right-end", formBorder, 0);
                     }}
                     endAdornment={
-                      <InputAdornment position="end">
+                      <InputAdornment position="end"
+                      >
                         {InputEmail.disabled ? (
                           <BlockIcon />
                         ) : InputEmail.value === "" ? (
@@ -463,8 +515,10 @@ export default function RegisterWeb(props) {
                         ) : InputEmail.value !== "" ? (
                           <IconButton
                             edge="end"
-                            onClick={() =>
+                            onClick={(e) =>
+                              {
                               setInputEmail({ ...InputEmail, value: "" })
+                              }
                             }
                           >
                             <CancelIcon />
@@ -483,9 +537,9 @@ export default function RegisterWeb(props) {
                   transition
                 >
                   {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={350}>
+                    <Fade {...TransitionProps} timeout={350} style={{ height: "9vh" }}>
                       <Paper>
-                        <Typography sx={{ p: 1 }}>
+                        <Typography sx={{ p: .1, lineHeight:"1.75" }} >
                           <div
                             style={{ display: "flex", flexDirection: "column" }}
                           >
@@ -533,6 +587,7 @@ export default function RegisterWeb(props) {
                   variant="outlined"
                   color="primary"
                   fullWidth
+                  id="formPassword"
                   error={InputPassword.error}
                   onClick={() => handleClick("top", false, 1)}
                 >
@@ -554,9 +609,12 @@ export default function RegisterWeb(props) {
                       checkUpperCase(e.target.value);
                       checkNumericValue(e.target.value);
                       setPass(e.target.value);
+                      let formBorder = document.getElementById('formPassword'); 
+                      handleClick("right-end", formBorder, 1);
                     }}
                     endAdornment={
-                      <InputAdornment position="end">
+                      <InputAdornment position="end"
+                      >
                         {InputPassword.disabled ? (
                           <BlockIcon />
                         ) : InputPassword.value === "" ? (
@@ -672,10 +730,11 @@ export default function RegisterWeb(props) {
                 </Popper>
                 <FormControl
                   variant="outlined"
-                  color="primary"
                   fullWidth
+                  id="formCPassword"
                   error={InputCPassword.error}
                   disabled={InputCPassword.disabled}
+                  sx={!EPValid ? { backgroundColor:"rgba(0, 0, 0, 0.12)" }: { backgroundColor:"inherit" }}
                   onClick={() => handleClick("top", false, 2)}
                 >
                   <InputLabel htmlFor="login-form-cpassword">
@@ -688,8 +747,9 @@ export default function RegisterWeb(props) {
                       <div className="iconTooltip"><CheckIcon fontSize="small" />1 huruf kecil</div>
                     </div>} arrow placement="right-start"> */}
                   <OutlinedInput
-                    disabled={InputCPassword.disabled}
+                    // disabled={InputCPassword.disabled}
                     id="login-form-cpassword"
+                    disabled={!EPValid}
                     type={InputCPassword.visible ? "text" : "password"}
                     value={InputCPassword.value}
                     onChange={(e) => {
@@ -697,12 +757,13 @@ export default function RegisterWeb(props) {
                         ...InputCPassword,
                         value: e.target.value,
                       });
-                      handleClick("right", e, 2);
-                      checkCharLength(e.target.value);
-                      checkLowerCase(e.target.value);
-                      checkUpperCase(e.target.value);
-                      checkNumericValue(e.target.value);
+                      // checkCharLength(e.target.value);
+                      // checkLowerCase(e.target.value);
+                      // checkUpperCase(e.target.value);
+                      // checkNumericValue(e.target.value);
                       checkSamePassword(e.target.value);
+                      let formBorder = document.getElementById('formCPassword'); 
+                      handleClick("right-end", formBorder, 2);
                     }}
                     endAdornment={
                       <InputAdornment position="end">
@@ -740,13 +801,13 @@ export default function RegisterWeb(props) {
                   transition
                 >
                   {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={350}>
+                    <Fade {...TransitionProps} timeout={350} style={{ height: "9vh" }}>
                       <Paper>
-                        <Typography sx={{ p: 1 }}>
+                        <Typography sx={{ p: 1, lineHeight:"1.75" }}>
                           <div
                             style={{ display: "flex", flexDirection: "column" }}
                           >
-                            <div
+                             {/* <div
                               style={{
                                 display: "flex",
                                 flexDirection: "row",
@@ -813,7 +874,7 @@ export default function RegisterWeb(props) {
                                 <CheckIcon style={{ color: "green" }} />
                               )}
                               <p style={{ margin: "0 auto" }}>1 angka</p>
-                            </div>
+                            </div> */}
                             <div
                               style={{
                                 display: "flex",
@@ -822,7 +883,7 @@ export default function RegisterWeb(props) {
                                 alignItems: "center",
                                 // margin: "0 auto",
                               }}
-                            >
+                            > 
                               {!checkPass ? (
                                 <CloseIcon style={{ color: "red" }} />
                               ) : (
@@ -837,14 +898,25 @@ export default function RegisterWeb(props) {
                   )}
                 </Popper>
                 <FormControl fullWidth sx={{ paddingY: 2 }}>
+                  {!EPCPValid ?
                   <Button
                     variant="contained"
                     color="primary"
                     size="large"
+                    disabled
                     onClick={handleValidateFirstPage}
-                  >
+                    >
                     {TEXTS.form1.submitButton}
-                  </Button>
+                    </Button>:
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={handleValidateFirstPage}
+                    >
+                      {TEXTS.form1.submitButton}
+                    </Button>
+                  }
                 </FormControl>
                 {!upMd ? (
                   <Typography variant="div" color="text.primary">
