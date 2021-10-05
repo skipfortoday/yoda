@@ -12,7 +12,7 @@ const INPUTS = [
 export default function CMUTahun(props) {
   console.log('props CMTahun => ', props)
   const [Data, setData] = useState([])
-  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
   const thisToken = sessionStorage.getItem('token')
   const { isFilter, filteredDataTahun } = props;
 

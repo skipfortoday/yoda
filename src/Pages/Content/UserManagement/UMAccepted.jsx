@@ -367,7 +367,7 @@ export default function UMAccepted(props) {
   };
 
   // async function GetAllUsers() {
-  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
 
   //   // console.log('GetAllUsers')
   //   // var AllUsers = [];
@@ -392,8 +392,8 @@ export default function UMAccepted(props) {
   // async function GetAllUsersInternal() {
   //   const thisToken = sessionStorage.getItem('token')
   //   console.log('thisToken', thisToken)
-  //   // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
-  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  //   // const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
+  //   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_PROD
 
   //   // console.log('GetAllUsers')
   //   var AllUsers = [];

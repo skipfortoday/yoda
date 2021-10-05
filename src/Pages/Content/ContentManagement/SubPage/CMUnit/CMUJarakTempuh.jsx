@@ -19,7 +19,7 @@ export default function CMUJarakTempuh(props) {
   // console.log('props CMUJarakTempuh', props)
   const [Data, setData] = useState([]);
   const [filteredDataJarak, setFilteredDataJarak] = useState([]);
-  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
+  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_PROD;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
   const { dataSort, isFilter } = props;
