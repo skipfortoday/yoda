@@ -11,29 +11,34 @@ import CMCPembayaranAsuransi from './SubPage/CMCredit/CMCPembayaranAsuransi';
 import CMCTenor from './SubPage/CMCredit/CMCTenor';
 import CMCAngsuranPertama from './SubPage/CMCredit/CMCAngsuranPertama';
 
-export default function CMCredit() {
+export default function CMCredit(props) {
   const [ActiveSubPage, setActiveSubPage] = useState(0)
+  const { currentSubTab, dataSort, filteredData } = props
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
 
+  useEffect(() => {
+    currentSubTab(0)
+  }, [])
+
   const TABS = [
     { index: 0, label: 'Tujuan penggunaan',
-      dataGrid: <CMCTujuanPenggunaan indexPage={0} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} /> },
+      dataGrid: <CMCTujuanPenggunaan indexPage={0} dataSort={dataSort} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} filteredData={filteredData} /> },
     { index: 1, label: 'Kategori',
-      dataGrid: <CMCKategori indexPage={1} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} /> },
+      dataGrid: <CMCKategori indexPage={1} dataSort={dataSort} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} filteredData={filteredData} /> },
     { index: 2, label: 'Tipe asuransi',
-      dataGrid: <CMCTipeAsuransi indexPage={2} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} /> },
+      dataGrid: <CMCTipeAsuransi indexPage={2} dataSort={dataSort} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} filteredData={filteredData} /> },
     { index: 3, label: 'Kesertaan Asuransi',
-      dataGrid: <CMCKesertaanAsuransi indexPage={3} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} /> },
+      dataGrid: <CMCKesertaanAsuransi indexPage={3} dataSort={dataSort} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} filteredData={filteredData} /> },
     { index: 4, label: 'Nilai pertanggungan',
-      dataGrid: <CMCNilaiPertanggungan indexPage={4} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} /> },
+      dataGrid: <CMCNilaiPertanggungan indexPage={4} dataSort={dataSort} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} filteredData={filteredData} /> },
     { index: 5, label: 'Pembayaran asuransi',
-      dataGrid: <CMCPembayaranAsuransi indexPage={5} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} /> },
+      dataGrid: <CMCPembayaranAsuransi indexPage={5} dataSort={dataSort} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} filteredData={filteredData} /> },
     { index: 6, label: 'Tenor',
-      dataGrid: <CMCTenor indexPage={6} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} /> },
+      dataGrid: <CMCTenor indexPage={6} dataSort={dataSort} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} filteredData={filteredData} /> },
     { index: 7, label: 'Angsuran pertama',
-      dataGrid: <CMCAngsuranPertama indexPage={7} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} /> },
+      dataGrid: <CMCAngsuranPertama indexPage={7} dataSort={dataSort} MenuanchorEl={MenuanchorEl} setMenuAnchorEl={setMenuAnchorEl} isMenuOpen={isMenuOpen} ActiveSubPage={ActiveSubPage} filteredData={filteredData} /> },
   ]
 
   return (
@@ -46,7 +51,11 @@ export default function CMCredit() {
                 key={index}
                 variant="contained" size="large"
                 color={ActiveSubPage===index?"mint20":"grey20"}
-                onClick={() => { setActiveSubPage(index) }}
+                onClick={() => { 
+                  setActiveSubPage(index)
+                  currentSubTab(index)
+                  props.cleanFilteredData()
+                 }}
                 sx={{ marginRight: 1.5, marginBottom: 1.5 }}
               >
                 {tab.label}

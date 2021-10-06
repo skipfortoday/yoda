@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axiosBackend from "../../../../../Helper/axiosBackend";
 import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
 import {
@@ -11,14 +10,66 @@ import {
 } from "@mui/material";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
 
+import axios from "axios";
+import axiosBackend from "../../../../../Helper/axiosBackend";
+
 const INPUTS = [
   { label: "Bahan bakar", value: "", error: false, disabled: false },
 ];
 
-let count = 1
-
 export default function CMUBahanBakar(props) {
   const [Data, setData] = useState([]);
+  const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
+  const thisToken = sessionStorage.getItem("token");
+
+  const { dataSort } = props;
+
+  function sortJenisBahanBakarAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.bahan_bakar.toLowerCase();
+      let y = b.bahan_bakar.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  function sortJenisBahanBakarDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.bahan_bakar.toLowerCase();
+      let y = b.bahan_bakar.toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "jenisBahanBakarDesc") {
+        sortJenisBahanBakarDesc();
+      }
+      if (dataSort === "jenisBahanBakarAsc") {
+        sortJenisBahanBakarAsc();
+      }
+    } else {
+      sortJenisBahanBakarDesc();
+    }
+  }, [dataSort]);
 
   useEffect(() => {
     LoadData();
@@ -30,16 +81,32 @@ export default function CMUBahanBakar(props) {
     LoadData();
   }, [props.val]);
 
-  async function LoadData() {
-    count +=1
-    console.log(count, "Count");
-    await axiosBackend.get("/cm/bahan-bakar").then((response) => {
-      var tempData = response.data;
-      tempData.forEach((dat, idx) => {
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setData(tempData);
-    });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
+
+  async function LoadData() {
+    await axiosBackend
+      .get(`/cm/bahan-bakar`, {
+        headers: {
+          Authorization: `Bearer ${thisToken}`,
+        },
+      })
+      .then((response) => {
+        var tempData = response.data;
+        tempData.forEach((dat, idx) => {
+          dat.index = idx + 1;
+        });
+        setData(tempData);
+      });
   }
 
   const { indexPage, ActiveSubPage } = props;
@@ -62,7 +129,7 @@ export default function CMUBahanBakar(props) {
 
   async function InsertData() {
     await axiosBackend
-      .post("/cm/bahan-bakar", {
+      .post(`/cm/bahan-bakar`, {
         bahan_bakar: InputBahanBakar.value,
       })
       .then((response) => {

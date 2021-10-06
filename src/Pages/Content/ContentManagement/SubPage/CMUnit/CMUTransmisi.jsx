@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import axios from 'axios'
 
 const INPUTS = [
   { label: 'Transmisi', value: '', error: false, disabled: false,},
@@ -11,6 +11,60 @@ const INPUTS = [
 
 export default function CMUTransmisi(props) {
   const [Data, setData] = useState([])
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  const thisToken = sessionStorage.getItem('token')
+  const { dataSort } = props;
+  
+  function sortJenisTransmisiAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = a.transmisi.toLowerCase();
+      let y = b.transmisi.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortJenisTransmisiDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = a.transmisi.toLowerCase();
+      let y = b.transmisi.toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "jenisTransmisiDesc") {
+        sortJenisTransmisiDesc();
+      }
+      if (dataSort === "jenisTransmisiAsc") {
+        sortJenisTransmisiAsc();
+      }
+    }else{
+      sortJenisTransmisiDesc();
+    }
+  }, [dataSort]);
 
   useEffect(() => { LoadData() }, [])
 
@@ -20,8 +74,24 @@ export default function CMUTransmisi(props) {
     LoadData();
   }, [props.val]);
 
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
+
   async function LoadData() {
-    await axiosBackend.get('/cm/transmisi')
+    await axios.get(`${baseURL}/cm/transmisi`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+    })
     .then((response) => { 
       var tempData = response.data
       tempData.forEach((dat, idx) => {
@@ -50,7 +120,10 @@ export default function CMUTransmisi(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/transmisi', {
+    await axios.post(`${baseURL}/cm/transmisi`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
       transmisi: InputTransmisi.value,
     })
     .then((response) => {

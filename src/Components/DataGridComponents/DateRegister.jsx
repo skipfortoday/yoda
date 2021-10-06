@@ -5,13 +5,13 @@ import { format } from 'date-fns';
 
 
 export default function DateRegister(props) {
-  const { created_at } = props;
+  const { created_at, cli } = props;
   const Distances = CountDatesDistance(new Date(created_at));
 
   return (
     <ListItem>
       <ListItemText
-        primary={<Typography fontSize={12}>{format(new Date(created_at), 'd MMMM yyyy')}</Typography>}
+      primary={<Typography fontSize={12} onClick={(e) => cli(e)}>{format(new Date(created_at), 'd MMMM yyyy')}</Typography>}
         secondary={<Typography fontSize={10}>
           {
             Distances.Days!==0?`${Distances.Days} hari lalu` :

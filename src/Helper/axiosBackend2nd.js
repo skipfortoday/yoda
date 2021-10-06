@@ -1,7 +1,8 @@
 import axios from "axios";
 import auth from "./auth"
 
-console.log(sessionStorage.getItem('token'), "L4");
+const token = sessionStorage.getItem('token')
+console.log("token apibackend", token);
 const axiosBackend2 = axios.create({
   baseURL: process.env.REACT_APP_BACKEND,
   headers: {

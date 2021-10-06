@@ -25,6 +25,7 @@ const INPUTS = [
 ];
 
 export default function CMLWilayah(props) {
+  console.log('props CMLWilayah', props)
   const [Data, setData] = useState([]);
   const [Wilayah, setWilayah] = useState([]);
   const [ProvinsiArr, setProvinsiArr] = useState([]);
@@ -35,6 +36,118 @@ export default function CMLWilayah(props) {
   const [Kecamatan, setKecamatan] = useState([]);
   const [CabangArr, setCabangArr] = useState([]);
   const [Cabang, setCabang] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+
+  const { dataSort, isFilter } = props;
+
+  const dataType = {
+    // "provinsiWilayahDesc": "nama_cabang",
+    // "kotaWilayahDesc": "kode_cabang",
+    // "kecamatanWilayahDesc": "no_telepon",
+    // "cabangPengelolaDesc": "alamat",
+    // "tanggalWilayahDesc": "tanggal_registrasi",
+
+  }
+  
+  function sortAsc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortDesc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "provinsiWilayahDesc") {
+        sortDesc("provinsiWilayah");
+      }
+      if (dataSort === "provinsiWilayahAsc") {
+        sortAsc("provinsiWilayah");
+      }
+      if (dataSort === "kotaWilayahDesc") {
+        sortDesc("kotaWilayah");
+      }
+      if (dataSort === "kotaWilayahAsc") {
+        sortAsc("kotaWilayah");
+      }
+      if (dataSort === "kecamatanWilayahDesc") {
+        sortDesc("kecamatanWilayah");
+      }
+      if (dataSort === "kecamatanWilayahAsc") {
+        sortAsc("kecamatanWilayah");
+      }
+      if (dataSort === "cabangPengelolaDesc") {
+        sortDesc("cabangPengelola");
+      }
+      if (dataSort === "cabangPengelolaAsc") {
+        sortAsc("cabangPengelola");
+      }
+      if (dataSort === "tanggalWilayahDesc") {
+        sortDesc("tanggalWilayah");
+      }
+      if (dataSort === "tanggalWilayahAsc") {
+        sortAsc("tanggalWilayah");
+      }
+    }else{
+      sortDesc("provinsiWilayah");
+    }
+  }, [dataSort]);
+
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setFilteredData(props.filteredData)
+    }
+  }, [props.filteredData])
+
+  // useEffect(() => { LoadData() }, [])
+
+  async function LoadData() {
+    await axiosBackend.get('/cm/kantor')
+    .then((response) => { 
+      var tempData = response.data
+      tempData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(tempData)
+     })
+  }
 
   useEffect(() => {
     LoadData();
@@ -42,19 +155,31 @@ export default function CMLWilayah(props) {
     getCabang();
   }, []);
 
+  useEffect(() => {
+    if(isFilter && props.filteredDataWilayah.length > 0){
+      console.log('props filteredDataWilayah', props.filteredData)
+      setFilteredData(props.filteredDataWilayah)
+    }
+    if(!isFilter && props.filteredDataWilayah.length === 0){
+      console.log('data kosong', props)
+      LoadData()
+    }
+  }, [props.filteredDataWilayah, isFilter]);
+
   async function LoadData() {
+    console.log('LoadData setFilteredData')
     await axiosBackend.get("/cm/wilayah").then((response) => {
       var tempData = response.data;
       tempData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setData(tempData);
+      setFilteredData(tempData);
     });
   }
 
   async function getWilayah() {
     await axios
-      .get("https://yodamobi.sagaramedia.id/api/dropdown/indonesia")
+      .get(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/dropdown/indonesia`)
       .then((response) => {
         var tempData = response.data;
         console.log(tempData);
@@ -68,8 +193,8 @@ export default function CMLWilayah(props) {
     }
     
     async function getCabang() {
-      await axios
-      .get("https://yodamobi.sagaramedia.id/api/dropdown/nama-cabang")
+      await axiosBackend
+      .get("/dropdown/nama-cabang")
       .then((response) => {
         var tempData = response.data.nama_cabang;
         console.log(tempData, "CABANG");
@@ -125,7 +250,7 @@ export default function CMLWilayah(props) {
   }
 
   async function InsertData() {
-    await axios.post("https://yodamobi.sagaramedia.id/api/cm/wilayah", {
+    await axios.post(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/cm/wilayah`, {
         provinsi: Provinsi,
         kota: Kota,
         kecamatan: Kecamatan,
@@ -322,7 +447,7 @@ export default function CMLWilayah(props) {
                 value={Cabang}
               >
                 {CabangArr?.map((data, idx) => {
-                  console.log(data, "CABANG INPUT");
+                  // console.log(data, "CABANG INPUT");
                   return (
                   <MenuItem value={data.nama_cabang} key={idx} onClick={() => {
                     setCabang(data.nama_cabang)
@@ -348,7 +473,7 @@ export default function CMLWilayah(props) {
       <Box fullWidth sx={{ maxHeight: "70vh", height: "70vh" }}>
         <DataGrid
           columns={DATAGRID_COLUMNS}
-          rows={Data}
+          rows={filteredData}
           checkboxSelection
           disableColumnResize={false}
           disableSelectionOnClick

@@ -12,7 +12,77 @@ const INPUTS = [
 export default function CMCKategori(props) {
   const [Data, setData] = useState([])
 
+  const { dataSort } = props;
+
+  const dataType = {
+    "kategori":"kategori"
+  }
+  
+  function sortAsc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortDesc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "kategoriDesc") {
+        sortDesc("kategori");
+      }
+      if (dataSort === "kategoriAsc") {
+        sortAsc("kategori");
+      }
+
+    }else{
+      sortDesc("kategori");
+    }
+  }, [dataSort]);
+
   useEffect(() => { LoadData() }, [])
+
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
 
   async function LoadData() {
     await axiosBackend.get('/cm/kategori')
@@ -59,7 +129,7 @@ export default function CMCKategori(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'kategori', headerName: 'Katgori', minWidth: 180, flex: 1 },
+    { field: 'kategori', headerName: 'Kategori', minWidth: 180, flex: 1 },
   ]
 
   return (

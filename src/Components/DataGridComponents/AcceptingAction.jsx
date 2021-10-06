@@ -30,37 +30,32 @@ export default function AcceptingAction(props) {
         location: 'Not set',
       })
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data, "RESPRESP")
         redBtnClick()
       })
       .catch((err) => {console.log(err.response) })
     }
     else if (fromPage==="UMRejected") {
-      const config = { 
-        target_email: row.email,
-        user_status: 'Deleted',
-        role: 'Deleted',
-        location: 'Not set',
-      }
-      console.log(config)
-      // SALAH GANTI NANTI
-      // await axiosBackend.post('/user-management', { 
+      // const config = { 
       //   target_email: row.email,
       //   user_status: 'Deleted',
       //   role: 'Deleted',
       //   location: 'Not set',
-      // })
-      // .then((response) => {
-      //   console.log(response.data)
-      //   redBtnClick()
-      // })
-      // .catch((err) => {console.log(err.response) })
-      redBtnClick()
+      // }
+      // SALAH GANTI NANTI
+      // redBtnClick()
+
+      await axiosBackend.get(`/um/delete/${row.id}`,)
+      .then((response) => {
+        console.log(response.data)
+        redBtnClick()
+      })
+      .catch((err) => {console.log(err.response) })
     }
   }
 
   return (
-    <Box sx={{ width: '100%', minHeight: Hide?40:0 }} onMouseEnter={() => setHide(false)} onMouseLeave={() => setHide(true)} >
+    <Box sx={{ width: '100%', minHeight: Hide?80:0 }} onMouseEnter={() => setHide(false)} onMouseLeave={() => setHide(true)} >
       <Stack sx={{ width: '100%' }} direction="row" spacing={2} justifyContent="flex-end" >
         <Box sx={{ display: Hide?'none' : 'block' }}>
           <Button variant="text" color="red20" size="small" onClick={handleRejectorDeleteUser}>{TEXTS?.redButton||'Ditolak'}</Button>
@@ -87,7 +82,7 @@ export default function AcceptingAction(props) {
             />
           </Popover>
         </Box>
-      </Stack>
-    </Box>
+       </Stack>
+     </Box>
   )
 }

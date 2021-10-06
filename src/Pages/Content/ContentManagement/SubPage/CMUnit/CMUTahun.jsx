@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import axios from 'axios'
 
 const INPUTS = [
   { label: 'Tahun', value: '', error: false, disabled: false,},
 ]
 
 export default function CMUTahun(props) {
+  console.log('props CMTahun => ', props)
   const [Data, setData] = useState([])
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  const thisToken = sessionStorage.getItem('token')
+  const { isFilter, filteredDataTahun } = props;
 
   useEffect(() => { LoadData() }, [])
 
@@ -21,7 +25,11 @@ export default function CMUTahun(props) {
   }, [props.val]);
 
   async function LoadData() {
-    await axiosBackend.get('/cm/tahun-pembuatan')
+    await axios.get(`${baseURL}/cm/tahun-pembuatan`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+    })
     .then((response) => { 
       var tempData = response.data
       tempData.forEach((dat, idx) => {
@@ -31,11 +39,88 @@ export default function CMUTahun(props) {
      })
   }
 
+  function doSort(items) {
+    var tempData = items
+    tempData.forEach((dat, idx) => {
+      dat.index = idx + 1;
+    });
+    setData(tempData)
+  }
+
   const { indexPage, ActiveSubPage } = props
   const { isMenuOpen } = props
   const { MenuanchorEl, setMenuAnchorEl } = props
 
   const [InputTahun, setInputTahun] = useState(INPUTS[0])
+
+  useEffect(() => {
+    if (props.dataSort) {
+      if (props.dataSort === "tahunDesc") {
+        sortTahunDesc();
+      }
+      if (props.dataSort === "tahunAsc") {
+        sortTahunAsc();
+      }
+    }else{
+      sortTahunDesc();
+    }
+    if(isFilter){
+      console.log('props filteredDataTahun', filteredDataTahun)
+      // setData(filteredDataTahun)
+      doSort(filteredDataTahun)
+    }
+  }, [props.dataSort, isFilter]);
+
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
+
+  function sortTahunAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.tahun.toLowerCase();
+      let y = b.tahun.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    // setData(mydata);
+    doSort(mydata)
+    console.log("mydata", mydata);
+  }
+  
+  function sortTahunDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.tahun.toLowerCase();
+      let y = b.tahun.toLowerCase();
+      if(y.includes("<")){
+        return -1;
+      }
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    // setData(mydata);
+    doSort(mydata)
+    console.log("mydata", mydata);
+  }
   
   function handleSubmit() {
     var isPassed = true;
@@ -50,7 +135,10 @@ export default function CMUTahun(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/tahun-pembuatan', {
+    await axios.post(`${baseURL}/cm/tahun-pembuatan`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
       tahun: InputTahun.value,
     })
     .then((response) => {
@@ -65,7 +153,7 @@ export default function CMUTahun(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'tahun', headerName: 'Merek', minWidth: 180, flex: 1 },
+    { field: 'tahun', headerName: 'Tahun pembuatan unit', minWidth: 180, flex: 1 },
   ]
 
   return (

@@ -31,7 +31,7 @@ export default function UMAcceptMenu(props) {
   const handleAcceptUser = () => {
     const config = { 
       target_email: data.email,
-      user_status: 'Active',
+      user_status: 'Aktif',
       role: Switch?'External':InputRole.value,
       location: InputKantor.value,
     }
@@ -58,19 +58,19 @@ export default function UMAcceptMenu(props) {
   }
 
   const SendData = async () => {
-    // console.log("SEND DATA");
+    console.log("SEND DATA");
     await axiosBackend.post('/user-management', { 
       target_email: data.email,
-      user_status: 'Active',
+      user_status: 'Aktif',
       role: Switch?'External':InputRole.value,
       location: Switch?'Not set':InputKantor.value,
     })
     .then((response) => {
-      console.log(response.data)
+      console.log('SendData', response.data)
       acceptBtnClick()
       setMenuAnchorEl(null)
     })
-    .catch((err) => { console.warn(err.response) })
+    .catch((err) => { console.log(err.response) })
   }
 
   return (
@@ -92,6 +92,7 @@ export default function UMAcceptMenu(props) {
             <Button sx={{ color: Switch?'primary.main':'tint.black.60', backgroundColor: Switch?'tint.grey.20':'plainwhite.main' }} onClick={() => setSwitch(true)} >External</Button>
           </ButtonGroup>
         </CardContent>
+        {/* <button onClick={() => console.log(}>cek</button> */}
         <Collapse in={!Switch} timeout="auto" unmountOnExit >
           <CardContent>
             <Stack spacing={1}>

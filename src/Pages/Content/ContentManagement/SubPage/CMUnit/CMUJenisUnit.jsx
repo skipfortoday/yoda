@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import axios from 'axios'
 
 const INPUTS = [
   { label: 'Jenis unit', value: '', error: false, disabled: false,},
@@ -11,6 +11,61 @@ const INPUTS = [
 
 export default function CMUJenisUnit(props) {
   const [Data, setData] = useState([])
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  const thisToken = sessionStorage.getItem('token')
+
+  const { dataSort } = props;
+  
+  function sortJenisUnitAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = a.jenis_unit.toLowerCase();
+      let y = b.jenis_unit.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortJenisUnitDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = a.jenis_unit.toLowerCase();
+      let y = b.jenis_unit.toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "jenisUnitDesc") {
+        sortJenisUnitDesc();
+      }
+      if (dataSort === "jenisUnitAsc") {
+        sortJenisUnitAsc();
+      }
+    }else{
+      sortJenisUnitDesc();
+    }
+  }, [dataSort]);
 
   useEffect(() => { LoadData() }, [])
 
@@ -20,8 +75,24 @@ export default function CMUJenisUnit(props) {
     LoadData();
   }, [props.val]);
 
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
+
   async function LoadData() {
-    await axiosBackend.get('/cm/jenis-unit')
+    await axios.get(`${baseURL}/cm/jenis-unit`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+    })
     .then((response) => { 
       var tempData = response.data
       tempData.forEach((dat, idx) => {
@@ -50,7 +121,10 @@ export default function CMUJenisUnit(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/jenis-unit', {
+    await axios.post(`${baseURL}/cm/jenis-unit`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
       jenis_unit: InputJenisUnit.value,
     })
     .then((response) => {

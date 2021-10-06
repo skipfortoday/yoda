@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import axios from 'axios'
 
 const INPUTS = [
   { label: 'Warna', value: '', error: false, disabled: false,},
@@ -11,17 +11,66 @@ const INPUTS = [
 
 export default function CMUWarna(props) {
   const [Data, setData] = useState([])
-
-  useEffect(() => { LoadData() }, [])
+  const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
+  const thisToken = sessionStorage.getItem('token')
+  const { dataSort } = props;
+  
+  function sortWarnaUnitAsc() {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = a.warna.toLowerCase();
+      let y = b.warna.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortWarnaUnitDesc() {
+    const mydata = [...Data].sort((a, b) => {
+      let x = a.warna.toLowerCase();
+      let y = b.warna.toLowerCase();
+      ;
+      ;
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
 
   useEffect(() => {
-    setMenuAnchorEl(null);
-    ResetInputs();
-    LoadData();
-  }, [props.val]);
-
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
+  
   async function LoadData() {
-    await axiosBackend.get('/cm/warna')
+    await axios.get(`${baseURL}/cm/warna`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
+    })
     .then((response) => { 
       var tempData = response.data
       tempData.forEach((dat, idx) => {
@@ -30,6 +79,27 @@ export default function CMUWarna(props) {
       setData(tempData)
      })
   }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "warnaUnitDesc") {
+        sortWarnaUnitDesc();
+      }
+      if (dataSort === "warnaUnitAsc") {
+        sortWarnaUnitAsc();
+      }
+    }else{
+      sortWarnaUnitDesc();
+    }
+  }, [dataSort]);
+
+  useEffect(() => { LoadData() }, [])
+
+  useEffect(() => {
+    setMenuAnchorEl(null);
+    ResetInputs();
+    LoadData();
+  }, [props.val]);
 
   const { indexPage, ActiveSubPage } = props
   const { isMenuOpen } = props
@@ -50,7 +120,10 @@ export default function CMUWarna(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/warna', {
+    await axios.post(`${baseURL}/cm/warna`, {
+      headers: {
+        Authorization: `Bearer ${thisToken}`,
+      },
       warna: InputWarna.value,
     })
     .then((response) => {

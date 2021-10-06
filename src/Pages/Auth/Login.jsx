@@ -12,6 +12,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import CancelIcon from '@mui/icons-material/Cancel';
 import BlockIcon from '@mui/icons-material/Block';
+import CheckIcon from "@mui/icons-material/Check";
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -87,6 +88,21 @@ export default function LoginPage() {
       console.warn(err.response)
     })
   }
+  const [isRemember, setIsRemember] = useState(false)
+
+  const cekCookie = () => {
+    console.log('isRemember', isRemember)
+  }
+
+  const doRemember = (item) => {
+    setIsRemember(!isRemember)
+    console.log('isRemember', item)
+      if(item){
+        document.cookie = "isRemember=true";
+      } else {
+        document.cookie = "isRemember=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      }
+  }
   
   return (
     <Box component="section" 
@@ -133,6 +149,7 @@ export default function LoginPage() {
                   endAdornment={
                     <InputAdornment position="end">
                       { InputEmail.disabled? ( <BlockIcon /> )
+                        : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(InputEmail.value) ? ( <CheckIcon /> )
                         : InputEmail.value===''? ( <EmailIcon /> )
                         : InputEmail.value!==''? (
                           <IconButton edge="end"
@@ -176,10 +193,11 @@ export default function LoginPage() {
                 />
               </FormControl>
               <FormControl fullWidth>
+                {/* {isRemember ? <p>true</p> : <p>false</p>} */}
                 <Stack direction="row" alignItems="center" alignContent="space-between" sx={{ width: '100%' }}>
                   <FormGroup sx={{ flexGrow: 1 }}>
                     <FormControlLabel control={
-                      <Checkbox color="primary" icon={<RadioButtonUncheckedIcon />}
+                      <Checkbox onClick={(e) => doRemember(!isRemember)} color="primary" icon={<RadioButtonUncheckedIcon />}
                       checkedIcon={<RadioButtonCheckedIcon />} />
                     } label={TEXTS.form.remember} />
                   </FormGroup>

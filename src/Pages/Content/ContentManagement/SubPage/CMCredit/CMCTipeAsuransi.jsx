@@ -11,8 +11,76 @@ const INPUTS = [
 
 export default function CMCTipeAsuransi(props) {
   const [Data, setData] = useState([])
+  const { dataSort } = props;
+
+  const dataType = {
+    "tipeAsuransi": "tipe_asuransi",
+  }
+  
+  function sortAsc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+  
+  function sortDesc(type) {
+    const mydata = [...Data].sort((a, b) => {
+      ;
+      ;
+      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
+      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      if (x < y) {
+        return 1;
+      }
+      if (x > y) {
+        return -1;
+      }
+      return 0;
+    });
+    
+    setData(mydata);
+    console.log("mydata", mydata);
+  }
+
+  useEffect(() => {
+    if (dataSort) {
+      if (dataSort === "tipeAsuransiDesc") {
+        sortDesc("tipeAsuransi");
+      }
+      if (dataSort === "tipeAsuransiAsc") {
+        sortAsc("tipeAsuransi");
+      }
+    }else{
+      sortDesc("tipeAsuransi");
+    }
+  }, [dataSort]);
 
   useEffect(() => { LoadData() }, [])
+
+  useEffect(() => {
+    if(props.filteredData.length === 0){
+      LoadData()
+    }else{
+      
+      props.filteredData.forEach((dat, idx) => {
+        dat.index = idx + 1;
+      });
+      setData(props.filteredData)
+    }
+  }, [props.filteredData])
 
   async function LoadData() {
     await axiosBackend.get('/cm/tipe-asuransi')
