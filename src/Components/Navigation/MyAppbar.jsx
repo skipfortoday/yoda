@@ -1775,7 +1775,7 @@ export default function MyAppbar(props) {
         .then((response) => {
           setAllDataMerek(response.data.results);
           console.log('res get filter', response.data.results)
-          props.searchedData("rejected", response.data.results)
+          props.searchedData("accepted", response.data.results)
           const idsUserName = response.data.results.map((o) => o.name);
           const duplicatedModel = response.data.results.filter(
             ({ name }, index) => !idsUserName.includes(name, index + 1)

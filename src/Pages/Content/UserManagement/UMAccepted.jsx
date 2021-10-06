@@ -64,7 +64,7 @@ export default function UMAccepted(props) {
 
   useEffect(() => {
     if (props.filteredData.length === 0) {
-      handleChangeTab(0);
+      handleChangeTab(ActiveSubPage);
       console.log("IFIFIFIFIFIFIFIFIFI", props.filteredData);
     } else {
       console.log("ELSEELSEELSEELSE", props.filteredData);
@@ -251,14 +251,14 @@ export default function UMAccepted(props) {
     // setCurentData(data)
   };
 
-  const DATAGRID_COLUMNS = [
+  const DATAGRID_COLUMNS = ActiveSubPage === 0 ? [
     { field: "index", headerName: "#" },
     { field: "id", headerName: "ID", hide: true },
     {
       field: "name",
       headerName: "Nama & email",
-      minWidth: 300,
-      flex: 1,
+      minWidth: 280,
+      // flex: 1,
       renderCell: StylingNameEmail,
     },
     {
@@ -279,6 +279,47 @@ export default function UMAccepted(props) {
       minWidth: 160,
       renderCell: StylingLocation,
     },
+    {
+      field: "created_at",
+      headerName: "Tanggal registrasi",
+      minWidth: 160,
+      renderCell: StylingDateRegister,
+    },
+    {
+      field: "user_status",
+      headerName: "Status",
+      minWidth: 130,
+      renderCell: StylingStatus,
+    },
+    { field: "user_code", headerName: "Kode user", minWidth: 130 },
+  ]:[
+    { field: "index", headerName: "#" },
+    { field: "id", headerName: "ID", hide: true },
+    {
+      field: "name",
+      headerName: "Nama & email",
+      minWidth: 280,
+      // flex: 1,
+      renderCell: StylingNameEmail,
+    },
+    {
+      field: "phone_number",
+      headerName: "No. Handphone",
+      minWidth: 160,
+      renderCell: StylingPhoneNumber,
+    },
+    // {
+    //   field: "role",
+    //   headerName: "Role",
+    //   minWidth: 150,
+    //   renderCell: StylingRole,
+    // },
+    // {
+    //   field: "location",
+    //   headerName: "Kantor",
+    //   minWidth: 160,
+    //   renderCell: StylingLocation,
+    // },
     {
       field: "created_at",
       headerName: "Tanggal registrasi",
