@@ -30,7 +30,7 @@ export default function AcceptingAction(props) {
         location: 'Not set',
       })
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data, "RESPRESP")
         redBtnClick()
       })
       .catch((err) => {console.log(err.response) })

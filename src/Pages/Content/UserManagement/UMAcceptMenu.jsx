@@ -58,7 +58,7 @@ export default function UMAcceptMenu(props) {
   }
 
   const SendData = async () => {
-    // console.log("SEND DATA");
+    console.log("SEND DATA");
     await axiosBackend.post('/user-management', { 
       target_email: data.email,
       user_status: 'Aktif',
@@ -70,7 +70,7 @@ export default function UMAcceptMenu(props) {
       acceptBtnClick()
       setMenuAnchorEl(null)
     })
-    .catch((err) => { console.warn(err.response) })
+    .catch((err) => { console.log(err.response) })
   }
 
   return (

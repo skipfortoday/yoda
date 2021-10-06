@@ -6,6 +6,7 @@ import MyAppbar from "../../../Components/Navigation/MyAppbar";
 import UMWaiting from "./UMWaiting";
 import UMAccepted from "./UMAccepted";
 import UMRejected from "./UMRejected";
+import moment from 'moment';
 import axios from "axios";
 
 export default function UserManagementPage(props) {
@@ -103,6 +104,9 @@ export default function UserManagementPage(props) {
       );
     });
     tempUsers.forEach((user, index) => {
+      let stillUtc = moment.utc(user.created_at).toDate();
+      let local = moment(stillUtc).local().format("YYYY-MM-DD HH:mm:ss");
+      user.created_at = local
       user.index = index + 1;
     });
     setWaitingData(tempUsers);
@@ -122,6 +126,9 @@ export default function UserManagementPage(props) {
       );
     });
     tempUsers.forEach((user, index) => {
+      let stillUtc = moment.utc(user.created_at).toDate();
+      let local = moment(stillUtc).local().format("YYYY-MM-DD HH:mm:ss");
+      user.created_at = local
       user.index = index + 1;
       user.user_code = "#" + user.id.toString().padStart(5, "0");
     });
@@ -145,9 +152,12 @@ export default function UserManagementPage(props) {
     //     )
     //   })
     tempUsers.forEach((user, index) => {
+      let stillUtc = moment.utc(user.created_at).toDate();
+      let local = moment(stillUtc).local().format("YYYY-MM-DD HH:mm:ss");
+      user.created_at = local
       user.index = index + 1;
     });
-    console.log(tempUsers,"TURTURTUR");
+    console.log(tempUsers, "TURTURTUR");
     setRejectedData(tempUsers);
   }
 
@@ -284,7 +294,10 @@ export default function UserManagementPage(props) {
             data={WaitingData}
             dataSort={dataSort}
             reload={() => {
+              GetAllUsers();
               LoadWaitingData(); /*console.log('LoadWaitingData')*/
+              LoadAcceptedData();
+              LoadRejectedData();
             }}
           />
         ),
