@@ -785,11 +785,12 @@ export default function CMUnit(props) {
               </Button>
             ) : (
               <Button
-                variant="contained"
+                variant="outlined"
                 size="large"
                 style={{
                   color: "red",
                   backgroundColor: "#F5F6F7",
+                  borderColor: "red"
                 }}
                 startIcon={<Delete />}
                 onClick={multiDelete}
