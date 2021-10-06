@@ -82,16 +82,15 @@ export default function CMUBahanBakar(props) {
   }, [props.val]);
 
   useEffect(() => {
-    if(props.filteredData.length === 0){
-      LoadData()
-    }else{
-      
+    if (props.filteredData.length === 0) {
+      LoadData();
+    } else {
       props.filteredData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setData(props.filteredData)
+      setData(props.filteredData);
     }
-  }, [props.filteredData])
+  }, [props.filteredData]);
 
   async function LoadData() {
     await axiosBackend
@@ -145,7 +144,7 @@ export default function CMUBahanBakar(props) {
 
   const DATAGRID_COLUMNS = [
     { field: "index", headerName: "#" },
-    { field: "id", headerName: "ID", hide: true },
+    { field: "id", headerName: "#", hide: true },
     {
       field: "bahan_bakar",
       headerName: "Jenis bahan bakar",

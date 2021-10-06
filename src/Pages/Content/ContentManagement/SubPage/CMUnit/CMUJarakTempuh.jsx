@@ -25,7 +25,7 @@ export default function CMUJarakTempuh(props) {
   const { dataSort, isFilter } = props;
 
   async function sortJarakTempuhUnitDesc() {
-    console.log('Data => Dsc', Data)
+    console.log("Data => Dsc", Data);
     const mydata = [...Data].sort(function (a, b) {
       let x = a.jarak_tempuh.toLowerCase();
       let y = b.jarak_tempuh.toLowerCase();
@@ -45,7 +45,7 @@ export default function CMUJarakTempuh(props) {
   }
 
   async function sortJarakTempuhUnitAsc() {
-    console.log('Data => Asc', Data)
+    console.log("Data => Asc", Data);
     const mydata = [...Data].sort(function (a, b) {
       let x = a.jarak_tempuh.toLowerCase();
       let y = b.jarak_tempuh.toLowerCase();
@@ -66,34 +66,33 @@ export default function CMUJarakTempuh(props) {
 
   useEffect(() => {
     if (dataSort) {
-      console.log('dataSort')
+      console.log("dataSort");
       if (dataSort === "jarakTempuhUnitDesc") {
         sortJarakTempuhUnitDesc();
       }
       if (dataSort === "jarakTempuhUnitAsc") {
         sortJarakTempuhUnitAsc();
       }
-    }else{
+    } else {
       sortJarakTempuhUnitDesc();
     }
-    if(isFilter){
-      console.log('props filteredDataJarak', props.filteredDataJarak)
-      setData(props.filteredDataJarak)
+    if (isFilter) {
+      console.log("props filteredDataJarak", props.filteredDataJarak);
+      setData(props.filteredDataJarak);
     }
   }, [isFilter, dataSort]);
 
   useEffect(() => {
-    if(props.filteredData.length === 0){
-      LoadData()
-    }else{
-      
+    if (props.filteredData.length === 0) {
+      LoadData();
+    } else {
       props.filteredData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setData(props.filteredData)
+      setData(props.filteredData);
     }
-  }, [props.filteredData])
-  
+  }, [props.filteredData]);
+
   useEffect(() => {
     setMenuAnchorEl(null);
     ResetInputs();
@@ -155,7 +154,7 @@ export default function CMUJarakTempuh(props) {
 
   const DATAGRID_COLUMNS = [
     { field: "index", headerName: "#" },
-    { field: "id", headerName: "ID", hide: true },
+    { field: "id", headerName: "#", hide: true },
     {
       field: "jarak_tempuh",
       headerName: "Jarak tempuh unit",

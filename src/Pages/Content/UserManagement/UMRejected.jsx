@@ -14,7 +14,7 @@ export default function UMRejected(props) {
 
   const DATAGRID_COLUMNS = [
     { field: "index", headerName: "#" },
-    { field: "id", headerName: "ID", hide: true },
+    { field: "id", headerName: "#", hide: true },
     {
       field: "name",
       headerName: "Nama & email",
@@ -47,21 +47,21 @@ export default function UMRejected(props) {
           user.user_status.toString().toLowerCase() === "rejected"
         );
       });
-  
+
       val = val.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i);
-  
+
       val.forEach((user, index) => {
         user.index = index + 1;
       });
-      console.log(val,"val");
+      console.log(val, "val");
       setdata(val);
     }
   }, [props.filteredData]);
 
   useEffect(() => {
-    console.log("re-render")
-    setdata(props.data)
-  },[props.data])
+    console.log("re-render");
+    setdata(props.data);
+  }, [props.data]);
 
   function myFunctionDesc() {
     const mydata = [...data].sort(function (a, b) {

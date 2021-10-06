@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { format } from "date-fns";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import axiosBackend from "../../Helper/axiosBackend";
@@ -59,7 +59,7 @@ export default function ProfileCard() {
   const [OpenHistory, setOpenHistory] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [userNow, setuserNow] = useState(auth.user);
-  const history = useHistory()
+  const history = useHistory();
 
   // useEffect(() => {
   //   setuserNow(auth.user)
@@ -77,17 +77,21 @@ export default function ProfileCard() {
   }
 
   const Logout = () => {
-    auth.logout()
-    history.push('/login')
-  }
+    auth.logout();
+    history.push("/login");
+  };
 
   return (
     <>
       <Card sx={{ width: 329 }}>
         <CardContent sx={{ paddingBottom: 1.5 }}>
-          <Button variant="text">
+          <Button
+            variant="text"
+            style={{ paddingLeft: 0, justifyContent: "left" }}
+          >
             <Typography
               variant="p"
+              style={{ paddingLeft: 0 }}
               fontSize={14}
               color="tint.grey.40"
               onClick={() => setOpenProfile(!OpenProfile)}
@@ -191,7 +195,9 @@ export default function ProfileCard() {
                 </Typography>
                 <Divider />
               </Box>
-                <Button variant="contained" onClick={() => Logout()} >Logout</Button>
+              <Button variant="contained" onClick={() => Logout()}>
+                Logout
+              </Button>
             </Stack>
             <Stack alignItems="center" sx={{ paddingX: 5 }}>
               <Typography fontSize={12} color="tint.grey.50" textAlign="center">
@@ -210,7 +216,7 @@ export default function ProfileCard() {
             color="grey50"
             onClick={() => setOpenHistory(!OpenHistory)}
           >
-            Riwayat Masuk
+            Riwayat masuk
           </Button>
         </CardActions>
         <Collapse in={OpenHistory} timeout="auto">

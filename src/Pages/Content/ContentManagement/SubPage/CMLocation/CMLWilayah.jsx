@@ -25,7 +25,7 @@ const INPUTS = [
 ];
 
 export default function CMLWilayah(props) {
-  console.log('props CMLWilayah', props)
+  console.log("props CMLWilayah", props);
   const [Data, setData] = useState([]);
   const [Wilayah, setWilayah] = useState([]);
   const [ProvinsiArr, setProvinsiArr] = useState([]);
@@ -46,15 +46,18 @@ export default function CMLWilayah(props) {
     // "kecamatanWilayahDesc": "no_telepon",
     // "cabangPengelolaDesc": "alamat",
     // "tanggalWilayahDesc": "tanggal_registrasi",
+  };
 
-  }
-  
   function sortAsc(type) {
     const mydata = [...Data].sort((a, b) => {
-      ;
-      ;
-      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
-      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      let x =
+        typeof a[dataType[type]] === "number"
+          ? a[dataType[type]]
+          : a[dataType[type]].toLowerCase();
+      let y =
+        typeof b[dataType[type]] === "number"
+          ? b[dataType[type]]
+          : b[dataType[type]].toLowerCase();
       if (x < y) {
         return -1;
       }
@@ -63,17 +66,21 @@ export default function CMLWilayah(props) {
       }
       return 0;
     });
-    
+
     setData(mydata);
     console.log("mydata", mydata);
   }
-  
+
   function sortDesc(type) {
     const mydata = [...Data].sort((a, b) => {
-      ;
-      ;
-      let x = typeof a[dataType[type]] === "number" ? a[dataType[type]] : a[dataType[type]].toLowerCase();
-      let y = typeof b[dataType[type]] === "number" ? b[dataType[type]] : b[dataType[type]].toLowerCase();
+      let x =
+        typeof a[dataType[type]] === "number"
+          ? a[dataType[type]]
+          : a[dataType[type]].toLowerCase();
+      let y =
+        typeof b[dataType[type]] === "number"
+          ? b[dataType[type]]
+          : b[dataType[type]].toLowerCase();
       if (x < y) {
         return 1;
       }
@@ -82,7 +89,7 @@ export default function CMLWilayah(props) {
       }
       return 0;
     });
-    
+
     setData(mydata);
     console.log("mydata", mydata);
   }
@@ -119,34 +126,32 @@ export default function CMLWilayah(props) {
       if (dataSort === "tanggalWilayahAsc") {
         sortAsc("tanggalWilayah");
       }
-    }else{
+    } else {
       sortDesc("provinsiWilayah");
     }
   }, [dataSort]);
 
   useEffect(() => {
-    if(props.filteredData.length === 0){
-      LoadData()
-    }else{
-      
+    if (props.filteredData.length === 0) {
+      LoadData();
+    } else {
       props.filteredData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setFilteredData(props.filteredData)
+      setFilteredData(props.filteredData);
     }
-  }, [props.filteredData])
+  }, [props.filteredData]);
 
   // useEffect(() => { LoadData() }, [])
 
   async function LoadData() {
-    await axiosBackend.get('/cm/kantor')
-    .then((response) => { 
-      var tempData = response.data
+    await axiosBackend.get("/cm/kantor").then((response) => {
+      var tempData = response.data;
       tempData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setData(tempData)
-     })
+      setData(tempData);
+    });
   }
 
   useEffect(() => {
@@ -156,18 +161,18 @@ export default function CMLWilayah(props) {
   }, []);
 
   useEffect(() => {
-    if(isFilter && props.filteredDataWilayah.length > 0){
-      console.log('props filteredDataWilayah', props.filteredData)
-      setFilteredData(props.filteredDataWilayah)
+    if (isFilter && props.filteredDataWilayah.length > 0) {
+      console.log("props filteredDataWilayah", props.filteredData);
+      setFilteredData(props.filteredDataWilayah);
     }
-    if(!isFilter && props.filteredDataWilayah.length === 0){
-      console.log('data kosong', props)
-      LoadData()
+    if (!isFilter && props.filteredDataWilayah.length === 0) {
+      console.log("data kosong", props);
+      LoadData();
     }
   }, [props.filteredDataWilayah, isFilter]);
 
   async function LoadData() {
-    console.log('LoadData setFilteredData')
+    console.log("LoadData setFilteredData");
     await axiosBackend.get("/cm/wilayah").then((response) => {
       var tempData = response.data;
       tempData.forEach((dat, idx) => {
@@ -188,39 +193,37 @@ export default function CMLWilayah(props) {
         );
 
         setWilayah(tempData.data);
-        setProvinsiArr(listProvinsi)
-      });
-    }
-    
-    async function getCabang() {
-      await axiosBackend
-      .get("/dropdown/nama-cabang")
-      .then((response) => {
-        var tempData = response.data.nama_cabang;
-        console.log(tempData, "CABANG");
-        setCabangArr(tempData, "CABANG ARR")
-        // let listCabang = tempData.data.filter(
-          //   (v, i, a) => a.findIndex((t) => t.provinsi === v.provinsi) === i
-        // );
-
-        // setWilayah(tempData.data);
-        // setProvinsiArr(listProvinsi)
+        setProvinsiArr(listProvinsi);
       });
   }
 
-  async function filterDaerah(nama, daerah) {
-    let listDaerah = Wilayah.filter(item => item[daerah] === nama );
+  async function getCabang() {
+    await axiosBackend.get("/dropdown/nama-cabang").then((response) => {
+      var tempData = response.data.nama_cabang;
+      console.log(tempData, "CABANG");
+      setCabangArr(tempData, "CABANG ARR");
+      // let listCabang = tempData.data.filter(
+      //   (v, i, a) => a.findIndex((t) => t.provinsi === v.provinsi) === i
+      // );
 
-    if(daerah === "provinsi"){
+      // setWilayah(tempData.data);
+      // setProvinsiArr(listProvinsi)
+    });
+  }
+
+  async function filterDaerah(nama, daerah) {
+    let listDaerah = Wilayah.filter((item) => item[daerah] === nama);
+
+    if (daerah === "provinsi") {
       listDaerah = listDaerah.filter(
         (v, i, a) => a.findIndex((t) => t.kota === v.kota) === i
       );
-      setKotaArr(listDaerah)
-    }else if(daerah === "kota"){
+      setKotaArr(listDaerah);
+    } else if (daerah === "kota") {
       listDaerah = listDaerah.filter(
         (v, i, a) => a.findIndex((t) => t.kecamatan === v.kecamatan) === i
       );
-      setKecamatanArr(listDaerah)
+      setKecamatanArr(listDaerah);
     }
   }
 
@@ -250,16 +253,22 @@ export default function CMLWilayah(props) {
   }
 
   async function InsertData() {
-    await axios.post(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/cm/wilayah`, {
-        provinsi: Provinsi,
-        kota: Kota,
-        kecamatan: Kecamatan,
-        cabang_pengelola: Cabang,
-      },{
-        headers: {
-        // Authorization: auth.token == null ? null : `Bearer ${auth.token}`
-        Authorization: `Bearer ${sessionStorage.getItem('token')}`
-      }})
+    await axios
+      .post(
+        `${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/cm/wilayah`,
+        {
+          provinsi: Provinsi,
+          kota: Kota,
+          kecamatan: Kecamatan,
+          cabang_pengelola: Cabang,
+        },
+        {
+          headers: {
+            // Authorization: auth.token == null ? null : `Bearer ${auth.token}`
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response.data);
         setMenuAnchorEl(null);
@@ -273,7 +282,7 @@ export default function CMLWilayah(props) {
 
   const DATAGRID_COLUMNS = [
     { field: "index", headerName: "#" },
-    { field: "id", headerName: "ID", hide: true },
+    { field: "id", headerName: "#", hide: true },
     { field: "provinsi", headerName: "Provinsi", minWidth: 120, flex: 1 },
     { field: "kota", headerName: "Kota", minWidth: 160, flex: 1 },
     { field: "kecamatan", headerName: "Kecamatan", minWidth: 160, flex: 1 },
@@ -315,7 +324,14 @@ export default function CMLWilayah(props) {
             header={"Tambah baru"}
             actionButtons={
               <>
-                <Button size="large" fullWidth variant="contained" onClick={handleSubmit} >Tambah</Button>
+                <Button
+                  size="large"
+                  fullWidth
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
+                  Tambah
+                </Button>
               </>
             }
           >
@@ -335,20 +351,20 @@ export default function CMLWilayah(props) {
                 }
                 label={InputProvince.label}
               /> */}
-              <Select
-                labelId="provinsi"
-                id="provinsi"
-                value={Provinsi}
-              >
+              <Select labelId="provinsi" id="provinsi" value={Provinsi}>
                 {ProvinsiArr?.map((data, idx) => {
                   return (
-                  <MenuItem value={data.provinsi} key={idx} onClick={() => {
-                    filterDaerah(data.provinsi, "provinsi")
-                    setProvinsi(data.provinsi)
-                  }}>
-                    {data.provinsi}
-                  </MenuItem>
-                  )
+                    <MenuItem
+                      value={data.provinsi}
+                      key={idx}
+                      onClick={() => {
+                        filterDaerah(data.provinsi, "provinsi");
+                        setProvinsi(data.provinsi);
+                      }}
+                    >
+                      {data.provinsi}
+                    </MenuItem>
+                  );
                 })}
               </Select>
             </FormControl>
@@ -368,20 +384,20 @@ export default function CMLWilayah(props) {
                 }
                 label={InputCity.label}
               /> */}
-              <Select
-                labelId="kota"
-                id="kota"
-                value={Kota}
-              >
+              <Select labelId="kota" id="kota" value={Kota}>
                 {KotaArr?.map((data, idx) => {
                   return (
-                  <MenuItem value={data.kota} key={idx} onClick={() => {
-                    filterDaerah(data.kota, "kota")
-                    setKota(data.kota)
-                  }}>
-                    {data.kota}
-                  </MenuItem>
-                  )
+                    <MenuItem
+                      value={data.kota}
+                      key={idx}
+                      onClick={() => {
+                        filterDaerah(data.kota, "kota");
+                        setKota(data.kota);
+                      }}
+                    >
+                      {data.kota}
+                    </MenuItem>
+                  );
                 })}
               </Select>
             </FormControl>
@@ -404,19 +420,19 @@ export default function CMLWilayah(props) {
                 }
                 label={InputKecamatan.label}
               /> */}
-              <Select
-                labelId="kecamatan"
-                id="kecamatan"
-                value={Kecamatan}
-              >
+              <Select labelId="kecamatan" id="kecamatan" value={Kecamatan}>
                 {KecamatanArr?.map((data, idx) => {
                   return (
-                  <MenuItem value={data.kecamatan} key={idx} onClick={() => {
-                    setKecamatan(data.kecamatan)
-                  }}>
-                    {data.kecamatan}
-                  </MenuItem>
-                  )
+                    <MenuItem
+                      value={data.kecamatan}
+                      key={idx}
+                      onClick={() => {
+                        setKecamatan(data.kecamatan);
+                      }}
+                    >
+                      {data.kecamatan}
+                    </MenuItem>
+                  );
                 })}
               </Select>
             </FormControl>
@@ -441,20 +457,20 @@ export default function CMLWilayah(props) {
                 }
                 label={InputCabangPengelola.label}
               /> */}
-              <Select
-                labelId="cabang"
-                id="cabang"
-                value={Cabang}
-              >
+              <Select labelId="cabang" id="cabang" value={Cabang}>
                 {CabangArr?.map((data, idx) => {
                   // console.log(data, "CABANG INPUT");
                   return (
-                  <MenuItem value={data.nama_cabang} key={idx} onClick={() => {
-                    setCabang(data.nama_cabang)
-                  }}>
-                    {data.nama_cabang}
-                  </MenuItem>
-                  )
+                    <MenuItem
+                      value={data.nama_cabang}
+                      key={idx}
+                      onClick={() => {
+                        setCabang(data.nama_cabang);
+                      }}
+                    >
+                      {data.nama_cabang}
+                    </MenuItem>
+                  );
                 })}
               </Select>
             </FormControl>
