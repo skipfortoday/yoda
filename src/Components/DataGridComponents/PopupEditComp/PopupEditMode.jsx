@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Popover, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import UMEdit from "../../Pages/Content/UserManagement/UMEdit";
-import AvatarNameEmail from "./AvatarNameEmail";
+import UMEdit from "../../../Pages/Content/UserManagement/UMEdit";
+import AvatarNameEmail from "../AvatarNameEmail";
 
-export default function PopupEdit(props) {
+export default function PopupEditModel(props) {
   const { reload, dataSent } = props;
   const { row, fromTable } = props;
   console.warn(fromTable, "FT");

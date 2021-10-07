@@ -7,6 +7,7 @@ import {
   InputLabel,
   OutlinedInput,
   Popover,
+  Typography,
 } from "@mui/material";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
 import axios from "axios";
@@ -25,6 +26,19 @@ export default function CMUMerkModelVariant(props) {
   // console.log('thisToken CMUJarakTempuh', thisToken)
 
   const [Data, setData] = useState([]);
+  const [isEditPop, setEditPop] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   const [filteredData, setFilteredData] = useState([]);
   const { dataSort, isFilter } = props;
   // const [DataMerek, setDataMerek] = useState(props.dataFiltered);
@@ -80,6 +94,13 @@ export default function CMUMerkModelVariant(props) {
   useEffect(() => {
     LoadData();
   }, []);
+
+  useEffect(() => {
+    if (props.reRender) {
+      LoadData();
+      props.vRerender();
+    }
+  });
 
   useEffect(() => {
     if (props.filteredData.length === 0) {
@@ -428,7 +449,27 @@ export default function CMUMerkModelVariant(props) {
           }}
           disableColumnResize={false}
           disableSelectionOnClick
+          onCellClick={(e) => {
+            console.log(e);
+            setAnchorEl(e.field);
+          }}
         />
+        {/* <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+        </Popover> */}
       </Box>
     </>
   );

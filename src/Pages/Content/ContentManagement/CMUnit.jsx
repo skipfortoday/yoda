@@ -20,6 +20,9 @@ export default function CMUnit(props) {
   const [ActiveSubPage, setActiveSubPage] = useState(0);
   // const { currentSubTab } = props;
   const [DeleteButton, setDeleteButton] = useState(false);
+
+  // reRender digunakan untuk meload data kembali setelah hapus
+  const [reRender, setRerender] = useState(false);
   const [DeleteChosenId, setDeleteChosenId] = useState([]);
   const [DeleteType, setDeleteType] = useState(false);
   const [Deleted, setDeleted] = useState(false);
@@ -29,6 +32,11 @@ export default function CMUnit(props) {
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
+
+  // Fungsi yang di lempaer ke props untuk menyelesaikan re render
+  const vRerender = () => {
+    setRerender(false);
+  };
 
   const changeIcons = (val, type) => {
     setDeleteButton(val.length > 0 ? true : false);
@@ -43,7 +51,7 @@ export default function CMUnit(props) {
       })
       .then((response) => {
         setDeleted(!Deleted);
-        console.log(response.data);
+        setRerender(true);
       })
       .catch((err) => {
         console.warn(err.response);
@@ -54,415 +62,6 @@ export default function CMUnit(props) {
   const [selectedArea, setSelectedArea] = useState([]);
   const [doMore, setdoMore] = useState(true);
 
-  const dataO = [
-    {
-      id: 11,
-      merek: "Aston Martin",
-      model: "Cygnet",
-      varian: "1.3 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-10-01 02:59:53",
-      deleted_at: "2021-10-01 02:59:53",
-    },
-    {
-      id: 12,
-      merek: "Aston Martin",
-      model: "Cygnet",
-      varian: "2.0 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-10-01 02:59:53",
-      deleted_at: "2021-10-01 02:59:53",
-    },
-    {
-      id: 13,
-      merek: "Aston Martin",
-      model: "Cygnet",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-10-01 07:27:23",
-      deleted_at: "2021-10-01 07:27:23",
-    },
-    {
-      id: 14,
-      merek: "Aston Martin",
-      model: "DB11",
-      varian: "5.2 A Design Evolution Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-10-01 02:59:53",
-      deleted_at: "2021-10-01 02:59:53",
-    },
-    {
-      id: 15,
-      merek: "Aston Martin",
-      model: "DB11",
-      varian: "V12",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 16,
-      merek: "Aston Martin",
-      model: "DB11",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 17,
-      merek: "Aston Martin",
-      model: "DB9",
-      varian: "5.9 V12 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 18,
-      merek: "Aston Martin",
-      model: "DB9",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 19,
-      merek: "Aston Martin",
-      model: "Rapide",
-      varian: "S",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 20,
-      merek: "Aston Martin",
-      model: "Rapide",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 21,
-      merek: "Aston Martin",
-      model: "Rapide S",
-      varian: "5.9 Luxury Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 22,
-      merek: "Aston Martin",
-      model: "Rapide S",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 23,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "5.9 S The Ultimate Super GT Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 24,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "5.9 S The Ultime Super GT Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 25,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "5.9 Ultimate GT Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 26,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "59 Ultimate Volente Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 27,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "5.9 Ultime GT Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 28,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "59 Ultime Volente Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 29,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "S",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 30,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "Super GT",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 31,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "Vanquish",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:45:04",
-      deleted_at: "2021-09-30 08:45:04",
-    },
-    {
-      id: 32,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "VANTAGE AMR",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 33,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "Violante",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 34,
-      merek: "Aston Martin",
-      model: "Vanquish",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 35,
-      merek: "Aston Martin",
-      model: "Vantage",
-      varian: "4.7 AMR A Fierce New Breed Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 36,
-      merek: "Aston Martin",
-      model: "Vantage",
-      varian: "4.7 V8 S Race Bred Dynamism Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 37,
-      merek: "Aston Martin",
-      model: "Vantage",
-      varian: "5.9 V12 S Pure Performance Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 38,
-      merek: "Aston Martin",
-      model: "Vantage",
-      varian: "5.9 V12 S Roadster Pure Sports Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 39,
-      merek: "Aston Martin",
-      model: "Vantage",
-      varian: "V12 S",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 40,
-      merek: "Aston Martin",
-      model: "Vantage",
-      varian: "V12 S Roadster",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 41,
-      merek: "Aston Martin",
-      model: "Vantage",
-      varian: "V8 S",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 42,
-      merek: "Aston Martin",
-      model: "Vantage",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 43,
-      merek: "Aston Martin",
-      model: "Virage",
-      varian: "4.0",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 44,
-      merek: "Aston Martin",
-      model: "Virage",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-    {
-      id: 45,
-      merek: "Aston Martin",
-      model: "Lain-lain",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:00:50",
-      deleted_at: null,
-    },
-  ];
-  const dataT = [
-    {
-      id: 1,
-      merek: "Alfa Romeo",
-      model: "156",
-      varian: "1.2 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:43:58",
-      deleted_at: "2021-09-30 08:43:58",
-    },
-    {
-      id: 2,
-      merek: "Alfa Romeo",
-      model: "156",
-      varian: "2.5 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:43:58",
-      deleted_at: "2021-09-30 08:43:58",
-    },
-    {
-      id: 3,
-      merek: "Alfa Romeo",
-      model: "156",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:43:58",
-      deleted_at: "2021-09-30 08:43:58",
-    },
-    {
-      id: 4,
-      merek: "Alfa Romeo",
-      model: "Giulietta",
-      varian: "1.4 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 09:19:23",
-      deleted_at: "2021-09-30 09:19:23",
-    },
-    {
-      id: 5,
-      merek: "Alfa Romeo",
-      model: "Giulietta",
-      varian: "1.5 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 09:19:23",
-      deleted_at: "2021-09-30 09:19:23",
-    },
-    {
-      id: 6,
-      merek: "Alfa Romeo",
-      model: "Giulietta",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:43:33",
-      deleted_at: "2021-09-30 08:43:33",
-    },
-    {
-      id: 7,
-      merek: "Alfa Romeo",
-      model: "Spider",
-      varian: "3.0 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:43:33",
-      deleted_at: "2021-09-30 08:43:33",
-    },
-    {
-      id: 8,
-      merek: "Alfa Romeo",
-      model: "Spider",
-      varian: "3.6 Bensin",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 08:43:33",
-      deleted_at: "2021-09-30 08:43:33",
-    },
-    {
-      id: 9,
-      merek: "Alfa Romeo",
-      model: "Spider",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 09:19:23",
-      deleted_at: "2021-09-30 09:19:23",
-    },
-    {
-      id: 10,
-      merek: "Alfa Romeo",
-      model: "Lain-lain",
-      varian: "Lain-lain",
-      created_at: "2021-09-30 08:00:50",
-      updated_at: "2021-09-30 09:19:23",
-      deleted_at: "2021-09-30 09:19:23",
-    },
-  ];
   const [dew, setDew] = useState([]);
 
   const doConcat = () => {
@@ -597,6 +196,8 @@ export default function CMUnit(props) {
           dataSort={dataSort}
           filteredData={filteredData}
           isFilter={isFilter}
+          reRender={reRender}
+          vRerender={vRerender}
         />
       ),
     },
@@ -686,6 +287,7 @@ export default function CMUnit(props) {
           filteredData={filteredData}
           val={Deleted}
           dataSort={dataSort}
+          setRerender={setRerender}
         />
       ),
     },
