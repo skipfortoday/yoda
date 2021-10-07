@@ -113,7 +113,7 @@ export default function CMCNilaiPertanggungan(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/nilai-pertanggungan', {
+    await axiosBackend.post('/cm/nilai-pertanggungan/insert', {
       nilai_pertanggungan: InputKesertaanAsuransi.value,
     })
     .then((response) => {

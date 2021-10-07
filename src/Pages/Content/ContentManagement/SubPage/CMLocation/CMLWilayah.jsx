@@ -15,6 +15,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import DateRegister from "../../../../../Components/DataGridComponents/DateRegister";
 
 const INPUTS = [
@@ -38,7 +39,7 @@ export default function CMLWilayah(props) {
   const [Cabang, setCabang] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-  const { dataSort, isFilter } = props;
+  const { dataSort, isFilter,reload } = props;
 
   const dataType = {
     // "provinsiWilayahDesc": "nama_cabang",
@@ -250,7 +251,7 @@ export default function CMLWilayah(props) {
   }
 
   async function InsertData() {
-    await axios.post(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/cm/wilayah`, {
+    await axios.post(`${process.env.REACT_APP_BACKEND_ENDPOINT_PROD}/cm/wilayah/insert`, {
         provinsi: Provinsi,
         kota: Kota,
         kecamatan: Kecamatan,
@@ -274,22 +275,36 @@ export default function CMLWilayah(props) {
   const DATAGRID_COLUMNS = [
     { field: "index", headerName: "#" },
     { field: "id", headerName: "ID", hide: true },
-    { field: "provinsi", headerName: "Provinsi", minWidth: 120, flex: 1 },
-    { field: "kota", headerName: "Kota", minWidth: 160, flex: 1 },
-    { field: "kecamatan", headerName: "Kecamatan", minWidth: 160, flex: 1 },
+    { field: "provinsi", headerName: "Provinsi", minWidth: 120, flex: 1,  renderCell: StylingWilayah, },
+    { field: "kota", headerName: "Kota", minWidth: 160, flex: 1, renderCell: StylingWilayah, },
+    { field: "kecamatan", headerName: "Kecamatan", minWidth: 160, flex: 1,renderCell: StylingWilayah, },
     {
       field: "cabang_pengelola",
       headerName: "Cabang pengelola",
       minWidth: 160,
       flex: 1,
+      renderCell: StylingWilayah,
     },
     {
       field: "tanggal_registrasi",
       headerName: "Tanggal registrasi",
       minWidth: 160,
-      renderCell: StylingDateRegister,
+      renderCell: StylingWilayah,
     },
   ];
+
+  function StylingWilayah(params) {
+    return (
+      <PopupEdit
+        params={params}
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   function StylingDateRegister(params) {
     return <DateRegister created_at={params.row.tanggal_registrasi} />;

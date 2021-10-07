@@ -165,7 +165,7 @@ export default function CMSPenjual(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/penjual', {
+    await axiosBackend.post('/cm/penjual/insert', {
       nama: InputName.value,
       no_telepon: InputTelephone.value,
       alamat: InputAddress.value,

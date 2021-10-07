@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   Popover,
 } from "@mui/material";
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
 
 import axios from "axios";
@@ -22,7 +23,7 @@ export default function CMUBahanBakar(props) {
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
 
-  const { dataSort } = props;
+  const { dataSort, reload } = props;
 
   function sortJenisBahanBakarAsc() {
     const mydata = [...Data].sort((a, b) => {
@@ -129,7 +130,7 @@ export default function CMUBahanBakar(props) {
 
   async function InsertData() {
     await axiosBackend
-      .post(`/cm/bahan-bakar`, {
+      .post(`/cm/bahan-bakar/insert`, {
         bahan_bakar: InputBahanBakar.value,
       })
       .then((response) => {
@@ -151,8 +152,21 @@ export default function CMUBahanBakar(props) {
       headerName: "Jenis bahan bakar",
       minWidth: 180,
       flex: 1,
+      renderCell : StylingBahanBakar
     },
   ];
+
+  function StylingBahanBakar(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   return (
     <>

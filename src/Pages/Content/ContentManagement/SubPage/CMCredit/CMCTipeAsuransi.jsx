@@ -112,7 +112,7 @@ export default function CMCTipeAsuransi(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/tipe-asuransi', {
+    await axiosBackend.post('/cm/tipe-asuransi/insert', {
       tipe_asuransi: InputTipeAsuransi.value,
     })
     .then((response) => {

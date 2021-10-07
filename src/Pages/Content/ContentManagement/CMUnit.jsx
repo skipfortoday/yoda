@@ -23,7 +23,8 @@ export default function CMUnit(props) {
   const [DeleteChosenId, setDeleteChosenId] = useState([]);
   const [DeleteType, setDeleteType] = useState(false);
   const [Deleted, setDeleted] = useState(false);
-  const { currentSubTab, dataSort, isFilter, filteredDataTahun } = props;
+  const { currentSubTab, dataSort, isFilter, filteredDataTahun, reload } =
+    props;
   const [filteredData, setFilteredData] = useState([]);
   const [filteredDataJarak, setFilteredDataJarak] = useState([]);
 
@@ -597,6 +598,7 @@ export default function CMUnit(props) {
           dataSort={dataSort}
           filteredData={filteredData}
           isFilter={isFilter}
+          reload={reload}
         />
       ),
     },
@@ -616,6 +618,7 @@ export default function CMUnit(props) {
           filteredData={filteredData}
           filteredDataTahun={filteredDataTahun}
           isFilter={isFilter}
+          reload={reload}
         />
       ),
     },
@@ -635,6 +638,7 @@ export default function CMUnit(props) {
           filteredData={filteredData}
           filteredDataJarak={filteredDataJarak}
           isFilter={isFilter}
+          reload={reload}
         />
       ),
     },
@@ -652,6 +656,7 @@ export default function CMUnit(props) {
           filteredData={filteredData}
           val={Deleted}
           dataSort={dataSort}
+          reload={reload}
         />
       ),
     },
@@ -669,6 +674,7 @@ export default function CMUnit(props) {
           filteredData={filteredData}
           val={Deleted}
           dataSort={dataSort}
+          reload={reload}
         />
       ),
     },
@@ -686,6 +692,7 @@ export default function CMUnit(props) {
           filteredData={filteredData}
           val={Deleted}
           dataSort={dataSort}
+          reload={reload}
         />
       ),
     },
@@ -703,6 +710,7 @@ export default function CMUnit(props) {
           filteredData={filteredData}
           val={Deleted}
           dataSort={dataSort}
+          reload={reload}
         />
       ),
     },
@@ -720,6 +728,7 @@ export default function CMUnit(props) {
           filteredData={filteredData}
           val={Deleted}
           dataSort={dataSort}
+          reload={reload}
         />
       ),
     },
@@ -785,12 +794,11 @@ export default function CMUnit(props) {
               </Button>
             ) : (
               <Button
-                variant="outlined"
+                variant="contained"
                 size="large"
                 style={{
                   color: "red",
                   backgroundColor: "#F5F6F7",
-                  borderColor: "red"
                 }}
                 startIcon={<Delete />}
                 onClick={multiDelete}

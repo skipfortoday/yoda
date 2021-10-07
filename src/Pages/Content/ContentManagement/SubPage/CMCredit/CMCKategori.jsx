@@ -114,7 +114,7 @@ export default function CMCKategori(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/kategori', {
+    await axiosBackend.post('/cm/kategori/insert', {
       kategori: InputKategori.value,
     })
     .then((response) => {

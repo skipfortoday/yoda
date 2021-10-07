@@ -8,7 +8,7 @@ import CMLWilayah from "./SubPage/CMLocation/CMLWilayah";
 export default function CMLocation(props) {
   console.log("props CMLocation", props)
   const [ActiveSubPage, setActiveSubPage] = useState(0);
-  const { currentSubTab, dataSort, filteredDataWilayah, isFilter, filteredData } = props;
+  const { currentSubTab, dataSort, filteredDataWilayah, isFilter, filteredData, reload } = props;
   // const [filteredData, setFilteredData] = useState(props.filteredData)
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
@@ -31,6 +31,7 @@ export default function CMLocation(props) {
           ActiveSubPage={ActiveSubPage}
           filteredData={filteredData}
           dataSort={dataSort}
+          reload={reload}
         />
       ),
     },
@@ -48,6 +49,7 @@ export default function CMLocation(props) {
           dataSort={dataSort}
           filteredDataWilayah={filteredDataWilayah}
           isFilter={isFilter}
+          reload={reload}
         />
       ),
     },

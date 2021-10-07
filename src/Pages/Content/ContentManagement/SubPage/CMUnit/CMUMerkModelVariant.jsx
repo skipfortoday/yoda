@@ -9,6 +9,7 @@ import {
   Popover,
 } from "@mui/material";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import axios from "axios";
 
 const INPUTS = [
@@ -25,7 +26,7 @@ export default function CMUMerkModelVariant(props) {
 
   const [Data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const { dataSort, isFilter } = props;
+  const { dataSort, isFilter, reload } = props;
   // const [DataMerek, setDataMerek] = useState(props.dataFiltered);
 
   function doSort(items) {
@@ -107,7 +108,7 @@ export default function CMUMerkModelVariant(props) {
         });
         // setData(tempData);
         setFilteredData(tempData)
-        // console.log('LoadData setFilteredData', tempData)
+        console.log('LoadData setFilteredData', tempData)
       }).catch((err) => {
         console.log(err, "Err");
       })
@@ -121,10 +122,10 @@ export default function CMUMerkModelVariant(props) {
   const [InputModel, setInputModel] = useState(INPUTS[1]);
   const [InputVarian, setInputVarian] = useState(INPUTS[2]);
 
-  function sortMerekDesc() {
+  function sortDesc(type) {
     const mydata = [...filteredData].sort(function (a, b) {
-      let x = a.merek.toLowerCase();
-      let y = b.merek.toLowerCase();
+      let x = a[type].toLowerCase();
+      let y = b[type].toLowerCase();
       if (x < y) {
         return 1;
       }
@@ -138,10 +139,10 @@ export default function CMUMerkModelVariant(props) {
     console.log("mydata", mydata);
   }
   
-  function sortMerekAsc() {
+  function sortAsc(type) {
     const mydata = [...filteredData].sort(function (a, b) {
-      let x = a.merek.toLowerCase();
-      let y = b.merek.toLowerCase();
+      let x = a[type].toLowerCase();
+      let y = b[type].toLowerCase();
       if (x < y) {
         return -1;
       }
@@ -150,76 +151,6 @@ export default function CMUMerkModelVariant(props) {
       }
       return 0;
     });
-    // setData(mydata);
-    doSort(mydata)
-    console.log("mydata", mydata);
-  }
-  
-  function sortModelDesc() {
-    const mydata = [...filteredData].sort(function (a, b) {
-      let x = a.model.toLowerCase();
-      let y = b.model.toLowerCase();
-      if (x < y) {
-        return 1;
-      }
-      if (x > y) {
-        return -1;
-      }
-      return 0;
-    });
-    // setData(mydata);
-    doSort(mydata)
-    console.log("mydata", mydata);
-  }
-  
-  function sortModelAsc() {
-    const mydata = [...filteredData].sort(function (a, b) {
-      let x = a.model.toLowerCase();
-      let y = b.model.toLowerCase();
-      if (x < y) {
-        return -1;
-      }
-      if (x > y) {
-        return 1;
-      }
-      return 0;
-    });
-    // setData(mydata);
-    doSort(mydata)
-    console.log("mydata", mydata);
-  }
-  
-  function sortVarianAsc() {
-    const mydata = [...filteredData].sort((a, b) => {
-      let x = a.varian.toLowerCase();
-      let y = b.varian.toLowerCase();
-      if (x < y) {
-        return -1;
-      }
-      if (x > y) {
-        return 1;
-      }
-      return 0;
-    });
-    
-    // setData(mydata);
-    doSort(mydata)
-    console.log("mydata", mydata);
-  }
-  
-  function sortVarianDesc() {
-    const mydata = [...filteredData].sort((a, b) => {
-      let x = a.varian.toLowerCase();
-      let y = b.varian.toLowerCase();
-      if (x < y) {
-        return 1;
-      }
-      if (x > y) {
-        return -1;
-      }
-      return 0;
-    });
-    
     // setData(mydata);
     doSort(mydata)
     console.log("mydata", mydata);
@@ -232,25 +163,25 @@ export default function CMUMerkModelVariant(props) {
   useEffect(() => {
     if (props.dataSort) {
       if (props.dataSort === "merekDesc") {
-        sortMerekDesc();
+        sortDesc("merek");
       }
       if (props.dataSort === "merekAsc") {
-        sortMerekAsc();
+        sortAsc("merek");
       }
       if (props.dataSort === "modelAsc") {
-        sortModelAsc();
+        sortAsc("model");
       }
       if (props.dataSort === "modelDesc") {
-        sortModelDesc();
+        sortDesc("model");
       }
       if (props.dataSort === "varianAsc") {
-        sortVarianAsc();
+        sortAsc("varian");
       }
       if (props.dataSort === "varianDesc") {
-        sortVarianDesc();
+        sortDesc("varian");
       }
     }else{
-      sortMerekDesc();
+      sortDesc("merek");
     }
   }, [props.dataSort]);
 
@@ -270,7 +201,7 @@ export default function CMUMerkModelVariant(props) {
   
   async function InsertData() {
     await axios
-    .post(`${baseURL}/cm/merek-model-varian`, {
+    .post(`${baseURL}/cm/merek-model-varian/insert`, {
       headers: {
         Authorization: `Bearer ${thisToken}`,
       },
@@ -279,7 +210,7 @@ export default function CMUMerkModelVariant(props) {
       varian: InputVarian.value,
     })
     .then((response) => {
-      // console.log(response.data)
+      console.log(response.data)
       
       setMenuAnchorEl(null);
       ResetInputs();
@@ -293,10 +224,22 @@ export default function CMUMerkModelVariant(props) {
   const DATAGRID_COLUMNS = [
     { field: "index", headerName: "#" },
     { field: "id", headerName: "ID", hide: true },
-    { field: "merek", headerName: "Merek", minWidth: 180, flex: 1 },
-    { field: "model", headerName: "Model", minWidth: 160 },
-    { field: "varian", headerName: "Varian", minWidth: 160, flex: 1 },
+    { field: "merek", headerName: "Merek", minWidth: 180, flex: 1, renderCell: StylingMMV, },
+    { field: "model", headerName: "Model", minWidth: 160, renderCell: StylingMMV },
+    { field: "varian", headerName: "Varian", minWidth: 160, flex: 1, renderCell: StylingMMV },
   ];
+
+  function StylingMMV(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   // const [InputVarian, setInputVarian] = useState(INPUTS[2])
   const doFilter = () => {

@@ -115,7 +115,7 @@ export default function CMCTujuanPenggunaan(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/tujuan-penggunaan', {
+    await axiosBackend.post('/cm/tujuan-penggunaan/insert', {
       tujuan_penggunaan: InputTujuanPenggunaan.value,
     })
     .then((response) => {

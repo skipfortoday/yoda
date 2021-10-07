@@ -114,7 +114,7 @@ export default function CMCKesertaanAsuransi(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/kesertaan-asuransi', {
+    await axiosBackend.post('/cm/kesertaan-asuransi/insert', {
       kesertaan_asuransi: InputKesertaanAsuransi.value,
     })
     .then((response) => {

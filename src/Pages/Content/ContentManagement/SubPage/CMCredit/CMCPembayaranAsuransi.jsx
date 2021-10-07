@@ -113,7 +113,7 @@ export default function CMCPembayaranAsuransi(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/pembayaran-asuransi', {
+    await axiosBackend.post('/cm/pembayaran-asuransi/insert', {
       pembayaran_asuransi: InputPembayaranAsuransi.value,
     })
     .then((response) => {

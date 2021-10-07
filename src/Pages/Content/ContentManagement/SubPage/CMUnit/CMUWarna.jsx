@@ -3,6 +3,7 @@ import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import axios from 'axios'
 
 const INPUTS = [
@@ -13,7 +14,7 @@ export default function CMUWarna(props) {
   const [Data, setData] = useState([])
   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
   const thisToken = sessionStorage.getItem('token')
-  const { dataSort } = props;
+  const { dataSort,reload } = props;
   
   function sortWarnaUnitAsc() {
     const mydata = [...Data].sort((a, b) => {
@@ -120,7 +121,7 @@ export default function CMUWarna(props) {
   }
 
   async function InsertData() {
-    await axios.post(`${baseURL}/cm/warna`, {
+    await axios.post(`${baseURL}/cm/warna/insert`, {
       headers: {
         Authorization: `Bearer ${thisToken}`,
       },
@@ -138,8 +139,20 @@ export default function CMUWarna(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'warna', headerName: 'Warna unit', minWidth: 180, flex: 1 },
+    { field: 'warna', headerName: 'Warna unit', minWidth: 180, flex: 1, renderCell: StylingWarna },
   ]
+
+  function StylingWarna(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   return (
     <>

@@ -113,7 +113,7 @@ export default function CMCTenor(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/tenor', {
+    await axiosBackend.post('/cm/tenor/insert', {
       tenor: InputTenor.value,
     })
     .then((response) => {

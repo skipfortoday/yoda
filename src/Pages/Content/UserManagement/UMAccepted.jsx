@@ -345,6 +345,7 @@ export default function UMAccepted(props) {
       <PopupEdit
         row={params.row}
         reload={reload}
+        fromPage={"UM"}
         fromTable={"name"}
         dataSent={dataSent}
       />
@@ -356,6 +357,7 @@ export default function UMAccepted(props) {
       <PopupEdit
         row={params.row}
         reload={reload}
+        fromPage={"UM"}
         fromTable={"phone_number"}
         dataSent={dataSent}
       />
@@ -367,6 +369,7 @@ export default function UMAccepted(props) {
       <PopupEdit
         row={params.row}
         reload={reload}
+        fromPage={"UM"}
         fromTable={"location"}
         dataSent={dataSent}
       />
@@ -384,6 +387,7 @@ export default function UMAccepted(props) {
         reload={reload}
         fromTable={"role"}
         value={params.value}
+        fromPage={"UM"}
         dataSent={dataSent}
       />
     );
@@ -396,6 +400,7 @@ export default function UMAccepted(props) {
         reload={reload}
         fromTable={"user_status"}
         value={params.value}
+        fromPage={"UM"}
         dataSent={dataSent}
       />
     );

@@ -113,7 +113,7 @@ export default function CMCAngsuranPertama(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/angsuran-pertama', {
+    await axiosBackend.post('/cm/angsuran-pertama/insert', {
       angsuran_pertama: InputAngsuranPertama.value,
     })
     .then((response) => {

@@ -5,6 +5,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import TextPrimarySecondary from '../../../../../Components/DataGridComponents/TextPrimarySecondary'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover, Select, MenuItem } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import DateRegister from '../../../../../Components/DataGridComponents/DateRegister'
 import SingleLine from '../../../../../Components/DataGridComponents/SingleLine'
 
@@ -20,7 +21,7 @@ export default function CMLKantor(props) {
   const [Data, setData] = useState([])
   const [PICArr, setPICArr] = useState([])
 
-  const { dataSort } = props;
+  const { dataSort, reload } = props;
 
   const dataType = {
     "namaKantor": "nama_cabang",
@@ -174,7 +175,7 @@ export default function CMLKantor(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/kantor', {
+    await axiosBackend.post('/cm/kantor/insert', {
       nama_cabang: InputName.value,
       no_telepon: InputTelephone.value,
       alamat: InputAddress.value,
@@ -193,33 +194,47 @@ export default function CMLKantor(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'nama_cabang', headerName: 'Nama & Kode cabang', minWidth: 180, flex: 1, renderCell: StylingNameIdCode },
-    { field: 'no_telepon', headerName: 'No. Telepon', minWidth: 160 },
-    { field: 'alamat', headerName: 'Alamat', minWidth: 160, flex: 1, renderCell: StylingLongAddress },
-    { field: 'pic', headerName: 'PIC', minWidth: 160 },
-    { field: 'tanggal_registrasi', headerName: 'Tanggal registrasi', minWidth: 160, renderCell: StylingDateRegister },
+    { field: 'nama_cabang', headerName: 'Nama & Kode cabang', minWidth: 180, flex: 1, renderCell: StylingKantor },
+    { field: 'no_telepon', headerName: 'No. Telepon', minWidth: 160, renderCell: StylingKantor },
+    { field: 'alamat', headerName: 'Alamat', minWidth: 160, flex: 1, renderCell: StylingKantor },
+    { field: 'pic', headerName: 'PIC', minWidth: 160, renderCell: StylingKantor },
+    { field: 'tanggal_registrasi', headerName: 'Tanggal registrasi', minWidth: 160, renderCell: StylingKantor },
   ]
 
-  function StylingNameIdCode(params) {
+  function StylingKantor(params) {
+    console.log(params.coldef, "PARAMSVALUE");
     return (
-      <TextPrimarySecondary
-        primaryText={params.row.nama_cabang}
-        secondaryText={params.row.kode_cabang}
+      <PopupEdit
+        params={params}
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
       />
-    )
+    );
   }
 
-  function StylingLongAddress(params) {
-    return (
-      <SingleLine Text={params.value} Width={params.colDef.computedWidth} />
-    )
-  }
+  // function StylingNameIdCode(params) {
+  //   return (
+  //     <TextPrimarySecondary
+  //       primaryText={params.row.nama_cabang}
+  //       secondaryText={params.row.kode_cabang}
+  //     />
+  //   )
+  // }
 
-  function StylingDateRegister(params) {
-    return (
-      <DateRegister created_at={params.row.tanggal_registrasi} />
-    )
-  }
+  // function StylingLongAddress(params) {
+  //   return (
+  //     <SingleLine Text={params.value} Width={params.colDef.computedWidth} />
+  //   )
+  // }
+
+  // function StylingDateRegister(params) {
+  //   return (
+  //     <DateRegister created_at={params.row.tanggal_registrasi} />
+  //   )
+  // }
 
   return (
     <>

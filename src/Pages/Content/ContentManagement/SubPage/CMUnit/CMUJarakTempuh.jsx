@@ -9,6 +9,7 @@ import {
   Popover,
 } from "@mui/material";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import axios from "axios";
 
 const INPUTS = [
@@ -22,7 +23,7 @@ export default function CMUJarakTempuh(props) {
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
-  const { dataSort, isFilter } = props;
+  const { dataSort, isFilter, reload } = props;
 
   async function sortJarakTempuhUnitDesc() {
     console.log('Data => Dsc', Data)
@@ -102,7 +103,7 @@ export default function CMUJarakTempuh(props) {
 
   async function LoadData() {
     await axios
-      .get(`${baseURL}/cm/jarak-tempuh`, {
+      .get(`${baseURL}/cm/jarak-tempuh/insert`, {
         headers: {
           Authorization: `Bearer ${thisToken}`,
         },
@@ -161,8 +162,21 @@ export default function CMUJarakTempuh(props) {
       headerName: "Jarak tempuh unit",
       minWidth: 180,
       flex: 1,
+      renderCell: StylingJarak,
     },
   ];
+
+  function StylingJarak(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   return (
     <>
