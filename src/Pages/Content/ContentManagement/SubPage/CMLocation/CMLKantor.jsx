@@ -198,11 +198,10 @@ export default function CMLKantor(props) {
     { field: 'no_telepon', headerName: 'No. Telepon', minWidth: 160, renderCell: StylingKantor },
     { field: 'alamat', headerName: 'Alamat', minWidth: 160, flex: 1, renderCell: StylingKantor },
     { field: 'pic', headerName: 'PIC', minWidth: 160, renderCell: StylingKantor },
-    { field: 'tanggal_registrasi', headerName: 'Tanggal registrasi', minWidth: 160, renderCell: StylingKantor },
+    { field: 'tanggal_registrasi', headerName: 'Tanggal registrasi', minWidth: 160, renderCell: StylingDateRegister },
   ]
 
   function StylingKantor(params) {
-    console.log(params.coldef, "PARAMSVALUE");
     return (
       <PopupEdit
         params={params}
@@ -230,11 +229,11 @@ export default function CMLKantor(props) {
   //   )
   // }
 
-  // function StylingDateRegister(params) {
-  //   return (
-  //     <DateRegister created_at={params.row.tanggal_registrasi} />
-  //   )
-  // }
+  function StylingDateRegister(params) {
+    return (
+      <DateRegister created_at={params.row.tanggal_registrasi} />
+    )
+  }
 
   return (
     <>

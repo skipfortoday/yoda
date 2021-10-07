@@ -4,19 +4,48 @@ import { Button, Collapse, Stack } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CMLKantor from "./SubPage/CMLocation/CMLKantor";
 import CMLWilayah from "./SubPage/CMLocation/CMLWilayah";
+import Delete from "@mui/icons-material/Delete";
 
 export default function CMLocation(props) {
-  console.log("props CMLocation", props)
+  console.log("props CMLocation", props);
   const [ActiveSubPage, setActiveSubPage] = useState(0);
   const { currentSubTab, dataSort, filteredDataWilayah, isFilter, filteredData, reload } = props;
   // const [filteredData, setFilteredData] = useState(props.filteredData)
-
+  const [DeleteButton, setDeleteButton] = useState(false);
+  const [DeleteChosenId, setDeleteChosenId] = useState([]);
+  const [DeleteType, setDeleteType] = useState(false);
+  const [Deleted, setDeleted] = useState(false);
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(MenuanchorEl);
+
+  const changeIcons = (val, type) => {
+    console.log("masuk sini ");
+    setDeleteButton(val.length > 0 ? true : false);
+    setDeleteChosenId(val);
+    setDeleteType(type);
+  };
+
+  const multiDelete = async () => {
+    // await axiosBackend
+    //   .post(`/delete/${DeleteType}`, {
+    //     id: DeleteChosenId,
+    //   })
+    //   .then((response) => {
+    //     setDeleted(!Deleted);
+    //     console.log(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.warn(err.response);
+    //   });
+  };
 
   useEffect(() => {
     currentSubTab(0);
   }, []);
+
+  useEffect(() => {
+    console.log("value nya disini ", DeleteButton);
+  });
 
   const TABS = [
     {
@@ -31,7 +60,7 @@ export default function CMLocation(props) {
           ActiveSubPage={ActiveSubPage}
           filteredData={filteredData}
           dataSort={dataSort}
-          reload={reload}
+          changeIcons={changeIcons}
         />
       ),
     },
@@ -49,7 +78,7 @@ export default function CMLocation(props) {
           dataSort={dataSort}
           filteredDataWilayah={filteredDataWilayah}
           isFilter={isFilter}
-          reload={reload}
+          changeIcons={changeIcons}
         />
       ),
     },
@@ -78,15 +107,27 @@ export default function CMLocation(props) {
             ))}
           </Box>
           <Box>
-            <Button
-              variant="contained"
-              size="large"
-              color="switch"
-              startIcon={<AddCircleIcon />}
-              onClick={(e) => setMenuAnchorEl(e.currentTarget)}
-            >
-              {"Tambah"}
-            </Button>
+            {!DeleteButton ? (
+              <Button
+                variant="contained"
+                size="large"
+                color="switch"
+                startIcon={<AddCircleIcon />}
+                onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+              >
+                {"Tambah"}
+              </Button>
+            ) : (
+              <Button
+                size="large"
+                variant="outlined"
+                color="error"
+                startIcon={<Delete />}
+                onClick={multiDelete}
+              >
+                {"Hapus"}
+              </Button>
+            )}
           </Box>
         </Stack>
       </Box>

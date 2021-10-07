@@ -19,7 +19,7 @@ export default function UMWaiting(props) {
   // reload to refresh
 
   const DATAGRID_COLUMNS = [
-    { field: "index", headerName: "ID", sortable: false, filterable: false },
+    { field: "index", headerName: "#", sortable: false, filterable: false },
     // { field: 'id', headerName: 'ID', hide: true },
     {
       field: "name",
@@ -58,18 +58,16 @@ export default function UMWaiting(props) {
   function StylingNameEmail(params) {
     const TEXTS = { greenButton: "Disetujui", redButton: "Ditolak" };
     return (
-        <AvatarNameEmail
-          name={params.row.name}
-          email={params.row.email}
-          profile_picture={params.row.profile_picture}
-        />
-    )
+      <AvatarNameEmail
+        name={params.row.name}
+        email={params.row.email}
+        profile_picture={params.row.profile_picture}
+      />
+    );
   }
 
   function StylingDateRegister(params) {
-    return (
-      <DateRegister created_at={params.row.created_at} />
-      );
+    return <DateRegister created_at={params.row.created_at} />;
   }
 
   function StylingAction(params) {

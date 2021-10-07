@@ -12,8 +12,7 @@ import SingleLine from './SingleLine'
 
 
 export default function PopupEdit(props) {
-  const { reload, dataSent, row, fromTable, fromPage, params } = props;
-  params !== undefined ? console.log(params.row, "PARAMS") : console.log("nothing");
+  const { reload, dataSent, row, fromTable, fromPage, params, sendToast } = props;
   console.warn(fromTable, "FT");
 
   const [MenuanchorEl, setMenuAnchorEl] = useState(null);
@@ -158,6 +157,7 @@ export default function PopupEdit(props) {
        <TextPrimarySecondary
        primaryText={row.nama_cabang}
        secondaryText={row.kode_cabang}
+       clicked={(e) => {setMenuAnchorEl(e.currentTarget); console.log('clicked')}}
      />
     ),
     no_telepon: (
@@ -169,7 +169,7 @@ export default function PopupEdit(props) {
     </Typography>
     ),
     alamat: (
-      <SingleLine Text={params !== undefined ? params.row.nama_cabang : "-"} Width={params !== undefined ? params.colDef.computedWidth : 0} />
+      <SingleLine clicked={(e) => setMenuAnchorEl(e.currentTarget)} Text={params !== undefined ? params.row.alamat : "-"} Width={params !== undefined ? params.colDef.computedWidth : 0} />
     ),
     pic: (
       <Typography
@@ -179,9 +179,9 @@ export default function PopupEdit(props) {
       {row.pic}
     </Typography>
     ),
-    tanggal_registrasi: (
-      <DateRegister created_at={row.tanggal_registrasi} />
-    ),
+    // tanggal_registrasi: (
+    //   <DateRegister created_at={row.tanggal_registrasi} />
+    // ),
     provinsi: (
       <Typography
       fontSize={14}
@@ -214,6 +214,77 @@ export default function PopupEdit(props) {
       {row.cabang_pengelola}
     </Typography>
     ),
+    tujuan_penggunaan: (
+      <Typography
+      fontSize={14}
+      onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+    >
+      {row.tujuan_penggunaan}
+    </Typography>
+    ),
+    kategori: (
+      <Typography
+      fontSize={14}
+      onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+    >
+      {row.kategori}
+    </Typography>
+    ),
+    tipe_asuransi: (
+      <Typography
+      fontSize={14}
+      onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+    >
+      {row.tipe_asuransi}
+    </Typography>
+    ),
+    kesertaan_asuransi: (
+      <Typography
+      fontSize={14}
+      onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+    >
+      {row.kesertaan_asuransi}
+    </Typography>
+    ),
+    nilai_pertanggungan: (
+      <Typography
+      fontSize={14}
+      onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+    >
+      {row.nilai_pertanggungan}
+    </Typography>
+    ),
+    pembayaran_asuransi: (
+      <Typography
+      fontSize={14}
+      onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+    >
+      {row.pembayaran_asuransi}
+    </Typography>
+    ),
+    tenor: (
+      <Typography
+      fontSize={14}
+      onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+    >
+      {row.tenor}
+    </Typography>
+    ),
+    angsuran_pertama: (
+      <Typography
+      fontSize={14}
+      onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+    >
+      {row.angsuran_pertama}
+    </Typography>
+    ),
+    nama: (
+      <TextPrimarySecondary
+        primaryText={row.nama}
+        secondaryText={row.kode}
+        clicked={(e) => setMenuAnchorEl(e.currentTarget)}
+      />
+    )
   };
 
   return (
@@ -257,6 +328,7 @@ export default function PopupEdit(props) {
                 setMenuAnchorEl={setMenuAnchorEl}
                 reload={reload}
                 dataSent={dataSent}
+                sendToast={sendToast}
               ></CMEdit>
             )}
           </Popover>

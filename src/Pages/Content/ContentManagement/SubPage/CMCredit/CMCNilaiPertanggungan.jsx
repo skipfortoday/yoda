@@ -3,6 +3,7 @@ import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
 
 const INPUTS = [
@@ -12,7 +13,7 @@ const INPUTS = [
 export default function CMCNilaiPertanggungan(props) {
   const [Data, setData] = useState([])
 
-  const { dataSort } = props;
+  const { dataSort, reload } = props;
 
   const dataType = {
     "nilaiPertanggungan": "nilai_pertanggungan",
@@ -128,8 +129,20 @@ export default function CMCNilaiPertanggungan(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'nilai_pertanggungan', headerName: 'Nilai pertanggungan', minWidth: 180, flex: 1 },
+    { field: 'nilai_pertanggungan', headerName: 'Nilai pertanggungan', minWidth: 180, flex: 1, renderCell: StylingNP },
   ]
+
+  function StylingNP(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        // reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   return (
     <>

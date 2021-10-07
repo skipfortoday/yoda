@@ -3,6 +3,7 @@ import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
 
 const INPUTS = [
@@ -12,7 +13,7 @@ const INPUTS = [
 export default function CMCKesertaanAsuransi(props) {
   const [Data, setData] = useState([])
 
-  const { dataSort } = props;
+  const { dataSort, reload } = props;
 
   const dataType = {
     "kesertaanAsuransi": "kesertaan_asuransi",
@@ -129,8 +130,20 @@ export default function CMCKesertaanAsuransi(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'kesertaan_asuransi', headerName: 'Kesertaan asuransi', minWidth: 180, flex: 1 },
+    { field: 'kesertaan_asuransi', headerName: 'Kesertaan asuransi', minWidth: 180, flex: 1, renderCell: StylingKA },
   ]
+
+  function StylingKA(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        // reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   return (
     <>
