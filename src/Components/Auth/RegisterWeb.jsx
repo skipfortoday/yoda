@@ -421,7 +421,6 @@ export default function RegisterWeb(props) {
 
   function handleToLoginClick() {
     history.push("/login");
-    setOpen3(false)
   }
 
   const LightTooltip = styled(({ className, ...props }) => (
