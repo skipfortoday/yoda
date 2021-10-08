@@ -88,6 +88,13 @@ export default function RegisterWeb(props) {
   const [placement, setPlacement] = useState();
 
   useEffect(() => {
+    if (numPass && PhoneNumberLength) {
+      setOpen3(false);
+  }});
+
+
+
+  useEffect(() => {
     if (EPValid && checkPass) {
       setEPCPValid(true);
     } else {
@@ -414,6 +421,7 @@ export default function RegisterWeb(props) {
 
   function handleToLoginClick() {
     history.push("/login");
+    setOpen3(false)
   }
 
   const LightTooltip = styled(({ className, ...props }) => (
@@ -1127,6 +1135,7 @@ export default function RegisterWeb(props) {
                     color="primary"
                     size="large"
                     onClick={() => {
+
                       handleToLoginClick();
                       handleClick("right", false, 0);
                     }}
