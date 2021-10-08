@@ -6,7 +6,7 @@ import MyAppbar from "../../../Components/Navigation/MyAppbar";
 import UMWaiting from "./UMWaiting";
 import UMAccepted from "./UMAccepted";
 import UMRejected from "./UMRejected";
-import moment from 'moment';
+import moment from "moment";
 import axios from "axios";
 
 export default function UserManagementPage(props) {
@@ -92,7 +92,7 @@ export default function UserManagementPage(props) {
     console.log("LoadWaitingData");
     // var tempUsers = await GetAllUsers();
     let tempUsers = await GetAllUsers();
-    tempUsers = tempUsers.filter((user) => {
+    tempUsers = tempUsers?.filter((user) => {
       // console.log('2--LoadWaitingData')
       // var tempUsers = await GetAllUsers()
       // tempUsers = tempUsers.filter(user => {
@@ -103,10 +103,10 @@ export default function UserManagementPage(props) {
         // user.user_status.toString().toLowerCase() !== "rejected"
       );
     });
-    tempUsers.forEach((user, index) => {
+    tempUsers?.forEach((user, index) => {
       let stillUtc = moment.utc(user.created_at).toDate();
       let local = moment(stillUtc).local().format("YYYY-MM-DD HH:mm:ss");
-      user.created_at = local
+      user.created_at = local;
       user.index = index + 1;
     });
     setWaitingData(tempUsers);
@@ -114,7 +114,7 @@ export default function UserManagementPage(props) {
   async function LoadAcceptedData() {
     console.log("LoadAcceptedData");
     let tempUsers = await GetAllUsers();
-    tempUsers = tempUsers.filter((user) => {
+    tempUsers = tempUsers?.filter((user) => {
       // var tempUsers = await GetAllUsers()
       // tempUsers = tempUsers.filter(user => {
       return (
@@ -125,10 +125,10 @@ export default function UserManagementPage(props) {
         user?.role?.name !== "Super Admin"
       );
     });
-    tempUsers.forEach((user, index) => {
+    tempUsers?.forEach((user, index) => {
       let stillUtc = moment.utc(user.created_at).toDate();
       let local = moment(stillUtc).local().format("YYYY-MM-DD HH:mm:ss");
-      user.created_at = local
+      user.created_at = local;
       user.index = index + 1;
       user.user_code = "#" + user.id.toString().padStart(5, "0");
     });
@@ -137,24 +137,22 @@ export default function UserManagementPage(props) {
   async function LoadRejectedData() {
     console.log("LoadRejectedData");
     let tempUsers = await GetAllUsers();
-    tempUsers = tempUsers.filter((user) => {
+    tempUsers = tempUsers?.filter((user) => {
       return user.user_status.toString().toLowerCase() === "rejected";
     });
-    //   setAcceptedData(tempUsers)
-    //   console.log('1--LoadAcceptedData', tempUsers)
-    // }
-    // async function LoadRejectedData() {
-    //   console.log('3--LoadRejectedData')
-    //   var tempUsers = await GetAllUsers()
-    //   tempUsers = tempUsers.filter(user => {
-    //     return (
-    //       user.user_status.toString().toLowerCase() === 'rejected'
-    //     )
-    //   })
-    tempUsers.forEach((user, index) => {
+    setAcceptedData(tempUsers);
+    console.log("1--LoadAcceptedData", tempUsers);
+  }
+  async function LoadRejectedData() {
+    console.log("3--LoadRejectedData");
+    var tempUsers = await GetAllUsers();
+    tempUsers = tempUsers?.filter((user) => {
+      return user.user_status.toString().toLowerCase() === "rejected";
+    });
+    tempUsers?.forEach((user, index) => {
       let stillUtc = moment.utc(user.created_at).toDate();
       let local = moment(stillUtc).local().format("YYYY-MM-DD HH:mm:ss");
-      user.created_at = local
+      user.created_at = local;
       user.index = index + 1;
     });
     console.log(tempUsers, "TURTURTUR");

@@ -251,89 +251,92 @@ export default function UMAccepted(props) {
     // setCurentData(data)
   };
 
-  const DATAGRID_COLUMNS = ActiveSubPage === 0 ? [
-    { field: "index", headerName: "#" },
-    { field: "id", headerName: "ID", hide: true },
-    {
-      field: "name",
-      headerName: "Nama & email",
-      minWidth: 280,
-      // flex: 1,
-      renderCell: StylingNameEmail,
-    },
-    {
-      field: "phone_number",
-      headerName: "No. Handphone",
-      minWidth: 160,
-      renderCell: StylingPhoneNumber,
-    },
-    {
-      field: "role",
-      headerName: "Role",
-      minWidth: 150,
-      renderCell: StylingRole,
-    },
-    {
-      field: "location",
-      headerName: "Kantor",
-      minWidth: 160,
-      renderCell: StylingLocation,
-    },
-    {
-      field: "created_at",
-      headerName: "Tanggal registrasi",
-      minWidth: 160,
-      renderCell: StylingDateRegister,
-    },
-    {
-      field: "user_status",
-      headerName: "Status",
-      minWidth: 130,
-      renderCell: StylingStatus,
-    },
-    { field: "user_code", headerName: "Kode user", minWidth: 130 },
-  ]:[
-    { field: "index", headerName: "#" },
-    { field: "id", headerName: "ID", hide: true },
-    {
-      field: "name",
-      headerName: "Nama & email",
-      minWidth: 280,
-      // flex: 1,
-      renderCell: StylingNameEmail,
-    },
-    {
-      field: "phone_number",
-      headerName: "No. Handphone",
-      minWidth: 160,
-      renderCell: StylingPhoneNumber,
-    },
-    // {
-    //   field: "role",
-    //   headerName: "Role",
-    //   minWidth: 150,
-    //   renderCell: StylingRole,
-    // },
-    // {
-    //   field: "location",
-    //   headerName: "Kantor",
-    //   minWidth: 160,
-    //   renderCell: StylingLocation,
-    // },
-    {
-      field: "created_at",
-      headerName: "Tanggal registrasi",
-      minWidth: 160,
-      renderCell: StylingDateRegister,
-    },
-    {
-      field: "user_status",
-      headerName: "Status",
-      minWidth: 130,
-      renderCell: StylingStatus,
-    },
-    { field: "user_code", headerName: "Kode user", minWidth: 130 },
-  ];
+  const DATAGRID_COLUMNS =
+    ActiveSubPage === 0
+      ? [
+          { field: "index", headerName: "#" },
+          { field: "id", headerName: "#", hide: true },
+          {
+            field: "name",
+            headerName: "Nama & email",
+            minWidth: 280,
+            // flex: 1,
+            renderCell: StylingNameEmail,
+          },
+          {
+            field: "phone_number",
+            headerName: "No. Handphone",
+            minWidth: 160,
+            renderCell: StylingPhoneNumber,
+          },
+          {
+            field: "role",
+            headerName: "Role",
+            minWidth: 150,
+            renderCell: StylingRole,
+          },
+          {
+            field: "location",
+            headerName: "Kantor",
+            minWidth: 160,
+            renderCell: StylingLocation,
+          },
+          {
+            field: "created_at",
+            headerName: "Tanggal registrasi",
+            minWidth: 160,
+            renderCell: StylingDateRegister,
+          },
+          {
+            field: "user_status",
+            headerName: "Status",
+            minWidth: 130,
+            renderCell: StylingStatus,
+          },
+          { field: "user_code", headerName: "Kode user", minWidth: 130 },
+        ]
+      : [
+          { field: "index", headerName: "#" },
+          { field: "id", headerName: "#", hide: true },
+          {
+            field: "name",
+            headerName: "Nama & email",
+            minWidth: 280,
+            // flex: 1,
+            renderCell: StylingNameEmail,
+          },
+          {
+            field: "phone_number",
+            headerName: "No. Handphone",
+            minWidth: 160,
+            renderCell: StylingPhoneNumber,
+          },
+          // {
+          //   field: "role",
+          //   headerName: "Role",
+          //   minWidth: 150,
+          //   renderCell: StylingRole,
+          // },
+          // {
+          //   field: "location",
+          //   headerName: "Kantor",
+          //   minWidth: 160,
+          //   renderCell: StylingLocation,
+          // },
+          {
+            field: "created_at",
+            headerName: "Tanggal registrasi",
+            minWidth: 160,
+            renderCell: StylingDateRegister,
+          },
+          {
+            field: "user_status",
+            headerName: "Status",
+            minWidth: 130,
+            renderCell: StylingStatus,
+          },
+          { field: "user_code", headerName: "Kode user", minWidth: 130 },
+        ];
 
   const dataSent = () => {
     // handleChangeTab(0)
@@ -345,6 +348,7 @@ export default function UMAccepted(props) {
       <PopupEdit
         row={params.row}
         reload={reload}
+        fromPage={"UM"}
         fromTable={"name"}
         dataSent={dataSent}
       />
@@ -356,6 +360,7 @@ export default function UMAccepted(props) {
       <PopupEdit
         row={params.row}
         reload={reload}
+        fromPage={"UM"}
         fromTable={"phone_number"}
         dataSent={dataSent}
       />
@@ -367,6 +372,7 @@ export default function UMAccepted(props) {
       <PopupEdit
         row={params.row}
         reload={reload}
+        fromPage={"UM"}
         fromTable={"location"}
         dataSent={dataSent}
       />
@@ -384,6 +390,7 @@ export default function UMAccepted(props) {
         reload={reload}
         fromTable={"role"}
         value={params.value}
+        fromPage={"UM"}
         dataSent={dataSent}
       />
     );
@@ -396,6 +403,7 @@ export default function UMAccepted(props) {
         reload={reload}
         fromTable={"user_status"}
         value={params.value}
+        fromPage={"UM"}
         dataSent={dataSent}
       />
     );

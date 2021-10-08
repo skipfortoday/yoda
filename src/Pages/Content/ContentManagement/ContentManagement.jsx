@@ -6,6 +6,7 @@ import CMUnit from "./CMUnit";
 import CMLocation from "./CMLocation";
 import CMSeller from "./CMSeller";
 import CMCredit from "./CMCredit";
+import axiosBackend from "../../../Helper/axiosBackend";
 
 export default function ContentManagementPage() {
   const ActivePage = 2; // Staticly Setup for Active Menu
@@ -104,6 +105,7 @@ export default function ContentManagementPage() {
             filteredDataJarak={filteredDataJarak}
             filteredDataTahun={filteredDataTahun}
             isFilter={isFilter}
+            // reload={() => reloadData()}
           />
         ),
       },

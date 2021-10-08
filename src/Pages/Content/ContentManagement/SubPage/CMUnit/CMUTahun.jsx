@@ -3,7 +3,9 @@ import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import axios from 'axios'
+import axiosBackend from '../../../../../Helper/axiosBackend'
 
 const INPUTS = [
   { label: 'Tahun', value: '', error: false, disabled: false,},
@@ -14,7 +16,7 @@ export default function CMUTahun(props) {
   const [Data, setData] = useState([])
   const baseURL= process.env.REACT_APP_BACKEND_ENDPOINT_DEV
   const thisToken = sessionStorage.getItem('token')
-  const { isFilter, filteredDataTahun } = props;
+  const { isFilter, filteredDataTahun, reload } = props;
 
   useEffect(() => { LoadData() }, [])
 
@@ -35,6 +37,7 @@ export default function CMUTahun(props) {
       tempData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
+      setData(tempData)
       setData(tempData)
      })
   }
@@ -123,6 +126,7 @@ export default function CMUTahun(props) {
   }
   
   function handleSubmit() {
+    console.log("HANDLESUBMIT");
     var isPassed = true;
     // Validation
     if (isPassed) {
@@ -135,26 +139,38 @@ export default function CMUTahun(props) {
   }
 
   async function InsertData() {
-    await axios.post(`${baseURL}/cm/tahun-pembuatan`, {
-      headers: {
-        Authorization: `Bearer ${thisToken}`,
-      },
+    await axiosBackend.post(`/cm/tahun-pembuatan/insert`, {
+      // headers: {
+      //   Authorization: `Bearer ${thisToken}`,
+      // },
       tahun: InputTahun.value,
     })
     .then((response) => {
-      console.log(response.data)
+      console.log(response.data, "INSERTTAHUN")
       setMenuAnchorEl(null)
       ResetInputs()
       LoadData()
     })
-    .catch((err) => { console.warn(err.response) })
+    .catch((err) => { console.log(err.response) })
   }
 
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'tahun', headerName: 'Tahun pembuatan unit', minWidth: 180, flex: 1 },
+    { field: 'tahun', headerName: 'Tahun pembuatan unit', minWidth: 180, flex: 1, renderCell: StylingTahun, },
   ]
+
+  function StylingTahun(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   return (
     <>

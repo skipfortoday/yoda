@@ -5,6 +5,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import TextPrimarySecondary from '../../../../../Components/DataGridComponents/TextPrimarySecondary'
 import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 
 const INPUTS = [
   { label: 'Nama penjual', value: '', error: false, disabled: false,},
@@ -19,7 +20,7 @@ const INPUTS = [
 export default function CMSPenjual(props) {
   const [Data, setData] = useState([])
 
-  const { dataSort } = props;
+  const { dataSort,reload } = props;
 
   const dataType = {
     "namaPenjual":"nama",
@@ -165,7 +166,7 @@ export default function CMSPenjual(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/penjual', {
+    await axiosBackend.post('/cm/penjual/insert', {
       nama: InputName.value,
       no_telepon: InputTelephone.value,
       alamat: InputAddress.value,
@@ -185,27 +186,40 @@ export default function CMSPenjual(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'nama', headerName: 'Nama penjual', minWidth: 180, flex: 1, renderCell: StylingNameIdCode },
-    { field: 'no_telepon', headerName: 'No. Telepon', minWidth: 160 },
-    { field: 'alamat', headerName: 'Alamat', minWidth: 160, flex: 1 },
-    { field: 'provinsi', headerName: 'Provinsi', minWidth: 160 },
-    { field: 'kota', headerName: 'Kota', minWidth: 160 },
-    { field: 'kecamatan', headerName: 'Kecamatan', minWidth: 160 },
+    { field: 'nama', headerName: 'Nama penjual', minWidth: 180, flex: 1, renderCell: StylingPenjual },
+    { field: 'no_telepon', headerName: 'No. Telepon', minWidth: 160, renderCell: StylingPenjual },
+    { field: 'alamat', headerName: 'Alamat', minWidth: 160, flex: 1, renderCell: StylingPenjual },
+    { field: 'provinsi', headerName: 'Provinsi', minWidth: 160, renderCell: StylingPenjual },
+    { field: 'kota', headerName: 'Kota', minWidth: 160, renderCell: StylingPenjual },
+    { field: 'kecamatan', headerName: 'Kecamatan', minWidth: 160, renderCell: StylingPenjual },
     // { field: 'roles', headerName: 'Role', minWidth: 150, renderCell: StylingRole },
     // { field: 'created_at', headerName: 'Tanggal registrasi', minWidth: 160, renderCell: StylingDateRegister },
     // { field: 'user_status', headerName: 'Status', minWidth: 130, renderCell: StylingStatus },
     // { field: 'user_code', headerName: 'Kode user', minWidth: 130 },
   ]
-  
-  function StylingNameIdCode(params) {
-    // console.log(params)
+
+  function StylingPenjual(params) {
     return (
-      <TextPrimarySecondary
-        primaryText={params.row.nama}
-        secondaryText={params.row.kode}
+      <PopupEdit
+        params={params}
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
       />
-    )
+    );
   }
+  
+  // function StylingNameIdCode(params) {
+  //   // console.log(params)
+  //   return (
+  //     <TextPrimarySecondary
+  //       primaryText={params.row.nama}
+  //       secondaryText={params.row.kode}
+  //     />
+  //   )
+  // }
   
 
   return (

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import axiosBackend from '../../../../../Helper/axiosBackend'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
-import { Button, FormControl, InputLabel, OutlinedInput, Popover } from '@mui/material'
+import { Button, FormControl, InputLabel, OutlinedInput, Popover, Snackbar, IconButton } from '@mui/material'
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import DynamicContentMenu from '../../../../../Components/Menus/DynamicContentMenu'
+import CloseIcon from '@mui/icons-material/Close'
 
 const INPUTS = [
   { label: 'Angsuran pertama', value: '', error: false, disabled: false,},
@@ -12,7 +14,21 @@ const INPUTS = [
 export default function CMCAngsuranPertama(props) {
   const [Data, setData] = useState([])
 
-  const { dataSort } = props;
+  const { dataSort, reload } = props;
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const dataType = {
     "angsuranPertama": "angsuran_pertama",
@@ -113,7 +129,7 @@ export default function CMCAngsuranPertama(props) {
   }
 
   async function InsertData() {
-    await axiosBackend.post('/cm/angsuran-pertama', {
+    await axiosBackend.post('/cm/angsuran-pertama/insert', {
       angsuran_pertama: InputAngsuranPertama.value,
     })
     .then((response) => {
@@ -128,8 +144,37 @@ export default function CMCAngsuranPertama(props) {
   const DATAGRID_COLUMNS = [
     { field: 'index', headerName: '#' },
     { field: 'id', headerName: 'ID', hide: true },
-    { field: 'angsuran_pertama', headerName: 'Angsuran pertama', minWidth: 180, flex: 1 },
+    { field: 'angsuran_pertama', headerName: 'Angsuran pertama', minWidth: 180, flex: 1, renderCell: StylingAP },
   ]
+
+  function StylingAP(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        // reload={reload}
+        fromTable={params.field}
+        sendToast={handleClick}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <>
@@ -186,6 +231,13 @@ export default function CMCAngsuranPertama(props) {
           disableSelectionOnClick
         />
       </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message="Success"
+        action={action}
+      />
     </>
   )
 }

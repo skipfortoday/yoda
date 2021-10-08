@@ -7,9 +7,12 @@ import {
   InputLabel,
   OutlinedInput,
   Popover,
+  Typography,
 } from "@mui/material";
 import DynamicContentMenu from "../../../../../Components/Menus/DynamicContentMenu";
+import PopupEdit from "../../../../../Components/DataGridComponents/PopupEdit";
 import axios from "axios";
+import axiosBackend from "../../../../../Helper/axiosBackend";
 
 const INPUTS = [
   { label: "Merek", value: "", error: false, disabled: false },
@@ -18,35 +21,47 @@ const INPUTS = [
 ];
 
 export default function CMUMerkModelVariant(props) {
-  console.log('props CMUMerkModelVariant', props)
+  console.log("props CMUMerkModelVariant", props);
   const baseURL = process.env.REACT_APP_BACKEND_ENDPOINT_DEV;
   const thisToken = sessionStorage.getItem("token");
   // console.log('thisToken CMUJarakTempuh', thisToken)
 
   const [Data, setData] = useState([]);
+  const [isEditPop, setEditPop] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   const [filteredData, setFilteredData] = useState([]);
-  const { dataSort, isFilter } = props;
+  const { dataSort, isFilter, reload } = props;
   // const [DataMerek, setDataMerek] = useState(props.dataFiltered);
 
   function doSort(items) {
-    var tempData = items
+    var tempData = items;
     tempData.forEach((dat, idx) => {
       dat.index = idx + 1;
     });
-    console.log('filteredData doSort', tempData)
-    setFilteredData(tempData)
+    console.log("filteredData doSort", tempData);
+    setFilteredData(tempData);
   }
-
 
   useEffect(() => {
     // LoadData();
     // if(props.filteredData){
     //   setFilteredData(props.filteredData)
     // }
-    if(isFilter){
-      console.log('props filteredDataTahun', props.filteredData)
+    if (isFilter) {
+      console.log("props filteredDataTahun", props.filteredData);
       // setData(filteredDataTahun)
-      setFilteredData(props.filteredData)
+      setFilteredData(props.filteredData);
     }
   }, [props.filteredData, isFilter]);
 
@@ -56,48 +71,59 @@ export default function CMUMerkModelVariant(props) {
     if (props.dataFiltered) {
       // setData(props.dataFiltered);
       if (props.dataFiltered.length === 0) {
-        if(!isFilter && !filteredData.length){
-          console.log('props dataFiltered === 0')
+        if (!isFilter && !filteredData.length) {
+          console.log("props dataFiltered === 0");
           LoadData();
         }
         // console.log('props dataFiltered === 0')
-        
+
         // LoadData();
       }
     }
     if (props.dataFiltered === "resetFilter") {
       // console.log('props.dataFiltered reset')
-      
       // LoadData();
     }
-    if(props.ActiveSubPage){
-      console.log('props.ActiveSubPage', props.ActiveSubPage)
-      if(props.dataFiltered.length === 0){
-        LoadData()
+    if (props.ActiveSubPage) {
+      console.log("props.ActiveSubPage", props.ActiveSubPage);
+      if (props.dataFiltered.length === 0) {
+        LoadData();
       }
     }
   }, [props.val, props.dataFiltered]);
 
   useEffect(() => {
-    if(props.filteredData.length === 0){
-      LoadData()
-    }else{
-      
+    LoadData();
+  }, []);
+
+  useEffect(() => {
+    if (props.reRender) {
+      LoadData();
+      props.vRerender();
+    }
+  });
+
+  useEffect(() => {
+    if (props.filteredData.length === 0) {
+      LoadData();
+    } else {
       props.filteredData.forEach((dat, idx) => {
         dat.index = idx + 1;
       });
-      setFilteredData(props.filteredData)
+      setFilteredData(props.filteredData);
     }
-  }, [props.filteredData])
+  }, [props.filteredData]);
 
   async function LoadData() {
-    console.log('load data LoadData')
+    console.log("load data LoadData");
 
     // console.log('loadData')
     await axios
       .get(`${baseURL}/cm/merek-model-varian`, {
         headers: {
           Authorization: `Bearer ${thisToken}`,
+          Accept: "multipart/form-data",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       })
       .then((response) => {
@@ -106,11 +132,12 @@ export default function CMUMerkModelVariant(props) {
           dat.index = idx + 1;
         });
         // setData(tempData);
-        setFilteredData(tempData)
+        setFilteredData(tempData);
         // console.log('LoadData setFilteredData', tempData)
-      }).catch((err) => {
-        console.log(err, "Err");
       })
+      .catch((err) => {
+        console.log(err, "Err");
+      });
   }
 
   const { indexPage, ActiveSubPage } = props;
@@ -121,10 +148,10 @@ export default function CMUMerkModelVariant(props) {
   const [InputModel, setInputModel] = useState(INPUTS[1]);
   const [InputVarian, setInputVarian] = useState(INPUTS[2]);
 
-  function sortMerekDesc() {
+  function sortDesc(type) {
     const mydata = [...filteredData].sort(function (a, b) {
-      let x = a.merek.toLowerCase();
-      let y = b.merek.toLowerCase();
+      let x = a[type].toLowerCase();
+      let y = b[type].toLowerCase();
       if (x < y) {
         return 1;
       }
@@ -134,14 +161,14 @@ export default function CMUMerkModelVariant(props) {
       return 0;
     });
     // setData(mydata);
-    doSort(mydata)
+    doSort(mydata);
     console.log("mydata", mydata);
   }
   
-  function sortMerekAsc() {
+  function sortAsc(type) {
     const mydata = [...filteredData].sort(function (a, b) {
-      let x = a.merek.toLowerCase();
-      let y = b.merek.toLowerCase();
+      let x = a[type].toLowerCase();
+      let y = b[type].toLowerCase();
       if (x < y) {
         return -1;
       }
@@ -151,106 +178,35 @@ export default function CMUMerkModelVariant(props) {
       return 0;
     });
     // setData(mydata);
-    doSort(mydata)
+    doSort(mydata);
     console.log("mydata", mydata);
   }
-  
-  function sortModelDesc() {
-    const mydata = [...filteredData].sort(function (a, b) {
-      let x = a.model.toLowerCase();
-      let y = b.model.toLowerCase();
-      if (x < y) {
-        return 1;
-      }
-      if (x > y) {
-        return -1;
-      }
-      return 0;
-    });
-    // setData(mydata);
-    doSort(mydata)
-    console.log("mydata", mydata);
-  }
-  
-  function sortModelAsc() {
-    const mydata = [...filteredData].sort(function (a, b) {
-      let x = a.model.toLowerCase();
-      let y = b.model.toLowerCase();
-      if (x < y) {
-        return -1;
-      }
-      if (x > y) {
-        return 1;
-      }
-      return 0;
-    });
-    // setData(mydata);
-    doSort(mydata)
-    console.log("mydata", mydata);
-  }
-  
-  function sortVarianAsc() {
-    const mydata = [...filteredData].sort((a, b) => {
-      let x = a.varian.toLowerCase();
-      let y = b.varian.toLowerCase();
-      if (x < y) {
-        return -1;
-      }
-      if (x > y) {
-        return 1;
-      }
-      return 0;
-    });
-    
-    // setData(mydata);
-    doSort(mydata)
-    console.log("mydata", mydata);
-  }
-  
-  function sortVarianDesc() {
-    const mydata = [...filteredData].sort((a, b) => {
-      let x = a.varian.toLowerCase();
-      let y = b.varian.toLowerCase();
-      if (x < y) {
-        return 1;
-      }
-      if (x > y) {
-        return -1;
-      }
-      return 0;
-    });
-    
-    // setData(mydata);
-    doSort(mydata)
-    console.log("mydata", mydata);
-  }
-  
   // const [SelectedItems, setSelectedItems] = useState([])
-  
+
   // console.warn(SelectedItems)
-  
+
   useEffect(() => {
     if (props.dataSort) {
       if (props.dataSort === "merekDesc") {
-        sortMerekDesc();
+        sortDesc("merek");
       }
       if (props.dataSort === "merekAsc") {
-        sortMerekAsc();
+        sortAsc("merek");
       }
       if (props.dataSort === "modelAsc") {
-        sortModelAsc();
+        sortAsc("model");
       }
       if (props.dataSort === "modelDesc") {
-        sortModelDesc();
+        sortDesc("model");
       }
       if (props.dataSort === "varianAsc") {
-        sortVarianAsc();
+        sortAsc("varian");
       }
       if (props.dataSort === "varianDesc") {
-        sortVarianDesc();
+        sortDesc("varian");
       }
     }else{
-      sortMerekDesc();
+      sortDesc("merek");
     }
   }, [props.dataSort]);
 
@@ -261,42 +217,50 @@ export default function CMUMerkModelVariant(props) {
       InsertData();
     }
   }
-  
+
   function ResetInputs() {
     setInputMerek(INPUTS[0]);
     setInputModel(INPUTS[1]);
     setInputVarian(INPUTS[2]);
   }
-  
+
   async function InsertData() {
-    await axios
-    .post(`${baseURL}/cm/merek-model-varian`, {
-      headers: {
-        Authorization: `Bearer ${thisToken}`,
-      },
-      merek: InputMerek.value,
-      model: InputModel.value,
-      varian: InputVarian.value,
-    })
-    .then((response) => {
-      // console.log(response.data)
-      
-      setMenuAnchorEl(null);
-      ResetInputs();
-      LoadData();
-    })
-    .catch((err) => {
-      console.warn(err.response);
-    });
+    await axiosBackend
+      .post(`/cm/merek-model-varian/insert`, {
+        merek: InputMerek.value,
+        model: InputModel.value,
+        varian: InputVarian.value,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setMenuAnchorEl(null);
+        ResetInputs();
+        LoadData();
+      })
+      .catch((err) => {
+        console.warn(err.response);
+      });
   }
 
   const DATAGRID_COLUMNS = [
     { field: "index", headerName: "#" },
     { field: "id", headerName: "ID", hide: true },
-    { field: "merek", headerName: "Merek", minWidth: 180, flex: 1 },
-    { field: "model", headerName: "Model", minWidth: 160 },
-    { field: "varian", headerName: "Varian", minWidth: 160, flex: 1 },
+    { field: "merek", headerName: "Merek", minWidth: 180, flex: 1, renderCell: StylingMMV, },
+    { field: "model", headerName: "Model", minWidth: 160, renderCell: StylingMMV },
+    { field: "varian", headerName: "Varian", minWidth: 160, flex: 1, renderCell: StylingMMV },
   ];
+
+  function StylingMMV(params) {
+    return (
+      <PopupEdit
+        row={params.row}
+        reload={reload}
+        fromTable={params.field}
+        fromPage={"CM"}
+        dataSent={LoadData}
+      />
+    );
+  }
 
   // const [InputVarian, setInputVarian] = useState(INPUTS[2])
   const doFilter = () => {
@@ -323,7 +287,9 @@ export default function CMUMerkModelVariant(props) {
     <>
       {indexPage !== ActiveSubPage ? null : (
         <Popover
+          anchorReference="anchorPosition"
           open={isMenuOpen}
+          anchorPosition={{ top: 180, left: 1680 }}
           anchorEl={MenuanchorEl}
           onClose={() => setMenuAnchorEl(null)}
           anchorOrigin={{
@@ -412,10 +378,9 @@ export default function CMUMerkModelVariant(props) {
             /> */}
           </DynamicContentMenu>
         </Popover>
-      ) }
+      )}
       {/* <button onClick={() => doFilter()}>doFilter</button> */}
-      <Box fullWidth sx={{ maxHeight: '70vh', height: '70vh'}}>
-
+      <Box fullWidth sx={{ maxHeight: "70vh", height: "70vh" }}>
         <DataGrid
           columns={DATAGRID_COLUMNS}
           rows={filteredData}
@@ -426,7 +391,27 @@ export default function CMUMerkModelVariant(props) {
           }}
           disableColumnResize={false}
           disableSelectionOnClick
+          onCellClick={(e) => {
+            console.log(e);
+            setAnchorEl(e.field);
+          }}
         />
+        {/* <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+        </Popover> */}
       </Box>
     </>
   );
